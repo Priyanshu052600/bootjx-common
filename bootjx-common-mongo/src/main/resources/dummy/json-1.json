@@ -1,0 +1,18 @@
+{
+  "emails": [
+    {
+      "email": "string",
+      "label": "string",
+      "type": "string"
+    }
+  ],
+  "name": {
+    "firstName": "Lalit",
+    "lastName": "Tanwar"
+  },
+  "phones": [
+    {
+      "phone": "919930104050"
+    }
+  ]
+}
