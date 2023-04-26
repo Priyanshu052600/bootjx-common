@@ -1,4 +1,4 @@
-package com.bootloaderjs;
+package com.boot.test;
 
 public class CivilGen {
 	public static void main(String[] args) {

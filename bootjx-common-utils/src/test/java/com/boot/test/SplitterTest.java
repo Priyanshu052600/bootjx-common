@@ -1,4 +1,4 @@
-package com.bootloaderjs;
+package com.boot.test;
 
 import java.util.Base64;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.bootloaderjs;
+package com.boot.test;
 
 import com.boot.utils.BashUtil;
 

@@ -1,4 +1,4 @@
-package com.boot.stringutiltest;
+package com.boot.test;
 
 import static org.junit.Assert.assertEquals;
 

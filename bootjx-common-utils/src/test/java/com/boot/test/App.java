@@ -1,4 +1,4 @@
-package com.bootloaderjs;
+package com.boot.test;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;

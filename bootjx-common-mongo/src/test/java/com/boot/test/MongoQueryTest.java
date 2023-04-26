@@ -1,4 +1,4 @@
-package com.boot.loaderjs;
+package com.boot.test;
 
 import java.io.IOException;
 import java.text.ParseException;

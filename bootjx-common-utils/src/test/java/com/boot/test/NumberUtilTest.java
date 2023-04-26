@@ -1,4 +1,4 @@
-package com.bootloaderjs;
+package com.boot.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

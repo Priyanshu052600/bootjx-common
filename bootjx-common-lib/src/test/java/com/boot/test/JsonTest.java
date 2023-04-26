@@ -1,4 +1,4 @@
-package com.boot.loaderjs;
+package com.boot.test;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
