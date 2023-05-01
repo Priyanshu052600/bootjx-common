@@ -52,28 +52,6 @@
 				<groupId>com.boot.jx</groupId>
 				<artifactId>bootjx-common-db</artifactId>
 				<version>${boot.jx.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.boot.jx</groupId>
-				<artifactId>bootjx-common-table</artifactId>
-				<version>${boot.jx.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.boot.jx</groupId>
-				<artifactId>bootjx-common-tmpl</artifactId>
-				<version>${boot.jx.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.boot.jx</groupId>
-				<artifactId>bootjx-common-lib-rbac</artifactId>
-				<version>${boot.jx.version}</version>
-			</dependency>	
-			<dependency>
-				<groupId>com.boot.jx</groupId>
-				<artifactId>bootjx-common-lib-session</artifactId>
-				<version>${boot.jx.version}</version>
 			</dependency>	
 		</dependencies>
 	</dependencyManagement>
@@ -138,9 +116,6 @@
 		<module>bootjx-common-table</module>
 		<module>bootjx-common-db</module>
 		<module>bootjx-common-mongo</module>
-		<module>bootjx-common-tmpl</module>
-		<module>bootjx-common-lib-rbac</module>
-		<module>bootjx-common-lib-session</module>
 		<!-- Common Servers -->
 	</modules>
 </project>
