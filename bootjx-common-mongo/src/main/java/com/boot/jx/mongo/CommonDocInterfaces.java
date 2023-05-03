@@ -330,6 +330,18 @@ public class CommonDocInterfaces {
 		private long day;
 		@Indexed
 		private long week;
+		@Indexed
+		private String byUser;
+
+		@Override
+		public String getByUser() {
+			return byUser;
+		}
+
+		@Override
+		public void setByUser(String byUser) {
+			this.byUser = byUser;
+		}
 
 		@Override
 		public long getStamp() {
@@ -369,6 +381,11 @@ public class CommonDocInterfaces {
 		@Override
 		public void setWeek(long week) {
 			this.week = week;
+		}
+
+		public TimeStampIndex by(String byUser) {
+			this.setByUser(byUser);
+			return this;
 		}
 
 		public static TimeStampIndex from(long stamp) {

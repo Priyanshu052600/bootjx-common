@@ -32,6 +32,10 @@ public class TimeModels {
 
 		void setWeek(long week);
 
+		String getByUser();
+
+		void setByUser(String byUser);
+
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
@@ -42,6 +46,15 @@ public class TimeModels {
 		private long hour;
 		private long day;
 		private long week;
+		private String byUser;
+
+		public String getByUser() {
+			return byUser;
+		}
+
+		public void setByUser(String byUser) {
+			this.byUser = byUser;
+		}
 
 		public long getStamp() {
 			return stamp;
@@ -73,6 +86,11 @@ public class TimeModels {
 
 		public void setWeek(long week) {
 			this.week = week;
+		}
+
+		public ITimeStampIndex by(String byUser) {
+			this.setByUser(byUser);
+			return this;
 		}
 	}
 
