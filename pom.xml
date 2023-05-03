@@ -113,7 +113,6 @@
 		<!-- Common Libs -->
 		<module>bootjx-common-utils</module>
 		<module>bootjx-common-lib</module>
-		<module>bootjx-common-table</module>
 		<module>bootjx-common-db</module>
 		<module>bootjx-common-mongo</module>
 		<!-- Common Servers -->
