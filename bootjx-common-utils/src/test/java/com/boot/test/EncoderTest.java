@@ -3,6 +3,7 @@ package com.boot.test;
 import java.util.regex.Pattern;
 
 import com.boot.libs.SixBitEnDec;
+import com.boot.model.MapModel;
 import com.boot.utils.CryptoUtil;
 
 public class EncoderTest { // Noncompliant
@@ -37,7 +38,7 @@ public class EncoderTest { // Noncompliant
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 
 		TestClass p = new TestClass();
 		p.setNum(3);
@@ -49,7 +50,22 @@ public class EncoderTest { // Noncompliant
 		String testString = "0";
 		String encr = new CryptoUtil.Encoder().message(testString).encrypt().encodeBase64().toString();
 		System.out.println("B64   " + encr);
-		System.out.println("B64   " + new CryptoUtil.Encoder().message("TkNldGxaMXBUWk9qWVdpQ1R5NHhkUT09").decodeBase64().decrypt().toString());
+		System.out.println("B64   " + new CryptoUtil.Encoder().message("TkNldGxaMXBUWk9qWVdpQ1R5NHhkUT09")
+				.decodeBase64().decrypt().toString());
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+
+		String state = MapModel.createInstance().put("csrfToken", "CSRFSECRET").encoder().encrypt().tokenize(10)
+				.encodeBase64().toString();
+		System.out.println("state : " + state);
+
+		Thread.sleep(5000);
+
+		System.out.println("csrfToken : " + MapModel.decoder(state).decodeBase64().detokenize().validate()
+				.decrypt().toMapModel().entry("csrfToken").asString());
+		;
+
 	}
 
 }

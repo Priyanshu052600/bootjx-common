@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.boot.libs.SixBitEnDec;
+import com.boot.model.MapModel;
 
 public final class CryptoUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CryptoUtil.class);
@@ -613,6 +614,10 @@ public final class CryptoUtil {
 		}
 	}
 
+	public static class TokenExpiredException extends RuntimeException {
+		private static final long serialVersionUID = -6558235413712013564L;
+	}
+
 	public static class Encoder {
 		private String output;
 		private CrypToken token;
@@ -692,6 +697,21 @@ public final class CryptoUtil {
 			return this;
 		}
 
+		public Encoder detokenize() {
+			token = JsonUtil.fromJson(this.output, CrypToken.class, true);
+			this.output = token.message;
+			return this;
+		}
+
+		public Encoder validate() {
+			if (token != null) {
+				if (token.isExpired()) {
+					throw new TokenExpiredException();
+				}
+			}
+			return this;
+		}
+
 		public Encoder sha1() {
 			try {
 				this.output = CryptoUtil.getSHA1Hash(this.output);
@@ -737,6 +757,10 @@ public final class CryptoUtil {
 
 		public boolean is(String compaeTo) {
 			return ArgUtil.is(this.output, compaeTo);
+		}
+
+		public MapModel toMapModel() {
+			return MapModel.from(output);
 		}
 
 	}

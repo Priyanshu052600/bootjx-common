@@ -13,6 +13,8 @@ import com.boot.json.MapModelDeserializer;
 import com.boot.model.MapModel.EntryMeta;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.Constants;
+import com.boot.utils.CryptoUtil;
+import com.boot.utils.CryptoUtil.Encoder;
 import com.boot.utils.JsonPath;
 import com.boot.utils.JsonUtil;
 import com.boot.utils.TimeUtils;
@@ -438,6 +440,10 @@ public class MapModel implements JsonSerializerType<Object> {
 		return JsonUtil.toJson(this.toObject());
 	}
 
+	public String toJsonPretty() {
+		return JsonUtil.toJsonPrettyPrint(this.toObject());
+	}
+
 	public <T> T as(Class<T> clazz) {
 		return JsonUtil.getMapper().convertValue(this.map(), clazz);
 	}
@@ -534,4 +540,13 @@ public class MapModel implements JsonSerializerType<Object> {
 		this.map().put(key, child);
 		return this;
 	}
+
+	public Encoder encoder() {
+		return CryptoUtil.getEncoder().obzect(this.toObject());
+	}
+
+	public static Encoder decoder(String state) {
+		return CryptoUtil.getEncoder().message(state);
+	}
+
 }
