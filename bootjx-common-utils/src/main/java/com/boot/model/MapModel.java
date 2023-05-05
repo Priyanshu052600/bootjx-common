@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import com.boot.json.JsonSerializerType;
 import com.boot.json.MapModelDeserializer;
-import com.boot.model.MapModel.EntryMeta;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.Constants;
 import com.boot.utils.CryptoUtil;
@@ -280,6 +279,20 @@ public class MapModel implements JsonSerializerType<Object> {
 		public MapPathEntry pathEntrySafe(String path) {
 			if (!this.exists() && ArgUtil.is(path)) {
 				return this.pathEntry(new JsonPath(path));
+			}
+			return this;
+		}
+
+		public MapPathEntry orPathEntry(String path) {
+			if (!this.exists() && ArgUtil.is(path)) {
+				return new MapPathEntry().map(this.map).path(new JsonPath(path)).load(null);
+			}
+			return this;
+		}
+
+		public MapPathEntry orKeyEntry(String path) {
+			if (!this.exists() && ArgUtil.is(path)) {
+				return new MapPathEntry().map(this.map).key(key).load(null);
 			}
 			return this;
 		}
