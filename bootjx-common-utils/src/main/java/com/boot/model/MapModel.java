@@ -290,8 +290,8 @@ public class MapModel implements JsonSerializerType<Object> {
 			return this;
 		}
 
-		public MapPathEntry orKeyEntry(String path) {
-			if (!this.exists() && ArgUtil.is(path)) {
+		public MapPathEntry orKeyEntry(String key) {
+			if (!this.exists() && ArgUtil.is(key)) {
 				return new MapPathEntry().map(this.map).key(key).load(null);
 			}
 			return this;
