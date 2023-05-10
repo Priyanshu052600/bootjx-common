@@ -117,4 +117,13 @@
 		<module>bootjx-common-mongo</module>
 		<!-- Common Servers -->
 	</modules>
+	
+	<distributionManagement>
+	   <repository>
+	     <id>github</id>
+	     <name>GitHub OWNER Apache Maven Packages</name>
+	     <url>https://maven.pkg.github.com/bootloader/bootjx-central-maven</url>
+	   </repository>
+	</distributionManagement>
+
 </project>
