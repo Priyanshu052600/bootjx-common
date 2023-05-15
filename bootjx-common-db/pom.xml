@@ -14,7 +14,7 @@
 		<groupId>com.boot.jx</groupId>
 		<artifactId>bootjx-common</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<relativePath/>
 	</parent>
 
 	<properties>
