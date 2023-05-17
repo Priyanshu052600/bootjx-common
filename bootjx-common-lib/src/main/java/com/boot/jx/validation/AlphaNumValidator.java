@@ -12,13 +12,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.regex.Pattern;
 
-import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.Payload;
-
 import com.boot.jx.validation.AlphaNumValidator.ValidAlphaNum;
 import com.boot.utils.ArgUtil;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.Payload;
 
 public class AlphaNumValidator implements ConstraintValidator<ValidAlphaNum, String> {
 

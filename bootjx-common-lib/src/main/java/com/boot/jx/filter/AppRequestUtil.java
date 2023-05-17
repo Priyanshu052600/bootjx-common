@@ -10,9 +10,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
@@ -20,6 +17,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StreamUtils;
 
 import com.boot.jx.logger.LoggerService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class AppRequestUtil {
 

@@ -11,9 +11,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
-
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +22,9 @@ import com.boot.utils.ArgUtil;
 import com.boot.utils.JsonUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.DatatypeConverter;
 
 public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Serializable {
 

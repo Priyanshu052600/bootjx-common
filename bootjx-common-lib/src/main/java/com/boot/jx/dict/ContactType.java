@@ -34,7 +34,8 @@ public enum ContactType {
 	INSTAGRAM("ig","Instagram"),
 	
 	// Default Null Value
-	DUMMY("dummy"), EMPTY("");
+	DUMMY("dummy"), EMPTY(""),
+	FBPUSH("push");
 
 	ContactType contactType;
 	String shortCode;

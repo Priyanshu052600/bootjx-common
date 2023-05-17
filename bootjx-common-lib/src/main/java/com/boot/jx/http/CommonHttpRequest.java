@@ -9,16 +9,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
@@ -49,6 +42,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class CommonHttpRequest extends ACommonHttpRequest {
@@ -152,10 +149,6 @@ public class CommonHttpRequest extends ACommonHttpRequest {
 		return (Language) ArgUtil.parseAsEnum(
 				ArgUtil.nonEmpty(getRequestParam(AppConstants.LANG_PARAM_KEY), request.getLocale().getLanguage()),
 				Language.DEFAULT, Language.class);
-	}
-
-	public Device getCurrentDevice() {
-		return DeviceUtils.getCurrentDevice(request);
 	}
 
 	public String getDeviceId() {
@@ -366,27 +359,18 @@ public class CommonHttpRequest extends ACommonHttpRequest {
 
 		userDevice.setIp(this.getIPAddress());
 
-		Device currentDevice = this.getCurrentDevice();
 		UserAgent userAgent = this.getUserAgent();
 
 		boolean isMobile = false;
 		boolean isTablet = false;
 		boolean isAndroid = false;
 		boolean isIOS = false;
-		if (currentDevice != null) {
-			isMobile = currentDevice.isMobile();
-			isTablet = currentDevice.isTablet();
-			isAndroid = (currentDevice.getDevicePlatform() == org.springframework.mobile.device.DevicePlatform.ANDROID);
-			isIOS = (currentDevice.getDevicePlatform() == org.springframework.mobile.device.DevicePlatform.IOS);
-		} else {
-			isMobile = userAgent.getOperatingSystem().getDeviceType()
-					.equals(eu.bitwalker.useragentutils.DeviceType.MOBILE);
-			isTablet = userAgent.getOperatingSystem().getDeviceType()
-					.equals(eu.bitwalker.useragentutils.DeviceType.TABLET);
-			isAndroid = userAgent.getOperatingSystem().getGroup()
-					.equals(eu.bitwalker.useragentutils.OperatingSystem.ANDROID);
-			isIOS = userAgent.getOperatingSystem().getGroup().equals(eu.bitwalker.useragentutils.OperatingSystem.IOS);
-		}
+
+		isMobile = userAgent.getOperatingSystem().getDeviceType().equals(eu.bitwalker.useragentutils.DeviceType.MOBILE);
+		isTablet = userAgent.getOperatingSystem().getDeviceType().equals(eu.bitwalker.useragentutils.DeviceType.TABLET);
+		isAndroid = userAgent.getOperatingSystem().getGroup()
+				.equals(eu.bitwalker.useragentutils.OperatingSystem.ANDROID);
+		isIOS = userAgent.getOperatingSystem().getGroup().equals(eu.bitwalker.useragentutils.OperatingSystem.IOS);
 
 		userDevice.setType((isMobile ? UserClient.DeviceType.MOBILE
 				: (isTablet ? UserClient.DeviceType.TABLET : UserClient.DeviceType.COMPUTER)));

@@ -2,18 +2,17 @@ package com.boot.jx.mongo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.http.CommonHttpRequest.ApiRequestDetail;
 import com.boot.jx.scope.tnt.Tenants;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.StringUtils;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 
 public class CommonMongoSource {
 
@@ -40,15 +39,15 @@ public class CommonMongoSource {
 	private static MongoClient sharedMongoClient;
 
 	private static Object lock = new Object();
-	MongoDbFactory mongoDbFactory;
+	MongoDatabaseFactory mongoDbFactory;
 	MongoTemplate mongoTemplate;
 
 	private static Object lockNoDb = new Object();
-	static MongoDbFactory mongoDbFactoryNoDb;
+	static MongoDatabaseFactory mongoDbFactoryNoDb;
 	static MongoTemplate mongoTemplateNoDb;
 
 	private static Object lockDefault = new Object();
-	static MongoDbFactory mongoDbFactoryDefault;
+	static MongoDatabaseFactory mongoDbFactoryDefault;
 	static MongoTemplate mongoTemplateDefault;
 
 	boolean ready = false;
@@ -62,33 +61,31 @@ public class CommonMongoSource {
 		return hasRule(READ_ONLY_DB);
 	}
 
-	public MongoDbFactory getMongoDbFactory(String dataSourceUrl) {
+	public MongoDatabaseFactory getMongoDbFactory(String dataSourceUrl) {
 		String tnt = tenant;
 		String dbtnt = tenantDB;
-		MongoClientURI mongoClientURI = new MongoClientURI(dataSourceUrl);
 
 		synchronized (lockClient) {
 			if (sharedMongoClient == null) {
-				sharedMongoClient = new MongoClient(mongoClientURI);
-				MongoClientOptions o = sharedMongoClient.getMongoClientOptions();
-				LOGGER.info("MONGODB: MongoClient:{}:{}   {}", tnt, dbtnt, o.getConnectionsPerHost());
+				sharedMongoClient = MongoClients.create(dataSourceUrl);
+				LOGGER.info("MONGODB: MongoClient:{}:{}  ", tnt, dbtnt);
 			}
 		}
 
 		String dataBaseName = (globalDBProfix + "_" + dbtnt);
 		if (hasRule(USE_NO_DB)) {
+			dataBaseName = sharedMongoClient.listDatabaseNames().first();
 			// dataBaseName = "nodb";
-			dataBaseName = mongoClientURI.getDatabase();
 		} else if ((!ArgUtil.areEqual(StringUtils.trim(dataSourceUrl), StringUtils.trim(globalDataSourceUrl))
 				|| Tenants.isDefault(tnt) || (hasRule(USE_DEFAULT_DB)))) {
-			dataBaseName = mongoClientURI.getDatabase();
+			dataBaseName = sharedMongoClient.listDatabaseNames().first();
 		}
 		LOGGER.info("MONGODB: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
 
-		return new SimpleMongoDbFactory(sharedMongoClient, dataBaseName);
+		return new SimpleMongoClientDatabaseFactory(sharedMongoClient, dataBaseName);
 	}
 
-	public MongoDbFactory getMongoDbFactory() {
+	public MongoDatabaseFactory getMongoDbFactory() {
 		if (hasRule(USE_NO_DB)) {
 			if (mongoDbFactoryNoDb == null && ArgUtil.is(dataSourceUrl)) {
 				mongoDbFactoryNoDb = getMongoDbFactory(dataSourceUrl);
@@ -126,7 +123,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.error("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getDb().getName());
+				LOGGER.error("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getMongoDatabase().getName());
 			}
 			return mongoTemplateNoDb;
 		} else if (hasRule(USE_DEFAULT_DB)) {
@@ -160,7 +157,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.debug("mongoDbFactory = {}", mongoDbFactory.getDb().getName());
+				LOGGER.debug("mongoDbFactory = {}", mongoDbFactory.getMongoDatabase().getName());
 			}
 			return mongoTemplate;
 		}

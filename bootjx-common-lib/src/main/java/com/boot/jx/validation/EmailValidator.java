@@ -2,11 +2,11 @@ package com.boot.jx.validation;
 
 import java.util.regex.Pattern;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import com.boot.jx.validation.ValidationAnnotations.ValidEmail;
 import com.boot.utils.ArgUtil;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 

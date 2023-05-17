@@ -1,10 +1,10 @@
 package com.boot.jx.rest;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.http.CommonHttpRequest.ApiRequestDetail;
 import com.boot.utils.JsonUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public final class AppRequestInterfaces {
 

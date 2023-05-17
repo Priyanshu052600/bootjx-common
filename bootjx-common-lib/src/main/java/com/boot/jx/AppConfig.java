@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,8 @@ import com.boot.utils.UniqueID;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+
+import jakarta.annotation.PostConstruct;
 
 @Configuration
 @PropertySource("classpath:application-lib.properties")

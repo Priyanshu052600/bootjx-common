@@ -6,7 +6,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.boot.jx.convertor.StringToEnumIgnoringCaseConverterFactory;
 import com.boot.jx.convertor.StringToTimePeriod;
@@ -14,7 +14,7 @@ import com.boot.jx.filter.AppRequestInterceptor;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class AppMVConfig extends WebMvcConfigurerAdapter {
+public class AppMVConfig implements WebMvcConfigurer {
 
     @Autowired
     private AppRequestInterceptor appRequestInterceptor;

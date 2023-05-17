@@ -4,23 +4,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.api.ApiResponseUtil;
 import com.boot.jx.exception.AmxApiError;
-import com.boot.jx.exception.ExceptionMessageKey;
 import com.boot.jx.exception.ApiHttpExceptions.ApiStatusCodes;
+import com.boot.jx.exception.ExceptionMessageKey;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.http.CommonHttpRequest.ApiRequestDetail;
 import com.boot.jx.rest.AppRequestInterfaces.AppAuthFilter;
@@ -28,8 +25,11 @@ import com.boot.jx.rest.RestService;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.JsonUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Component
-public class AppRequestInterceptor extends HandlerInterceptorAdapter {
+public class AppRequestInterceptor implements HandlerInterceptor {
 
 	final String sameSiteAttribute = "; SameSite=None";
 	final String secureAttribute = "; Secure";
@@ -74,7 +74,7 @@ public class AppRequestInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 
-		return super.preHandle(request, response, handler);
+		return true;
 	}
 
 	@Override

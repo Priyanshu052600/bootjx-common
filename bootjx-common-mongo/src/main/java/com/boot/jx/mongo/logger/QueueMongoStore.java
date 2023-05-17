@@ -42,7 +42,7 @@ public class QueueMongoStore extends CommonMongoTemplateAbstract implements ZQue
 				.and("queueType").is(queueType)//
 				.and("queueId").is(queueId)//
 				.and("batchId").exists(false))//
-				.sortBy(new Sort(Direction.ASC, "itemOrder").and(new Sort(Direction.ASC, "timestamp"))).limit(1);
+				.sortBy(Sort.by(Direction.ASC, "itemOrder").and(Sort.by(Direction.ASC, "timestamp"))).limit(1);
 		builder.set("batchId", batchId);
 		findAndModify(builder.getQuery(), builder.update(), QueueElementDoc.class);
 

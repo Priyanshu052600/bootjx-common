@@ -5,9 +5,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -31,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -181,7 +181,7 @@ public class RequestTrackEvent extends AuditEvent<RequestTrackEvent> implements 
 		}
 
 		try {
-			HttpStatus status = response.getStatusCode();
+			HttpStatus status = (HttpStatus) response.getStatusCode();
 			statusCode = ArgUtil.parseAsString(status);
 			if (ArgUtil.is(status) && (status.is5xxServerError() || status.is4xxClientError())) {
 				this.result = Result.ERROR;

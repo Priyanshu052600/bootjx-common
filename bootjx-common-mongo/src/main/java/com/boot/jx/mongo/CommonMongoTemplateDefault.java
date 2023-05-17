@@ -20,15 +20,11 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.index.IndexOperations;
-import org.springframework.data.mongodb.core.mapreduce.GroupBy;
-import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceOptions;
 import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.util.CloseableIterator;
 
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
 import com.mongodb.ReadPreference;
@@ -76,9 +72,9 @@ public abstract class CommonMongoTemplateDefault {
 		return getCommonMongoTemplate().execute(collectionName, action);
 	}
 
-	public <T> CloseableIterator<T> stream(Query query, Class<T> entityType) {
-		return getCommonMongoTemplate().stream(query, entityType);
-	}
+//	public <T> CloseableIterator<T> stream(Query query, Class<T> entityType) {
+//		return getCommonMongoTemplate().stream(query, entityType);
+//	}
 
 	public <T> MongoCollection<Document> createCollection(Class<T> entityClass) {
 		return getCommonMongoTemplate().createCollection(entityClass);
@@ -153,14 +149,14 @@ public abstract class CommonMongoTemplateDefault {
 		return getCommonMongoTemplate().findAll(entityClass, collectionName);
 	}
 
-	public <T> GroupByResults<T> group(String inputCollectionName, GroupBy groupBy, Class<T> entityClass) {
-		return getCommonMongoTemplate().group(inputCollectionName, groupBy, entityClass);
-	}
-
-	public <T> GroupByResults<T> group(Criteria criteria, String inputCollectionName, GroupBy groupBy,
-			Class<T> entityClass) {
-		return getCommonMongoTemplate().group(criteria, inputCollectionName, groupBy, entityClass);
-	}
+//	public <T> GroupByResults<T> group(String inputCollectionName, GroupBy groupBy, Class<T> entityClass) {
+//		return getCommonMongoTemplate().group(inputCollectionName, groupBy, entityClass);
+//	}
+//
+//	public <T> GroupByResults<T> group(Criteria criteria, String inputCollectionName, GroupBy groupBy,
+//			Class<T> entityClass) {
+//		return getCommonMongoTemplate().group(criteria, inputCollectionName, groupBy, entityClass);
+//	}
 
 	public <O> AggregationResults<O> aggregate(TypedAggregation<?> aggregation, String collectionName,
 			Class<O> outputType) {

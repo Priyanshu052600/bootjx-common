@@ -95,7 +95,7 @@ public final class JsonUtil {
 		}
 
 		@SuppressWarnings("rawtypes")
-		public <E> E fromJson(String json, TypeReference valueTypeRef) {
+		public <E> E fromJson(String json, TypeReference<E> valueTypeRef) {
 			if (json == null || "".equals(json.trim()) || "\"\"".equals(json.trim())) {
 				return null;
 			}

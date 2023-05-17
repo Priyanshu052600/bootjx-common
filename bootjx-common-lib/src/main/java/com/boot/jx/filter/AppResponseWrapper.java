@@ -2,15 +2,15 @@ package com.boot.jx.filter;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.slf4j.Logger;
 
 import com.boot.jx.AppConstants;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 public class AppResponseWrapper extends HttpServletResponseWrapper {
 
@@ -26,12 +26,6 @@ public class AppResponseWrapper extends HttpServletResponseWrapper {
 	handleStatus(sc);
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void setStatus(int sc, String sm) {
-	super.setStatus(sc, sm);
-	handleStatus(sc);
-    }
 
     @Override
     public void sendError(int sc, String msg) throws IOException {

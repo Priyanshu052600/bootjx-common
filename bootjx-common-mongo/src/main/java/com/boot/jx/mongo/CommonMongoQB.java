@@ -130,13 +130,13 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 
 	@SuppressWarnings("unchecked")
 	public M sortBy(String byField) {
-		this.query().with(new Sort(Direction.ASC, byField));
+		this.query().with(Sort.by(Direction.ASC, byField));
 		return (M) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	public M sortBy(String byField, Direction inDir) {
-		this.query().with(new Sort(inDir, byField));
+		this.query().with(Sort.by(inDir, byField));
 		return (M) this;
 	}
 

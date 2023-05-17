@@ -2,10 +2,10 @@ package com.boot.utils;
 
 import java.net.MalformedURLException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public final class HttpUtils {
 

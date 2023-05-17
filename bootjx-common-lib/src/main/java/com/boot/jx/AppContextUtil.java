@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +25,8 @@ import com.boot.utils.ContextUtil;
 import com.boot.utils.JsonUtil;
 import com.boot.utils.UniqueID;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class AppContextUtil {
 

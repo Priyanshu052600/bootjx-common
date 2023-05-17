@@ -10,8 +10,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map.Entry;
 
-import javax.activation.DataSource;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -21,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.boot.jx.dict.FileFormat;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+
+import jakarta.activation.DataSource;
 
 public class CommonFileStream extends CommonFileAbstract<CommonFileStream> {
 
