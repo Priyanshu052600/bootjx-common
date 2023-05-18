@@ -69,6 +69,18 @@
 					<target>17</target>
 				</configuration>
 			</plugin>
+			<plugin>
+      <artifactId>maven-source-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>attach-sources</id>
+          <phase>deploy</phase>
+          <goals><goal>jar-no-fork</goal></goals> 
+        </execution>
+      </executions>
+    </plugin>
+
+    
 		</plugins>
 		<pluginManagement>
 			<plugins>
