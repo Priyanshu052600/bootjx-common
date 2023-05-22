@@ -7,7 +7,8 @@
 	<artifactId>bootjx-common</artifactId>
 	<name>bootjx-common</name>
 	<packaging>pom</packaging>
-	<description>Parent pom providing dependency and plugin management for applications built with Maven </description>
+	<description>Parent pom providing dependency and plugin management for
+		applications built with Maven </description>
 	<url>http://maven.apache.org</url>
 	<version>3.0.3-SNAPSHOT</version>
 
@@ -51,7 +52,7 @@
 				<groupId>com.boot.jx</groupId>
 				<artifactId>bootjx-common-db</artifactId>
 				<version>${boot.jx.version}</version>
-			</dependency>	
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -65,22 +66,23 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>17</source>
-					<target>17</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
-      <artifactId>maven-source-plugin</artifactId>
-      <executions>
-        <execution>
-          <id>attach-sources</id>
-          <phase>deploy</phase>
-          <goals><goal>jar-no-fork</goal></goals> 
-        </execution>
-      </executions>
-    </plugin>
-
-    
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -128,13 +130,13 @@
 		<module>bootjx-common-mongo</module>
 		<!-- Common Servers -->
 	</modules>
-	
+
 	<distributionManagement>
-	   <repository>
-	     <id>github</id>
-	     <name>GitHub bootloader Apache Maven Packages</name>
-	     <url>https://maven.pkg.github.com/bootloader/bootloader.github.io</url>
-	   </repository>
+		<repository>
+			<id>github</id>
+			<name>GitHub bootloader Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/bootloader/bootloader.github.io</url>
+		</repository>
 	</distributionManagement>
 
 </project>

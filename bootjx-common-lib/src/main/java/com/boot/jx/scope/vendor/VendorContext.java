@@ -12,9 +12,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import com.boot.common.ScopedBeanFactory;
 import com.boot.jx.AppConstants;
-import com.boot.jx.swagger.ApiMockParam;
-import com.boot.jx.swagger.ApiMockParams;
-import com.boot.jx.swagger.MockParamBuilder.MockParamType;
 import com.boot.utils.ClazzUtil;
 import com.boot.utils.ContextUtil;
 import com.boot.utils.StringUtils;
@@ -36,11 +33,11 @@ public class VendorContext<T> extends ScopedBeanFactory<String, T> {
 
 	@Target({ ElementType.TYPE, ElementType.METHOD })
 	@Retention(RetentionPolicy.RUNTIME)
-	@ApiMockParams({
-			@ApiMockParam(name = AppConstants.AUTH_ID_XKEY, value = "Vendor Id",
-					defaultValue = "vendor", paramType = MockParamType.HEADER),
-			@ApiMockParam(name = AppConstants.AUTH_TOKEN_XKEY, value = "Vendor Request Token",
-					defaultValue = "vendor@1234", paramType = MockParamType.HEADER) })
+	//@ApiMockParams({
+		//	@ApiMockParam(name = AppConstants.AUTH_ID_XKEY, value = "Vendor Id",
+			//		defaultValue = "vendor", paramType = MockParamType.HEADER),
+			//@ApiMockParam(name = AppConstants.AUTH_TOKEN_XKEY, value = "Vendor Request Token",
+				//	defaultValue = "vendor@1234", paramType = MockParamType.HEADER) })
 	public @interface ApiVendorHeaders {
 
 	}

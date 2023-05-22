@@ -92,7 +92,7 @@ public class AppParamController {
 				map.putAll(eachListner.getIndicators(gaugeIndicator));
 			}
 		}
-		return response.data(map);
+		return ApiResponse.buildResult(map);
 	}
 
 	@ApiRequest(type = RequestType.NO_TRACK_PING)
@@ -136,7 +136,7 @@ public class AppParamController {
 	@RequestMapping(value = "/pub/amx/config/shared/clear", method = RequestMethod.GET)
 	public ApiResponse<BoolRespModel, Object> clearSharedConfig() {
 		appConfigPackage.clear(null);
-		return ApiResponse.buildData(new BoolRespModel(true));
+		return ApiResponse.buildResults(new BoolRespModel(true));
 	}
 
 	@Autowired(required = false)
@@ -175,7 +175,7 @@ public class AppParamController {
 		ApiResponseUtil.addWarning("THis is a warning for no reason");
 		ApiResponse<UserDevice, Map<String, Object>> resp = new ApiResponse<UserDevice, Map<String, Object>>();
 		resp.setMeta(map);
-		resp.setData(commonHttpRequest.getUserDevice().toSanitized());
+		// resp.setData(commonHttpRequest.getUserDevice().toSanitized());
 		return resp;
 	}
 
@@ -265,7 +265,7 @@ public class AppParamController {
 
 	@RequestMapping(value = EXT_PUB_CONFIG_CLIENT, method = RequestMethod.GET)
 	public ApiResponse<Map<String, Object>, Object> extPubConfig() {
-		return ApiResponse.buildData(appConfigPackage.getExternalConfig());
+		return ApiResponse.buildResult(appConfigPackage.getExternalConfig());
 	}
 
 }

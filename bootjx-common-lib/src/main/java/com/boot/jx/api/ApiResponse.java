@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.boot.jx.api.AmxResponseSchemes.ApiDataMetaResponse;
 import com.boot.jx.api.AmxResponseSchemes.ApiResultsMetaCompactResponse;
 import com.boot.jx.api.AmxResponseSchemes.ApiResultsMetaResponse;
 import com.boot.jx.exception.IExceptionEnum;
@@ -14,22 +13,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaResponse<T, M>, ApiResultsMetaResponse<T, M>,
+public class ApiResponse<T, M> extends AResponse<M> implements ApiResultsMetaResponse<T, M>,
 		ApiResultsMetaCompactResponse<T, M>, Serializable {
 
 	private static final long serialVersionUID = 2026047322050489651L;
 
-	/** The data. */
-	protected T data = null;
-
-	/** The data. */
 	protected List<T> results = null;
 
 	protected Object query = null;
 
 	public ApiResponse() {
 		super();
-		this.data = null;
 		this.results = new ArrayList<T>();
 	}
 
@@ -40,7 +34,6 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 	 */
 	public ApiResponse(List<T> resultList) {
 		super();
-		this.data = null;
 		this.results = resultList;
 	}
 
@@ -52,30 +45,10 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 	 */
 	public ApiResponse(List<T> resultList, M meta) {
 		super();
-		this.data = null;
 		this.results = resultList;
 		this.meta = meta;
 	}
 
-	/**
-	 * Gets the data.
-	 *
-	 * @return the data
-	 */
-	@Override
-	public T getData() {
-		return data;
-	}
-
-	/**
-	 * Sets the data.
-	 *
-	 * @param data the new data
-	 */
-	@Override
-	public void setData(T data) {
-		this.data = data;
-	}
 
 	public List<T> getResults() {
 		return results;
@@ -190,19 +163,6 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 		return resp;
 	}
 
-	public static <TS> ApiResponse<TS, Object> buildData(TS data) {
-		ApiResponse<TS, Object> resp = new ApiResponse<TS, Object>();
-		resp.setData(data);
-		return resp;
-	}
-
-	public static <TS, MS> ApiResponse<TS, MS> buildData(TS data, MS meta) {
-		ApiResponse<TS, MS> resp = new ApiResponse<TS, MS>();
-		resp.setData(data);
-		resp.setMeta(meta);
-		return resp;
-	}
-
 	/**
 	 * Builds the list.
 	 *
@@ -290,10 +250,6 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 		return this;
 	}
 
-	public ApiResponse<T, M> data(T data) {
-		this.data = data;
-		return this;
-	}
 
 	public ApiResponse<T, M> details(List<M> details) {
 		this.details = details;
@@ -302,15 +258,6 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 
 	public ApiResponse<T, M> query(Object query) {
 		this.query = query;
-		return this;
-	}
-
-	public T data() {
-		return this.data;
-	}
-
-	public ApiResponse<T, M> meta(M meta) {
-		this.meta = meta;
 		return this;
 	}
 

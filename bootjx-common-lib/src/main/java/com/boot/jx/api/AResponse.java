@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import com.boot.jx.api.AmxResponseSchemes.ApiMetaDetailsResponse;
 import com.boot.jx.exception.ApiHttpExceptions.ApiStatusCodes;
 import com.boot.jx.exception.IExceptionEnum;
-import com.boot.jx.swagger.ApiMockModelProperty;
 import com.boot.utils.ArgUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,10 +24,10 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 	protected String message;// JSON parse error
 	protected String warningKey;
 
-	@ApiMockModelProperty(example = "/postman/email/send")
+	//@ApiMockModelProperty(example = "/postman/email/send")
 	protected String path;
 
-	@ApiMockModelProperty(example = "/go/to/some/other/url.html")
+	//@ApiMockModelProperty(example = "/go/to/some/other/url.html")
 	protected String redirectUrl;
 
 	public static enum Target {

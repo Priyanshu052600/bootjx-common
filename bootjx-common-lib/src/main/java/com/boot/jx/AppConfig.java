@@ -54,7 +54,7 @@ public class AppConfig {
 	public static final String APP_GROUP = "${app.group}";
 	public static final String APP_NAME = "${app.name}";
 	public static final String APP_TYPE = "${app.type}";
-	public static final String APP_MESSAGE = "${app.message}";
+	public static final String APP_DESCRIPTION = "${app.description}";
 	public static final String APP_ID = "${app.id}";
 	public static final String APP_VERSION = "${app.version}";
 	public static final String APP_BUILDTIMESTAMP = "${app.buildtimestamp}";
@@ -107,9 +107,9 @@ public class AppConfig {
 	@AppParamKey(AppParam.APP_TYPE)
 	private String appType;
 
-	@Value(APP_MESSAGE)
-	@AppParamKey(AppParam.APP_MESSAGE)
-	private String appMessage;
+	@Value(APP_DESCRIPTION)
+	@AppParamKey(AppParam.APP_DESCRIPTION)
+	private String appDescription;
 
 	@Value(SPRING_APP_NAME)
 	@AppParamKey(AppParam.SPRING_APP_NAME)
@@ -483,6 +483,14 @@ public class AppConfig {
 		return appVenv;
 	}
 
+	public String getAppDescription() {
+		return appDescription;
+	}
+
+	public void setAppDescription(String appDescription) {
+		this.appDescription = appDescription;
+	}
+	
 	public String getAppInstanceType() {
 		return AppParam.APP_INSTANCE_TYPE.getValue();
 	}
