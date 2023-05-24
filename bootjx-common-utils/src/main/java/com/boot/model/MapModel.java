@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.boot.json.JsonSerializerType;
+import com.boot.json.JsonSerializerTypeSerializer;
 import com.boot.json.MapModelDeserializer;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.Constants;
@@ -21,8 +22,10 @@ import com.boot.utils.TimeUtils.TimePeriod;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSerialize(using = JsonSerializerTypeSerializer.class)
 @JsonDeserialize(using = MapModelDeserializer.class)
 public class MapModel implements JsonSerializerType<Object> {
 
@@ -313,7 +316,15 @@ public class MapModel implements JsonSerializerType<Object> {
 
 	@SuppressWarnings("unchecked")
 	public MapModel(String json) {
-		this.map = JsonUtil.fromJson(json, Map.class);
+		if (json.indexOf("[") == 0) {
+			try {
+				this.list = JsonUtil.getObjectListFromJsonString(json);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.map = JsonUtil.fromJson(json, Map.class);
+		}
 	}
 
 	public MapModel(List<Object> list) {
