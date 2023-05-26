@@ -3,6 +3,7 @@ package com.boot.jx.openapi;
 import java.util.StringJoiner;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +13,11 @@ import com.boot.jx.AppConfig;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 
 @Configuration
 public class OpenApiConfig {
@@ -57,6 +61,19 @@ public class OpenApiConfig {
 		}
 
 		return description.toString();
+	}
+
+	@Bean
+	public OpenApiCustomizer openApiCustomizer() {
+		//Modify apiresponse to add custom annotation metadata using spring beanpost processsort
+		OpenApiCustomizer c = (OpenAPI openApi) -> {
+//			Paths paths = openApi.getPaths();
+//			ApiResponses repsones = paths.get("/pub/test/post-api").getPost().getResponses();
+//			ApiResponse apiResp = new ApiResponse();
+//			apiResp.setDescription("custom desription");
+//			repsones.addApiResponse("CUSTOM_APIRESP", apiResp);
+		};
+		return c;
 	}
 
 }
