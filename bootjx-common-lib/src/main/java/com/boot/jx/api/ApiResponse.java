@@ -114,30 +114,7 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiResultsMetaRes
 		return new ApiResponse<TS, MS>();
 	}
 
-	/**
-	 * @deprecated - use {@link #buildResults(Object)} for list of elements and
-	 *             {@link #buildResult(Object)} for single element list
-	 * 
-	 * @param <TS>
-	 * @param result
-	 * @return
-	 */
-	@Deprecated
-	public static <TS> ApiResponse<TS, Object> build(TS result) {
-		ApiResponse<TS, Object> resp = new ApiResponse<TS, Object>();
-		resp.addResult(result);
-		return resp;
-	}
-
-	/**
-	 * @deprecated - use {@link #buildResults(Object, Object)} for list of elements
-	 *             and {@link #buildResult(Object, Object)} for single element list
-	 * 
-	 * @param <TS>
-	 * @param result
-	 * @return
-	 */
-	@Deprecated
+	
 	public static <TS, MS> ApiResponse<TS, MS> build(TS result, MS meta) {
 		return buildResult(result, meta);
 	}
@@ -145,14 +122,10 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiResultsMetaRes
 	/**
 	 * Builds the list.
 	 * 
-	 * @deprecated - this method should not be used for list , use
-	 *             {@link #buildResults(List)} for this
-	 *
 	 * @param <TS>       the generic type
 	 * @param resultList the result list
 	 * @return the amx api response
 	 */
-	@Deprecated
 	public static <TS> ApiResponse<List<TS>, HashMap<String, Object>> build(List<TS> resultList) {
 		return buildResult(resultList, new HashMap<String, Object>());
 	}
