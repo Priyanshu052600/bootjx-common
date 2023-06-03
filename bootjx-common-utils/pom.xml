@@ -16,7 +16,7 @@
 	</parent>
 	
 	<properties>
-		<jasypt.version>2.0.0</jasypt.version>
+		<jasypt.version>2.1.0</jasypt.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
