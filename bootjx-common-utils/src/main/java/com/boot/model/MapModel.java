@@ -1,5 +1,6 @@
 package com.boot.model;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -490,7 +491,7 @@ public class MapModel implements JsonSerializerType<Object> {
 	public static MapModel createInstance() {
 		return new MapModel(new HashMap<String, Object>());
 	}
-	
+
 	public MapModel putAll(Map<? extends String, ? extends Object> source) {
 		if (source != null)
 			this.map().putAll(source);
