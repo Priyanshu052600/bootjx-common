@@ -206,6 +206,10 @@ public final class StringUtils {
 		return getMapFromString(SPLITTER_CHAR, KEY_VALUE_SEPARATOR_CHAR, data);
 	}
 
+	public static Map<String, String> toMapFromQueryString(String data) {
+		return getMapFromString("&", "=", data);
+	}
+
 	public static String toString(Map<String, String> data) {
 		StringJoiner orCondition = new StringJoiner(SPLITTER_CHAR);
 		for (Entry<String, String> c : data.entrySet()) {

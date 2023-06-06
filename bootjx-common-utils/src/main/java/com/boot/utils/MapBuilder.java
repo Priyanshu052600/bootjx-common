@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -170,6 +171,10 @@ public class MapBuilder {
 
 	public static <K, V> MultiValueMap<K, V> multiValueMap(Map<K, List<V>> map) {
 		return new MultiValueMapAdapter<K, V>(map);
+	}
+
+	public static <K, V> MultiValueMap<K, V> multiValueMap() {
+		return new MultiValueMapAdapter<K, V>(new LinkedMultiValueMap<K, V>());
 	}
 
 	@SuppressWarnings("unused")
