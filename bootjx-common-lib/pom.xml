@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 	<name>bootjx-common-lib</name>
 	<url>http://maven.apache.org</url>
-	<description>Common Spring boot lib  for amx projects</description>
+	<description>Common Spring boot lib for amx projects</description>
 
 	<parent>
 		<groupId>com.boot.jx</groupId>
@@ -30,8 +30,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>
-				jakarta.servlet</groupId>
+			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 		</dependency>
 
@@ -42,15 +41,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>
-				eu.bitwalker</groupId>
+			<groupId>eu.bitwalker</groupId>
 			<artifactId>UserAgentUtils</artifactId>
 			<version>1.21</version>
 		</dependency>
 
 		<dependency>
-			<groupId>
-				com.googlecode.owasp-java-html-sanitizer</groupId>
+			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
 			<artifactId>
 				owasp-java-html-sanitizer</artifactId>
 			<version>20200713.1</version>
@@ -65,41 +62,35 @@
 
 		<dependency>
 			<groupId>commons-lang</groupId>
-			<artifactId>
-				commons-lang</artifactId>
+			<artifactId>commons-lang</artifactId>
 			<version>2.5</version>
 		</dependency>
 
 		<dependency>
-			<groupId>
-				org.springframework.boot</groupId>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>
-				com.github.gianluca-nitti</groupId>
+			<groupId>com.github.gianluca-nitti</groupId>
 			<artifactId>java-expr-eval</artifactId>
-			<version>
-				v3.1</version>
+			<version>v3.1</version>
 		</dependency>
 
-		<!-- https://stackoverflow.com/questions/61501810/javadoc-error-datatypeconverter-doesnot-exist -->
+		<!--
+		https://stackoverflow.com/questions/61501810/javadoc-error-datatypeconverter-doesnot-exist -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
-			<artifactId>
-				jakarta.xml.bind-api</artifactId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
 
 		<!-- file upload libs start -->
 		<dependency>
-			<groupId>
-				org.springframework.integration</groupId>
+			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-http</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>
-				commons-io</groupId>
+			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.9.0</version>
 		</dependency>
@@ -109,15 +100,17 @@
 			<groupId>
 				com.googlecode.libphonenumber</groupId>
 			<artifactId>libphonenumber</artifactId>
-			<version>
-				8.10.5</version>
+			<version>8.10.5</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.validation</groupId>
-			<artifactId>
-				jakarta.validation-api</artifactId>
+			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 
 	</dependencies>
 
