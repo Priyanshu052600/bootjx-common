@@ -317,7 +317,9 @@ public class MapModel implements JsonSerializerType<Object> {
 
 	@SuppressWarnings("unchecked")
 	public MapModel(String json) {
-		if (json.indexOf("[") == 0) {
+		if (!ArgUtil.is(json)) {
+			// Do nothing
+		} else if (json.indexOf("[") == 0) {
 			try {
 				this.list = JsonUtil.getObjectListFromJsonString(json);
 			} catch (IOException e) {
