@@ -569,4 +569,8 @@ public final class StringUtils {
 		return String.join("-", Arrays.copyOfRange(slots, 0, slots.length / 4 * 3));
 	}
 
+	public static String repeat(String repeat, int times) {
+		return new String(new char[times]).replace("\0", repeat);
+	}
+
 }

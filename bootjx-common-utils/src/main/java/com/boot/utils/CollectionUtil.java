@@ -345,4 +345,11 @@ public final class CollectionUtil {
 	public static <T> List<T> distinct(List<T> numbersList) {
 		return numbersList.stream().distinct().collect(Collectors.toList());
 	}
+
+	public static <T> List<T> clean(List<T> numbersList) {
+		if (ArgUtil.not(numbersList)) {
+			return numbersList;
+		}
+		return numbersList.stream().filter(x -> ArgUtil.is(numbersList)).distinct().collect(Collectors.toList());
+	}
 }

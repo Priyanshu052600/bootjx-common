@@ -17,7 +17,7 @@
 	</parent>
 	
 	<properties>
-		<jasypt.version>2.0.0</jasypt.version>
+		<jasypt.version>1.9.3</jasypt.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -58,11 +58,11 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>com.github.ulisesbocchio</groupId>
-			<artifactId>jasypt-spring-boot</artifactId>
-			<version>${jasypt.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>

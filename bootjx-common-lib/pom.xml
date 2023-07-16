@@ -21,6 +21,7 @@
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<swagger.version>2.8.0</swagger.version>
+		<jasypt.spring.version>3.0.0</jasypt.spring.version>
 	</properties>
 
 	<dependencies>
@@ -77,6 +78,20 @@
 			<version>${swagger.version}</version>
 		</dependency>
 
+<!-- 
+		<dependency>
+			<groupId>com.boot.jx</groupId>
+			<artifactId>boot-ext-jar</artifactId>
+			<type>pom</type>
+		</dependency>
+-->
+		
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot</artifactId>
+			<version>${jasypt.spring.version}</version>
+		</dependency> 
+		
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

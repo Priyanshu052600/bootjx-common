@@ -224,6 +224,12 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 	}
 
 	@SuppressWarnings("unchecked")
+	public M push(String key, Object o) {
+		update().push(key, o);
+		return (M) this;
+	}
+
+	@SuppressWarnings("unchecked")
 	public M setOnInsert(String key, Object o) {
 		update().setOnInsert(key, o);
 		return (M) this;

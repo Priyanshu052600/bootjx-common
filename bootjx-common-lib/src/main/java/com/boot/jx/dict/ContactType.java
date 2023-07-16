@@ -7,6 +7,12 @@ public enum ContactType {
 			return true;
 		}
 	},
+	OA("oa", "OA") {
+		@Override
+		public boolean isPhoneIndex() {
+			return true;
+		}
+	},
 	EMAIL("email", "Email Id") {
 		@Override
 		public boolean isEmailIndex() {

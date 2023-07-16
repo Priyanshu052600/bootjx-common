@@ -637,6 +637,15 @@ public final class CryptoUtil {
 			return this;
 		}
 
+		public Encoder decodeBase64Hack() {
+			if (this.output.indexOf("_") == 0) {
+				String[] x = this.output.substring(1).split("_");
+				this.output = x[0] + StringUtils.repeat("=", ArgUtil.parseAsInteger(x[1]));
+			}
+			this.output = new String(Base64.getDecoder().decode(this.output));
+			return this;
+		}
+
 		public Encoder encodeBase64() {
 			this.output = Base64.getEncoder().encodeToString(this.output.getBytes());
 			return this;
