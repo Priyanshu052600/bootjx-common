@@ -81,6 +81,7 @@ public class AppConfig {
 	public static final String JAX_CDN_CONTEXT = "${jax.cdn.context}";
 	public static final String JAX_APP_URL = "${jax.app.url}";
 	public static final String JAX_POSTMAN_URL = "${jax.postman.url}";
+	public static final String JAX_AUTH_URL = "${jax.auth.url}";
 
 	public static final String JAX_SSO_URL = "${jax.sso.url}";
 
@@ -209,6 +210,10 @@ public class AppConfig {
 	@Value(APP_CONTEXT_PREFIX)
 	@AppParamKey(AppParam.APP_CONTEXT_PREFIX)
 	private String appPrefix;
+	
+	@Value(JAX_AUTH_URL)
+	@AppParamKey(AppParam.JAX_AUTH_URL)
+	private String authURL;
 
 	@Value("${app.response.ok}")
 	private boolean appResponseOK;
@@ -283,6 +288,9 @@ public class AppConfig {
 		return postmapURL;
 	}
 
+	public String getAuthURL() {
+		return authURL;
+	}
 	@Bean
 	public AppParam loadAppParams() {
 
