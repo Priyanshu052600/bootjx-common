@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import com.boot.utils.JsonUtil;
+import com.boot.utils.TimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,8 +15,7 @@ public class TimeModels {
 
 	@JsonDeserialize(as = ITimeStampIndexImpl.class, keyUsing = TimeStampIndexKeyDeserializer.class)
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public interface ITimeStampIndex extends Serializable {
-
+	public interface ITimeStampIndex<T extends ITimeStampIndex<T>> extends Serializable {
 		public long getStamp();
 
 		void setStamp(long stamp);
@@ -36,11 +36,28 @@ public class TimeModels {
 
 		void setByUser(String byUser);
 
+		@SuppressWarnings("unchecked")
+		public default T fromStamp(long stamp) {
+			this.setStamp(stamp);
+			this.setHour(stamp / TimeUtils.Constants.MILLIS_IN_HOUR);
+			this.setDay(stamp / TimeUtils.Constants.MILLIS_IN_DAY);
+			this.setWeek(stamp / TimeUtils.Constants.MILLIS_IN_WEEK);
+			return (T) this;
+		}
+
+		public default T fromNow() {
+			return this.fromStamp(System.currentTimeMillis());
+		}
+
+		@SuppressWarnings("unchecked")
+		public default T by(String byUser) {
+			this.setByUser(byUser);
+			return (T) this;
+		}
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class ITimeStampIndexImpl implements ITimeStampIndex {
-
+	public static abstract class ITimeStampIndexAbstract<T extends ITimeStampIndex<T>> implements ITimeStampIndex<T> {
 		private static final long serialVersionUID = -923904958433975647L;
 		private long stamp;
 		private long hour;
@@ -88,9 +105,18 @@ public class TimeModels {
 			this.week = week;
 		}
 
-		public ITimeStampIndex by(String byUser) {
-			this.setByUser(byUser);
-			return this;
+	}
+
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public static class ITimeStampIndexImpl extends ITimeStampIndexAbstract<ITimeStampIndexImpl> {
+		private static final long serialVersionUID = 4863858945194917227L;
+
+		public static ITimeStampIndexImpl from(long stamp) {
+			return new ITimeStampIndexImpl().fromStamp(stamp);
+		}
+
+		public static ITimeStampIndexImpl now() {
+			return new ITimeStampIndexImpl().fromNow();
 		}
 	}
 

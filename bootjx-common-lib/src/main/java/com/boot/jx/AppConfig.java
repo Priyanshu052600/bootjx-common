@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -240,9 +243,6 @@ public class AppConfig {
 	@Value("${app.audit.file.skip}")
 	String[] skipAuditMarkers;
 
-	@Value("${encrypted.app.property}")
-	String appSpecifcDecryptedProp;
-
 	public boolean isCookieHttpOnly() {
 		return cookieHttpOnly;
 	}
@@ -423,10 +423,6 @@ public class AppConfig {
 		return springAppName;
 	}
 
-	public String getAppSpecifcDecryptedProp() {
-		return appSpecifcDecryptedProp;
-	}
-
 	public String getAppAuthToken() {
 		return appAuthToken;
 	}
@@ -485,6 +481,36 @@ public class AppConfig {
 
 	public String getAppInstanceType() {
 		return AppParam.APP_INSTANCE_TYPE.getValue();
+	}
+
+	// Crypto Config
+
+	@Value("${jasypt.encryptor.password}")
+	String jasyptEncryptorPassword;
+
+	@Value("${jasypt.encryptor.algorithm}")
+	String jasyptEncryptorAlgorithm;
+
+	@Value("${encrypted.app.property}")
+	String appSpecifcDecryptedProp;
+
+	public String getAppSpecifcDecryptedProp() {
+		return appSpecifcDecryptedProp;
+	}
+
+	@Bean(name = "encryptorBean")
+	public StringEncryptor stringEncryptor() {
+		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+		SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+		config.setPassword(jasyptEncryptorPassword);
+		config.setAlgorithm(jasyptEncryptorAlgorithm);
+		config.setKeyObtentionIterations("1000");
+		config.setPoolSize("1");
+		config.setProviderName("SunJCE");
+		config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+		config.setStringOutputType("base64");
+		encryptor.setConfig(config);
+		return encryptor;
 	}
 
 }

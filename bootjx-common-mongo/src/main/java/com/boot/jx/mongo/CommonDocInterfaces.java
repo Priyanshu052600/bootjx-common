@@ -21,7 +21,6 @@ import com.boot.model.UtilityModels.PublicJsonProperty;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.EntityDtoUtil;
 import com.boot.utils.JsonUtil;
-import com.boot.utils.TimeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -319,7 +318,7 @@ public class CommonDocInterfaces {
 	}
 
 	@JsonDeserialize(as = TimeStampIndex.class, keyUsing = TimeStampIndexKeyDeserializer.class)
-	public static class TimeStampIndex implements Serializable, ITimeStampIndex {
+	public static class TimeStampIndex implements Serializable, ITimeStampIndex<TimeStampIndex> {
 
 		private static final long serialVersionUID = 9114924334759684396L;
 		@Indexed
@@ -383,22 +382,12 @@ public class CommonDocInterfaces {
 			this.week = week;
 		}
 
-		public TimeStampIndex by(String byUser) {
-			this.setByUser(byUser);
-			return this;
-		}
-
 		public static TimeStampIndex from(long stamp) {
-			TimeStampIndex timeStamp = new TimeStampIndex();
-			timeStamp.setStamp(stamp);
-			timeStamp.setHour(stamp / TimeUtils.Constants.MILLIS_IN_HOUR);
-			timeStamp.setDay(stamp / TimeUtils.Constants.MILLIS_IN_DAY);
-			timeStamp.setWeek(stamp / TimeUtils.Constants.MILLIS_IN_WEEK);
-			return timeStamp;
+			return new TimeStampIndex().fromStamp(stamp);
 		}
 
 		public static TimeStampIndex now() {
-			return from(System.currentTimeMillis());
+			return new TimeStampIndex().fromNow();
 		}
 
 		public interface UpdatedTimeStampIndexSupport {
