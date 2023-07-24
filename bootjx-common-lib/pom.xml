@@ -85,6 +85,11 @@
 			<type>pom</type>
 		</dependency>
 -->
+		<dependency>
+			<groupId>com.boot.jx</groupId>
+			<artifactId>bootjx-extjar</artifactId>
+			<type>pom</type>
+		</dependency>
 		
 		<dependency>
 			<groupId>com.github.ulisesbocchio</groupId>
@@ -145,14 +150,6 @@
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
-		</repository>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/libs-milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
 		</repository>
 		<repository>
 			<id>spring-repo</id>

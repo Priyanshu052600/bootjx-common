@@ -33,6 +33,12 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.boot.jx</groupId>
+				<artifactId>bootjx-extjar</artifactId>
+				<version>${boot.jx.version}</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>com.boot.jx</groupId>
 				<artifactId>bootjx-common-utils</artifactId>
 				<version>${boot.jx.version}</version>
 			</dependency>
@@ -51,7 +57,7 @@
 				<groupId>com.boot.jx</groupId>
 				<artifactId>bootjx-common-db</artifactId>
 				<version>${boot.jx.version}</version>
-			</dependency>	
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
