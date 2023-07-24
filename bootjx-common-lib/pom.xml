@@ -154,6 +154,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>spring-repo</id>
+			<name>Spring Plugins</name>
+			<url>https://repo.spring.io/plugins-release</url>
+		</repository>
 	</repositories>
 
 </project>
