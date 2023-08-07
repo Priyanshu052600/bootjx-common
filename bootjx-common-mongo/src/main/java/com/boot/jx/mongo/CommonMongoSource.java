@@ -1,5 +1,7 @@
 package com.boot.jx.mongo;
 
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -71,7 +73,6 @@ public class CommonMongoSource {
 				LOGGER.info("MONGODB: MongoClient:{}:{}  ", tnt, dbtnt);
 			}
 		}
-
 		String dataBaseName = (globalDBProfix + "_" + dbtnt);
 		if (hasRule(USE_NO_DB)) {
 			dataBaseName = sharedMongoClient.listDatabaseNames().first();
@@ -79,6 +80,9 @@ public class CommonMongoSource {
 		} else if ((!ArgUtil.areEqual(StringUtils.trim(dataSourceUrl), StringUtils.trim(globalDataSourceUrl))
 				|| Tenants.isDefault(tnt) || (hasRule(USE_DEFAULT_DB)))) {
 			dataBaseName = sharedMongoClient.listDatabaseNames().first();
+		}
+		if (ArgUtil.isEmpty(dataBaseName)) {
+			dataBaseName = URI.create(dataSourceUrl).getPath().substring(1);
 		}
 		LOGGER.info("MONGODB: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
 
