@@ -196,6 +196,7 @@ public abstract class BashUtil {
 		private String method;
 		private String url;
 		private List<String> headers;
+		private List<String> auths;
 		private Map<String, Object> data;
 		private Map<String, String> fields;
 
@@ -220,6 +221,10 @@ public abstract class BashUtil {
 					break;
 				case "-H":
 					this.header(optionValue.asString());
+					i++;
+					break;
+				case "-u":
+					this.auth(optionValue.asString());
 					i++;
 					break;
 				case "-d":
@@ -262,6 +267,14 @@ public abstract class BashUtil {
 				this.headers = new ArrayList<String>();
 			}
 			this.headers.add(header);
+			return this;
+		}
+
+		public CurlCommand auth(String header) {
+			if (this.auths == null) {
+				this.auths = new ArrayList<String>();
+			}
+			this.auths.add(header);
 			return this;
 		}
 
@@ -319,6 +332,14 @@ public abstract class BashUtil {
 
 		public void setBash(String bash) {
 			this.bash = bash;
+		}
+
+		public List<String> getAuths() {
+			return auths;
+		}
+
+		public void setAuths(List<String> auths) {
+			this.auths = auths;
 		}
 
 	}
