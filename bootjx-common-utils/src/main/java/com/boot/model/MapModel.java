@@ -490,6 +490,10 @@ public class MapModel implements JsonSerializerType<Object> {
 		return new MapModel(json);
 	}
 
+	public static Map<String, Object> newMap() {
+		return new HashMap<String, Object>();
+	}
+
 	public static MapModel createInstance() {
 		return new MapModel(new HashMap<String, Object>());
 	}
