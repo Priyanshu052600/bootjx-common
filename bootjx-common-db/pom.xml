@@ -60,6 +60,16 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.boot.jx</groupId>
+			<artifactId>bootjx-common-lib</artifactId>
+		</dependency>
 
+	</dependencies>
+	<repositories>
+		<repository>
+			<url>https://maven.pkg.github.com/bootloader/bootloader.github.io</url>
+			<id>bootloader</id>
+		</repository>
+	</repositories>
 </project>
