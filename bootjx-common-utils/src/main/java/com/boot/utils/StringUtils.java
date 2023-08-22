@@ -526,6 +526,13 @@ public final class StringUtils {
 		return str.split(KEY_VALUE_SEPARATOR_CHAR);
 	}
 
+	public static boolean contains(String str, String find) {
+		if (str == null) {
+			return false;
+		}
+		return str.contains(find);
+	}
+
 	public static String[] toArray(String str) {
 		if (str == null) {
 			return new String[0];
