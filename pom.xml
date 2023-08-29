@@ -121,6 +121,7 @@
 		<module>bootjx-common-db</module>
 		<module>bootjx-common-mongo</module>
 		<!-- Common Servers -->
+		<module>bootjx-demo-server</module>
 	</modules>
 	
 	<distributionManagement>

@@ -158,6 +158,7 @@ public class AppParamController {
 		map.put("getBasicAuthPassword", appVendorConfigForAuth.getBasicAuthPassword());
 		map.put("getBasicAuthUser", appVendorConfigForAuth.getBasicAuthUser());
 		map.put("commonHttpRequest.getIPAddress()", commonHttpRequest.getIPAddress());
+		map.put("commonHttpRequest.getBasedomain()", commonHttpRequest.getBaseDomain());
 
 		map.put("httpSession.getId", httpSession.getId());
 		map.put("request.getRequestURL", request.getRequestURL().toString());
@@ -168,6 +169,7 @@ public class AppParamController {
 		map.put("request.getLocalAddr()", request.getLocalAddr());
 		map.put("request.getScheme()", request.getScheme());
 		map.put("HttpUtils.getSubdomain()", HttpUtils.getSubDomain(request));
+
 		map.put("HttpUtils.getScheme()", HttpUtils.getScheme(request));
 
 		if (!ArgUtil.isEmpty(key)) {
