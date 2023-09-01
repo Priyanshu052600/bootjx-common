@@ -402,6 +402,12 @@ public class CommonDocInterfaces {
 			public void setCreated(TimeStampIndex created);
 		}
 
+		public interface TimeStampIndexSupport extends CreatedTimeStampIndexSupport, UpdatedTimeStampIndexSupport {
+			public TimeStampIndex getCreated();
+
+			public void setCreated(TimeStampIndex created);
+		}
+
 		public static class UpdatedTimeStampDoc implements UpdatedTimeStampIndexSupport {
 			private TimeStampIndex updated;
 
@@ -411,6 +417,18 @@ public class CommonDocInterfaces {
 
 			public void setUpdated(TimeStampIndex updated) {
 				this.updated = updated;
+			}
+		}
+
+		public static class TimeStampDoc extends UpdatedTimeStampDoc implements TimeStampIndexSupport {
+			private TimeStampIndex created;
+
+			public TimeStampIndex getCreated() {
+				return created;
+			}
+
+			public void setCreated(TimeStampIndex created) {
+				this.created = created;
 			}
 		}
 	}
