@@ -88,19 +88,25 @@ public class BootJxConfigService {
 			this(new HashMap<String, Object>());
 		}
 
-		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
-			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
-			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
-			return this;
-		}
-
-		public BootJxConfigModel cdnAEntry(String bootJxCdnApp) {
-			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
+		public BootJxConfigModel cdnStatic(String cdnStatic) {
+			map.put("BOOTJX_CDN_STATIC", cdnStatic);
 			return this;
 		}
 
 		public BootJxConfigModel cdnContext(String bootJxCdnContext) {
 			map.put("BOOTJX_CDN_CONTEXT", bootJxCdnContext);
+			return this;
+		}
+
+		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
+			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
+			this.cdnAEntry(bootJxCdnApp);
+			this.cdnStatic(bootJxCdnApp);
+			return this;
+		}
+
+		public BootJxConfigModel cdnAEntry(String bootJxCdnApp) {
+			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
 			return this;
 		}
 
