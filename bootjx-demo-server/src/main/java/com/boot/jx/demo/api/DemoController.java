@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.boot.jx.AppConfig;
 import com.boot.jx.AppConfigPackage.AppCommonConfig;
+import com.boot.jx.cdn.BootJxConfigService;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.utils.ArgUtil;
 
@@ -27,6 +28,9 @@ public class DemoController {
 	@Autowired(required = false)
 	private AppCommonConfig appCommonConfig;
 
+	@Autowired(required = false)
+	private BootJxConfigService bootJxConfigService;
+
 	@Value("${swagger.auth.password}")
 	String swaggerAuthPassword;
 
@@ -40,7 +44,6 @@ public class DemoController {
 		if (ArgUtil.is(appCommonConfig)) {
 			model.addAllAttributes(appCommonConfig.appAttributes());
 		}
-
 		return "swagger-uix";
 	}
 
@@ -55,7 +58,11 @@ public class DemoController {
 			model.addAllAttributes(appCommonConfig.appAttributes());
 		}
 
-		return "app-contak";
+		if (ArgUtil.is(bootJxConfigService)) {
+			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("demo").map());
+		}
+
+		return "app-demo";
 	}
 
 }

@@ -1,0 +1,161 @@
+<style type="text/css">
+html.loadable.loading,
+body.loadable.loading {
+    height: 100vh;
+    text-align: center;
+}
+html.loadable .fullloader{
+	text-align: center;
+    width: 100%;
+    height: 100vh;
+    display: block;
+    position: absolute;
+    z-index: 1000000000000!important;
+}
+html.loadable.loading body {
+	width: 100%;
+	margin : 0px;
+	padding: 0px;
+	height: 100%;
+}
+html.loadable .fullloader .loaderr {
+	display: inline-block;
+	position: absolute;
+	top: calc(50% - 40px);
+	left: calc(50% - 24px);
+    z-index: 1000000000001!important;
+}
+html.loadable .fullloader .loaderr_message_div {
+ 	position: absolute;
+    top: calc( 50% + 20px);
+    text-align: center;
+    width: 100%;
+}
+html.loadable .fullloader .loaderr_message {
+    text-align: center;
+}
+html.loadable .fullloader .loaderr {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  background: linear-gradient(0deg, rgba(16, 185, 129, 0.2) 33%, #10b981 100%);
+  box-sizing: border-box;
+  animation: loaderr-rotation 1s linear infinite;
+}
+html.loadable .fullloader .loaderr::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+html.loadable .fullloader .loaderr::after {
+  background-color: #10b981;
+  -webkit-transition: background-color 0.5s linear;
+  -ms-transition: background-color 0.5s linear;
+  transition: background-color 0.5s linear;
+}
+html.loadable.loading .fullloader .loaderr::after {
+  background-color: #000;
+	-webkit-transition: background-color 0.5s linear;
+	-ms-transition: background-color 0.5s linear;
+	transition: background-color 0.5s linear;
+}
+@keyframes loaderr-rotation {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg)}
+}
+
+
+.loadable.loading #app,
+.loadable.loading main{
+	display: none;
+}
+.loadable.noloading .fullloader {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0.3s, opacity 0.4s linear;
+	background-color: #fff;
+   	-webkit-transition: background-color 0.5s linear;
+   	-ms-transition: background-color 0.5s linear;
+   	transition: background-color 0.5s linear;
+}
+.loadable.loading .fullloader{
+    visibility: visible;
+    opacity: .9;
+    background-color: #000;
+   	-webkit-transition: background-color 0.5s linear;
+   	-ms-transition: background-color 0.5s linear;
+   	transition: background-color 0.5s linear;
+}
+</style>
+<loader class="fullloader">
+	<span class="loaderr"></span>
+	<div class="loaderr_message_div">
+		<span class="loaderr_message">loading...</span>
+	</div>
+	<script>
+		window.fullloader = (function(){
+			let ready =  false;
+			let busy =  false;
+			let message = '';
+			let $message = null;
+			let fun = function(){
+				let showLoader = !ready || busy;
+				let htmlElement = document.querySelector('html.loadable');
+				if(htmlElement){
+					htmlElement.className = showLoader ?  "loadable loading" : "loadable noloading loaded";
+				}
+				console.log(`fullloader(ready:${ready},busy:${busy})`)
+			};
+			let busyLocal = function(isBusy){
+				isBusy = (isBusy === undefined ? true : !!isBusy);
+				busy =  !!isBusy;
+				fun()
+			}
+			let setMessage = function(msg){
+				message = msg;
+				$message = $message || document.querySelector('loader.fullloader .loaderr_message');
+				if(!$message ) {
+					let fl = document.querySelector('loader.fullloader');
+					$message  = document.createElement('span');
+					message.className = 'loaderr_message';
+					fl.appendChild($message);
+				}
+				$message.innerText = msg;
+			}
+			fun.ready = function(isReady){
+				isReady = (isReady === undefined ? true : !!isReady);
+				ready = !!isReady;
+				fun();
+			}
+			fun.busy =  function(msg){
+				if(typeof msg === 'string'){
+					setMessage(msg);
+					return busyLocal(true)
+				} else {
+					setMessage('');
+					return busyLocal(msg);
+				}
+			}
+			return fun;
+		})();
+		(function(fn) {
+		  if (document.readyState !== 'loading') {
+		    fn();
+		    return;
+		  }
+		  document.addEventListener('DOMContentLoaded', fn);
+		})(function(){
+			setTimeout(()=>{
+				fullloader.ready();
+			},1000)
+		})
+	</script>
+</loader>

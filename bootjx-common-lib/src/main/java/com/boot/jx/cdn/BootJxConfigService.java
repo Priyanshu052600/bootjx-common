@@ -50,27 +50,72 @@ public class BootJxConfigService {
 		return ArgUtil.parseAsString(debugCdnUrl, bootJxCdnUrl);
 	}
 
-	public Map<String, Object> bootJxAttributes() {
-		Map<String, Object> map = new HashMap<String, Object>();
-
+	public BootJxConfigModel bootJxAttributesModel() {
+		BootJxConfigModel model = new BootJxConfigModel();
 		String cdnUrl = getCdnUrl();
 
-		map.put("BOOTJX_CDN_URL", cdnUrl);
-		map.put("BOOTJX_CDN_APP", bootJxCdnApp);
-		map.put("BOOTJX_CDN_CONTEXT", bootJxCdnContext);
-		map.put("BOOTJX_CDN_VERSION", bootJxCdnVersion);
+		model.put("BOOTJX_CDN_URL", cdnUrl);
+		model.cdnApp(bootJxCdnApp);
+		model.cdnContext(bootJxCdnContext);
+		model.cdnVersion(bootJxCdnVersion);
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
-			map.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
+			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
 		} else {
-			map.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "false"));
+			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "false"));
 		}
 
-		map.put("BOOTJX_APP_TITLE", bootJxAppTitle);
-		map.put("BOOTJX_APP_DESC", bootJxAppDesc);
-		map.put("BOOTJX_APP_SITE", bootJxAppSite);
-
-		return map;
+		model.put("BOOTJX_APP_TITLE", bootJxAppTitle);
+		model.put("BOOTJX_APP_DESC", bootJxAppDesc);
+		model.put("BOOTJX_APP_SITE", bootJxAppSite);
+		return model;
 	}
 
+	public Map<String, Object> bootJxAttributes() {
+		BootJxConfigModel model = this.bootJxAttributesModel();
+		return model.map();
+	}
+
+	public static class BootJxConfigModel {
+		private Map<String, Object> map;
+
+		public BootJxConfigModel(Map<String, Object> map) {
+			super();
+			this.map = map;
+		}
+
+		public BootJxConfigModel() {
+			this(new HashMap<String, Object>());
+		}
+
+		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
+			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
+			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
+			return this;
+		}
+
+		public BootJxConfigModel cdnAEntry(String bootJxCdnApp) {
+			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
+			return this;
+		}
+
+		public BootJxConfigModel cdnContext(String bootJxCdnContext) {
+			map.put("BOOTJX_CDN_CONTEXT", bootJxCdnContext);
+			return this;
+		}
+
+		public BootJxConfigModel cdnVersion(String bootJxCdnVersion) {
+			map.put("BOOTJX_CDN_VERSION", bootJxCdnVersion);
+			return this;
+		}
+
+		public Map<String, Object> map() {
+			return this.map;
+		}
+
+		public BootJxConfigModel put(String key, Object value) {
+			this.map.put(key, value);
+			return this;
+		}
+	}
 }

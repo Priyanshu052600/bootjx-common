@@ -1,0 +1,76 @@
+<metas th:remove="tag">
+	<meta charset=utf-8>
+	<meta http-equiv=X-UA-Compatible content="IE=edge">
+	<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<title>[[${BOOTJX_APP_TITLE}]]</title>
+	<link rel="shortcut icon" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_ENTRY} + '/favicon/favicon.ico'" />
+	<link rel="apple-touch-icon" sizes="180x180" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_ENTRY} + '/favicon/apple-touch-icon.png'">
+	<link rel="icon" type="image/png" sizes="32x32" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_ENTRY} + '/favicon/favicon-32x32.png'">
+	<link rel="icon" type="image/png" sizes="16x16" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_ENTRY} + '/favicon/favicon-16x16.png'">
+	<link rel="manifest" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_ENTRY} + '/favicon/site.webmanifest'">
+</metas>
+<const th:remove="tag">
+	<script>
+		window.CONST = {
+			dev : '[[${BOOTJX_CDN_DEBUG}]]',
+			CDN_URL : '[[${BOOTJX_CDN_URL}]]', //
+			APP_CONTEXT : '[[${BOOTJX_CDN_CONTEXT}]]',  //
+			CONTEXT: '[[${BOOTJX_APP_CONTEXT}]]',
+			APP : '[[${BOOTJX_CDN_APP}]]',  //
+			remoteJsVersion :  '[[${BOOTJX_CDN_VERSION}]]', //
+			CONFIG : {},
+			extend :  function(obj){
+				for(var key in obj){
+					this[key] = obj[key]
+				}
+			}
+		};
+	</script>
+</const>	
+<header th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
+	<p th:case="'true'" th:remove="tag">
+		<meta name=report th:content="${BOOTJX_CDN_DEBUG}">
+	</p>
+	<p th:case="*" th:remove="tag">
+		<link rel=stylesheet
+			href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+		
+		<!-- // preload  css and js -->
+		<link th:href="${BOOTJX_CDN_URL} + '/app-'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}" rel=preload
+			as=script>
+		<link th:href="${BOOTJX_CDN_URL} + '/css/chunk-common.css?_='+${BOOTJX_CDN_VERSION}"
+			rel=preload as=style>
+		<link th:href="${BOOTJX_CDN_URL} + '/js/chunk-vendors.js?_='+${BOOTJX_CDN_VERSION}"
+			rel=preload as=script>
+		<link th:href="${BOOTJX_CDN_URL} + '/js/chunk-common.js?_='+${BOOTJX_CDN_VERSION}"
+			rel=preload as=script>
+			
+		<!-- // load  css -->
+		<link
+			th:href="${BOOTJX_CDN_URL} + '/css/chunk-vendors.css?_='+${BOOTJX_CDN_VERSION}"
+			rel=stylesheet>
+		<link th:href="${BOOTJX_CDN_URL} + '/css/chunk-common.css?_='+${BOOTJX_CDN_VERSION}"
+			rel=stylesheet />
+
+	</p>
+</header>
+<body th:remove="tag">
+	<noscript>
+		<strong>We're sorry but ArchitectUI doesn't work properly
+			without JavaScript enabled. Please enable it to continue.</strong>
+	</noscript>
+	<div id=app></div>
+	<div th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag"> 
+	  <p th:case="'true'" th:remove="tag">
+	  		<!-- // load  js if debug -->
+			<script th:src="${BOOTJX_CDN_URL}+'/app-'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}"></script>
+	  </p>
+	  <p th:case="*" th:remove="tag">
+			<!-- // load  js if prod -->
+		  	<script th:src="${BOOTJX_CDN_URL}+'/js/chunk-vendors.js?_='+${BOOTJX_CDN_VERSION}"></script>
+		  	<script th:src="${BOOTJX_CDN_URL}+'/js/chunk-common.js?_='+${BOOTJX_CDN_VERSION}"></script>
+			<script th:src="${BOOTJX_CDN_URL}+'/app-'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}"></script>
+	  </p> 
+	</div>
+</body>
