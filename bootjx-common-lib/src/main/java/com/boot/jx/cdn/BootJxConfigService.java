@@ -30,6 +30,9 @@ public class BootJxConfigService {
 	@Value("${bootjx.cdn.context:}")
 	String bootJxCdnContext;
 
+	@Value("${bootjx.cdn.static:}")
+	String bootJxCdnStatic;
+
 	@Value("${bootjx.app.title:}")
 	String bootJxAppTitle;
 
@@ -57,6 +60,7 @@ public class BootJxConfigService {
 		model.put("BOOTJX_CDN_URL", cdnUrl);
 		model.cdnApp(bootJxCdnApp);
 		model.cdnContext(bootJxCdnContext);
+		model.cdnStatic(bootJxCdnStatic);
 		model.cdnVersion(bootJxCdnVersion);
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
@@ -101,7 +105,6 @@ public class BootJxConfigService {
 		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
 			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
 			this.cdnAEntry(bootJxCdnApp);
-			this.cdnStatic(bootJxCdnApp);
 			return this;
 		}
 
