@@ -65,4 +65,22 @@ public class DemoController {
 		return "app-demo";
 	}
 
+	@ApiOperation(value = "Page", hidden = true)
+	@RequestMapping(value = { "/test", "/test/**" }, method = { RequestMethod.GET, RequestMethod.POST })
+	public String test(Model model) {
+
+		model.addAttribute("APP_NAME", appConfig.getAppName());
+		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
+		model.addAttribute("CDN_URL", appConfig.getAppPrefix());
+		if (ArgUtil.is(appCommonConfig)) {
+			model.addAllAttributes(appCommonConfig.appAttributes());
+		}
+
+		if (ArgUtil.is(bootJxConfigService)) {
+			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("test").cdnAEntry("dev").map());
+		}
+
+		return "app-demo";
+	}
+
 }

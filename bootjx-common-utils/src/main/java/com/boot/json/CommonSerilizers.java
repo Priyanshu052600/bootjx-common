@@ -21,83 +21,83 @@ import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 
 public class CommonSerilizers {
-    @JsonComponent
-    public static class EnumByIdSerializer extends JsonSerializer<EnumById> {
+	@JsonComponent
+	public static class EnumByIdSerializer extends JsonSerializer<EnumById> {
 
-	@Override
-	public void serialize(EnumById value, JsonGenerator gen, SerializerProvider serializers)
-		throws IOException, JsonProcessingException {
-	    gen.writeString(value.getId());
-	}
-    }
-
-    @JsonComponent
-    public static class EnumTypeSerializer extends JsonSerializer<EnumType> {
-
-	@Override
-	public void serialize(EnumType value, JsonGenerator gen, SerializerProvider serializers)
-		throws IOException, JsonProcessingException {
-	    if (!ArgUtil.isEmpty(value)) {
-		// super.serialize(value, gen, serializers);
-		gen.writeString(value.enumValue().name());
-		// defaultSerializer.serialize(value, gen, serializers);
-		// serializers.defaultSerialize(value, gen);
-	    }
-	}
-    }
-
-    @JsonComponent
-    public static class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
-
-	@Override
-	public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers)
-		throws IOException, JsonProcessingException {
-	    if (!ArgUtil.isEmpty(value)) {
-		// gen.writeString(value.toPlainString());
-		// gen.writeNumber(value);
-		// gen.writeNumber(value.doubleValue());
-		gen.writeNumber(value.toPlainString());
-	    }
+		@Override
+		public void serialize(EnumById value, JsonGenerator gen, SerializerProvider serializers)
+				throws IOException, JsonProcessingException {
+			gen.writeString(value.getId());
+		}
 	}
 
-	@Override
-	public void serializeWithType(BigDecimal value, JsonGenerator gen, SerializerProvider provider,
-		TypeSerializer typeSer) throws IOException {
-	    // typeSer.writeTypePrefixForObject(value, gen);
-	    serialize(value, gen, provider); // call your customized serialize method
-	    // typeSer.writeTypeSuffixForObject(value, gen);
-	    // super.serializeWithType(value, gen, provider, typeSer);
+	@JsonComponent
+	public static class EnumTypeSerializer extends JsonSerializer<EnumType> {
+
+		@Override
+		public void serialize(EnumType value, JsonGenerator gen, SerializerProvider serializers)
+				throws IOException, JsonProcessingException {
+			if (!ArgUtil.isEmpty(value)) {
+				// super.serialize(value, gen, serializers);
+				gen.writeString(value.enumValue().name());
+				// defaultSerializer.serialize(value, gen, serializers);
+				// serializers.defaultSerialize(value, gen);
+			}
+		}
 	}
-    }
 
-    @JsonComponent
-    public static class MapModelDeSerializer extends JsonDeserializer<MapModel> {
+	@JsonComponent
+	public static class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
 
-	@Override
-	public MapModel deserialize(JsonParser jp, DeserializationContext ctxt)
-		throws IOException, JsonProcessingException {
-	    return MapModel.from(jp.getValueAsString("{}"));
+		@Override
+		public void serialize(BigDecimal value, JsonGenerator gen, SerializerProvider serializers)
+				throws IOException, JsonProcessingException {
+			if (!ArgUtil.isEmpty(value)) {
+				// gen.writeString(value.toPlainString());
+				// gen.writeNumber(value);
+				// gen.writeNumber(value.doubleValue());
+				gen.writeNumber(value.toPlainString());
+			}
+		}
+
+		@Override
+		public void serializeWithType(BigDecimal value, JsonGenerator gen, SerializerProvider provider,
+				TypeSerializer typeSer) throws IOException {
+			// typeSer.writeTypePrefixForObject(value, gen);
+			serialize(value, gen, provider); // call your customized serialize method
+			// typeSer.writeTypeSuffixForObject(value, gen);
+			// super.serializeWithType(value, gen, provider, typeSer);
+		}
 	}
-    }
 
-    /**
-     * Not Used Yet
-     * 
-     * @author lalittanwar
-     *
-     */
-    public class BigDecimalDeSerializer extends JsonDeserializer<BigDecimal> {
+	@JsonComponent
+	public static class MapModelDeSerializer extends JsonDeserializer<MapModel> {
 
-	private NumberDeserializers.BigDecimalDeserializer delegate = NumberDeserializers.BigDecimalDeserializer.instance;
-
-	@Override
-	public BigDecimal deserialize(JsonParser jp, DeserializationContext ctxt)
-		throws IOException, JsonProcessingException {
-	    // return ArgUtil.parseAsBigDecimal(jp.getDecimalValue());
-
-	    BigDecimal bd = delegate.deserialize(jp, ctxt);
-	    bd = bd.setScale(2, RoundingMode.HALF_UP);
-	    return bd;
+		@Override
+		public MapModel deserialize(JsonParser jp, DeserializationContext ctxt)
+				throws IOException, JsonProcessingException {
+			return MapModel.from(jp.getValueAsString("{}"));
+		}
 	}
-    }
+
+	/**
+	 * Not Used Yet
+	 * 
+	 * @author lalittanwar
+	 *
+	 */
+	public class BigDecimalDeSerializer extends JsonDeserializer<BigDecimal> {
+
+		private NumberDeserializers.BigDecimalDeserializer delegate = NumberDeserializers.BigDecimalDeserializer.instance;
+
+		@Override
+		public BigDecimal deserialize(JsonParser jp, DeserializationContext ctxt)
+				throws IOException, JsonProcessingException {
+			// return ArgUtil.parseAsBigDecimal(jp.getDecimalValue());
+
+			BigDecimal bd = delegate.deserialize(jp, ctxt);
+			bd = bd.setScale(2, RoundingMode.HALF_UP);
+			return bd;
+		}
+	}
 }

@@ -306,6 +306,7 @@ public class MapModel implements JsonSerializerType<Object> {
 	protected Map<String, Object> map;
 	protected List<Object> list;
 	protected Map<String, Object> elem;
+	protected String safejson;
 
 	public MapModel() {
 		this.map = new HashMap<String, Object>();
@@ -316,18 +317,29 @@ public class MapModel implements JsonSerializerType<Object> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public MapModel(String json) {
+	public MapModel(String json, boolean suppressWarning) {
 		if (!ArgUtil.is(json)) {
 			// Do nothing
 		} else if (json.indexOf("[") == 0) {
 			try {
 				this.list = JsonUtil.getObjectListFromJsonString(json);
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (suppressWarning) {
+					this.safejson = json;
+				} else {
+					e.printStackTrace();
+				}
 			}
 		} else {
-			this.map = JsonUtil.fromJson(json, Map.class);
+			this.map = JsonUtil.fromJson(json, Map.class, suppressWarning);
+			if (suppressWarning && this.map == null && ArgUtil.is(json)) {
+				this.safejson = json;
+			}
 		}
+	}
+
+	public MapModel(String json) {
+		this(json, false);
 	}
 
 	public MapModel(List<Object> list) {
@@ -440,6 +452,15 @@ public class MapModel implements JsonSerializerType<Object> {
 		return this.map();
 	}
 
+	public boolean cannotSerialize() {
+		return ArgUtil.is(this.safejson);
+	}
+
+	@Override
+	public String toString() {
+		return this.safejson;
+	}
+
 	public MapModel fromMap(Map<String, Object> map) {
 		this.map = map;
 		return this;
@@ -488,6 +509,10 @@ public class MapModel implements JsonSerializerType<Object> {
 
 	public static MapModel from(String json) {
 		return new MapModel(json);
+	}
+
+	public static MapModel fromSafe(String json) {
+		return new MapModel(json, true);
 	}
 
 	public static Map<String, Object> newMap() {

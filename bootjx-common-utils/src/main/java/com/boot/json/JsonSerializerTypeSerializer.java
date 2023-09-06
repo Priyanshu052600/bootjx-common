@@ -26,6 +26,11 @@ public class JsonSerializerTypeSerializer extends JsonSerializer<JsonSerializerT
 	@Override
 	public void serialize(JsonSerializerType value, JsonGenerator jgen, SerializerProvider sp)
 			throws IOException, JsonProcessingException {
-		jgen.writeObject(value.toObject());
+		if (value.cannotSerialize()) {
+			jgen.writeRawValue(value.toString());
+		} else {
+			jgen.writeObject(value.toObject());
+		}
+
 	}
 }

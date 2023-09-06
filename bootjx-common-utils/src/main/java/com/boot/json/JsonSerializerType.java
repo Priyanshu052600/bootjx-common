@@ -1,11 +1,11 @@
 package com.boot.json;
 
+import com.boot.utils.Constants;
 
 /**
  * The Interface JsonSerializerType.
  *
- * @param <T>
- *            the generic type
+ * @param <T> the generic type
  */
 public interface JsonSerializerType<T> {
 
@@ -15,4 +15,8 @@ public interface JsonSerializerType<T> {
 	 * @return the object
 	 */
 	Object toObject();
+
+	default boolean cannotSerialize() {
+		return false;
+	}
 }
