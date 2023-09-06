@@ -306,7 +306,7 @@ public class MapModel implements JsonSerializerType<Object> {
 	protected Map<String, Object> map;
 	protected List<Object> list;
 	protected Map<String, Object> elem;
-	protected String safejson;
+	protected String nojson;
 
 	public MapModel() {
 		this.map = new HashMap<String, Object>();
@@ -325,7 +325,7 @@ public class MapModel implements JsonSerializerType<Object> {
 				this.list = JsonUtil.getObjectListFromJsonString(json);
 			} catch (IOException e) {
 				if (suppressWarning) {
-					this.safejson = json;
+					this.nojson = json;
 				} else {
 					e.printStackTrace();
 				}
@@ -333,7 +333,7 @@ public class MapModel implements JsonSerializerType<Object> {
 		} else {
 			this.map = JsonUtil.fromJson(json, Map.class, suppressWarning);
 			if (suppressWarning && this.map == null && ArgUtil.is(json)) {
-				this.safejson = json;
+				this.nojson = json;
 			}
 		}
 	}
@@ -453,12 +453,12 @@ public class MapModel implements JsonSerializerType<Object> {
 	}
 
 	public boolean cannotSerialize() {
-		return ArgUtil.is(this.safejson);
+		return ArgUtil.is(this.nojson);
 	}
 
 	@Override
 	public String toString() {
-		return this.safejson;
+		return this.nojson;
 	}
 
 	public MapModel fromMap(Map<String, Object> map) {
