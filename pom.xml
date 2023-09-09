@@ -8,7 +8,7 @@
 	<description>Parent pom providing dependency and plugin management for
 		applications built with Maven </description>
 	<url>http://maven.apache.org</url>
-	<version>3.0.3</version>
+	<version>3.0.4-SNAPSHOT</version>
 
 	<organization>
 		<name>Java Extended Spring Framework</name>
@@ -25,14 +25,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
-		<boot.jx.version>3.0.3</boot.jx.version>
+		<boot.jx.version>3.0.4-SNAPSHOT</boot.jx.version>
 		<HTTP_URL_GIT_REPOSITORY>ssh://git@github.com/bootloader/bootjx-common.git</HTTP_URL_GIT_REPOSITORY>
 	</properties>
  <scm>
         <url>${HTTP_URL_GIT_REPOSITORY}</url> <!-- URL HTTP de clone do projeto -->
         <connection>scm:git:${HTTP_URL_GIT_REPOSITORY}</connection> <!-- URL HTTP de clone do projeto -->
         <developerConnection>scm:git:${HTTP_URL_GIT_REPOSITORY}</developerConnection> <!-- URL HTTP de clone do projeto -->
-        <tag>3.0.3</tag>
+        <tag>@{project.version}</tag>
     </scm>
 	<dependencyManagement>
 		<dependencies>
