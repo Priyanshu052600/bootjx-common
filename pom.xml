@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.boot.jx</groupId>
@@ -10,7 +8,7 @@
 	<description>Parent pom providing dependency and plugin management for
 		applications built with Maven </description>
 	<url>http://maven.apache.org</url>
-	<version>3.0.3-SNAPSHOT</version>
+	<version>3.0.3</version>
 
 	<organization>
 		<name>Java Extended Spring Framework</name>
@@ -27,9 +25,15 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>17</java.version>
-		<boot.jx.version>3.0.3-SNAPSHOT</boot.jx.version>
+		<boot.jx.version>3.0.3</boot.jx.version>
+		<HTTP_URL_GIT_REPOSITORY>ssh://git@github.com/bootloader/bootjx-common.git</HTTP_URL_GIT_REPOSITORY>
 	</properties>
-
+ <scm>
+        <url>${HTTP_URL_GIT_REPOSITORY}</url> <!-- URL HTTP de clone do projeto -->
+        <connection>scm:git:${HTTP_URL_GIT_REPOSITORY}</connection> <!-- URL HTTP de clone do projeto -->
+        <developerConnection>scm:git:${HTTP_URL_GIT_REPOSITORY}</developerConnection> <!-- URL HTTP de clone do projeto -->
+        <tag>3.0.3</tag>
+    </scm>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -82,7 +86,17 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+			<plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    
+                    <configuration>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <checkModificationExcludes>
+                            <checkModificationExclude>pom.xml</checkModificationExclude>
+                        </checkModificationExcludes>
+                    </configuration>
+                </plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -111,7 +125,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
