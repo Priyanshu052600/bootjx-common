@@ -42,6 +42,7 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 	protected String url;
 	protected String thumb;
 	protected long contentLength;
+	protected String contentType;
 	private CommonTemplateMeta template = null;
 	private Map<String, Object> model = new HashMap<String, Object>();
 	private Map<String, Object> options = new HashMap<String, Object>();
@@ -201,7 +202,7 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 		if (ArgUtil.is(this.fileFormat)) {
 			return this.fileFormat.getContentType();
 		}
-		return null;
+		return this.contentType;
 	}
 
 	public void setExtension(String extension) {
@@ -395,17 +396,27 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 			response.addHeader("Content-type", "application/jpeg");
 		} else if (this.fileFormat == FileFormat.JPG) {
 			response.addHeader("Content-type", "application/jpg");
+		} else {
+			response.addHeader("Content-type", this.getContentType());
 		}
+
 		if (download) {
 			response.addHeader("Content-Disposition", "attachment; filename=" + getName());
 		}
 		try {
-			if (body != null) {
-				outputStream = response.getOutputStream();
-				outputStream.write(this.body);
-				LOGGER.info("PDF created successfully :  Template {}", this.getTemplate());
+			byte[] contentBytes = body;
+			if (ArgUtil.not(contentBytes) && ArgUtil.is(content)) {
+				contentBytes = content.getBytes();
 			}
-		} finally {
+
+			if (contentBytes != null) {
+				outputStream = response.getOutputStream();
+				outputStream.write(contentBytes);
+				LOGGER.debug("File created successfully :  Template {}", this.getTemplate());
+			}
+		} finally
+
+		{
 			if (outputStream != null) {
 				try {
 					outputStream.close();
@@ -429,6 +440,10 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 
 	public void setContentLength(long contentLength) {
 		this.contentLength = contentLength;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 }
