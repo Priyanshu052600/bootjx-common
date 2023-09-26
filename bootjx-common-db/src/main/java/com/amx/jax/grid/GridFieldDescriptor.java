@@ -52,5 +52,29 @@ public interface GridFieldDescriptor extends Serializable {
 	public default boolean isDBColumn() {
 		return ArgUtil.is(this.getFieldDataType());
 	}
+	
+	String getFilterType();
+	
+	void setFilterType(String filterType);
+	
+	String getFilterOptionsView();
+	
+	void setFilterOptionsView(String filterOptionsView);
+	
+	String getFilterRequired();
+	
+	void setFilterRequired(String filterRequired);
+	
+	String getFilterCondition();
+	
+	void setFilterCondition(String filterCondition);
+
+	String getFilterGroupName();
+	
+	void setFilterGroupName(String filterGroupName);
+	
+	String getFilterGroupStrategy();
+	
+	void setFilterGroupStrategy(String filterGroupStrategy);
 
 }

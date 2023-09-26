@@ -2,6 +2,7 @@ package com.amx.jax.grid;
 
 import java.math.BigDecimal;
 
+
 public class GridFieldDescriptorDTO implements GridFieldDescriptor {
 
 	private static final long serialVersionUID = 1L;
@@ -26,6 +27,18 @@ public class GridFieldDescriptorDTO implements GridFieldDescriptor {
 	private String condition;
 	
 	private String fieldType;
+
+	private String filterType;
+
+	private String filterOptionsView;
+	
+	private String filterRequired;
+	
+	private String filterCondition;
+	
+	private String filterGroupName;
+	
+	private String filterGroupStrategy;
 
 	@Override
 	public BigDecimal getId() {
@@ -127,10 +140,72 @@ public class GridFieldDescriptorDTO implements GridFieldDescriptor {
 	public void setFieldType(String fieldType) {
 		this.fieldType = fieldType;
 	}
-
+	
 	@Override
 	public String getFieldType() {
 		return fieldType;
 	}
 
+	@Override
+	public String getFilterType() {
+		return filterType;
+	}
+
+	@Override
+	public void setFilterType(String filterType) {
+		this.filterType = filterType;
+	}
+
+	@Override
+	public String getFilterOptionsView() {
+		return filterOptionsView;
+	}
+
+	@Override
+	public void setFilterOptionsView(String filterOptionsView) {
+		this.filterOptionsView = filterOptionsView;
+	}
+
+	@Override
+	public String getFilterRequired() {
+		return filterRequired;
+	}
+
+	@Override
+	public void setFilterRequired(String filterRequired) {
+		this.filterRequired = filterRequired;
+	}
+
+	@Override
+	public String getFilterCondition() {
+		return filterCondition;
+	}
+
+	@Override
+	public void setFilterCondition(String filterCondition) {
+		this.filterCondition = filterCondition;
+	}
+
+	@Override
+	public String getFilterGroupName() {
+		return filterGroupName;
+	}
+
+	@Override
+	public void setFilterGroupName(String filterGroupName) {
+		this.filterGroupName = filterGroupName;
+	}
+
+	@Override
+	public String getFilterGroupStrategy() {
+		return filterGroupStrategy;
+	}
+
+	@Override
+	public void setFilterGroupStrategy(String filterGroupStrategy) {
+		this.filterGroupStrategy = filterGroupStrategy;
+	}
+
+
+	
 }

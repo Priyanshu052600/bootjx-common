@@ -40,7 +40,7 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 
 	@Column(name = "FIELD_ORDER")
 	private String fieldOrder;
-	
+
 	@Column(name = "DISPLAY_ORDER")
 	private String displayOrder;
 
@@ -61,10 +61,28 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 
 	@Column(name = "CONDITION")
 	private String condition;
-	
+
 	@Column(name = "FIELD_TYPE")
 	private String fieldType;
-	
+
+	@Column(name = "FILTER_TYPE")
+	private String filterType;
+
+	@Column(name = "FILTER_OPTIONS_VIEW")
+	private String filterOptionsView;
+
+	@Column(name = "FILTER_REQUIRED")
+	private String filterRequired;
+
+	@Column(name = "FILTER_CONDITION")
+	private String filterCondition;
+
+	@Column(name = "FILTER_GROUP_NAME")
+	private String filterGroupName;
+
+	@Column(name = "FILTER_GROUP_STRATEGY")
+	private String filterGroupStrategy;
+
 	@Override
 	public BigDecimal getId() {
 		return id;
@@ -210,7 +228,7 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 	@Override
 	public void setCondition(String condition) {
 		this.condition = condition;
-		
+
 	}
 
 	@Override
@@ -221,6 +239,66 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 	@Override
 	public String getFieldType() {
 		return fieldType;
+	}
+
+	@Override
+	public String getFilterType() {
+		return filterType;
+	}
+
+	@Override
+	public void setFilterType(String filterType) {
+		this.filterType = filterType;
+	}
+
+	@Override
+	public String getFilterOptionsView() {
+		return filterOptionsView;
+	}
+
+	@Override
+	public void setFilterOptionsView(String filterOptionsView) {
+		this.filterOptionsView = filterOptionsView;
+	}
+
+	@Override
+	public String getFilterRequired() {
+		return filterRequired;
+	}
+
+	@Override
+	public void setFilterRequired(String filterRequired) {
+		this.filterRequired = filterRequired;
+	}
+
+	@Override
+	public String getFilterCondition() {
+		return filterCondition;
+	}
+
+	@Override
+	public void setFilterCondition(String filterCondition) {
+		this.filterCondition = filterCondition;
+	}
+
+	@Override
+	public String getFilterGroupName() {
+		return filterGroupName;
+	}
+
+	@Override
+	public void setFilterGroupName(String filterGroupName) {
+		this.filterGroupName = filterGroupName;
+	}
+
+	@Override
+	public String getFilterGroupStrategy() {
+		return filterGroupStrategy;
+	}
+
+	@Override
+	public void setFilterGroupStrategy(String filterGroupStrategy) {
+		this.filterGroupStrategy = filterGroupStrategy;
 	}
 
 }
