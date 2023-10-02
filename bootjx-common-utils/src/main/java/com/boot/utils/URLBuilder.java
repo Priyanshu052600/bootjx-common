@@ -1,5 +1,6 @@
 package com.boot.utils;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -197,9 +198,14 @@ public class URLBuilder {
 			builder = new URLBuilder(url.getAuthority());
 			builder.setConnectionType(url.getProtocol());
 		}
+
 		builder.setPath(url.getPath());
 		builder.addParameter(url.getQuery());
 		return builder;
+	}
+
+	public File toFile() {
+		return new File(folders.toString());
 	}
 
 }
