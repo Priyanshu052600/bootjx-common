@@ -2,7 +2,13 @@
 	<meta charset=utf-8>
 	<meta http-equiv=X-UA-Compatible content="IE=edge">
 	<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-	<!-- meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" -->
+	<div th:switch="${BOOTJX_UPGRADE_INSECURE_REQUESTS}" th:remove="tag"> 
+	  <p th:case="'true'" th:remove="tag">
+	  	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	  </p>
+	  <p th:case="*" th:remove="tag"></p> 
+	</div>
+
 	<title>[[${BOOTJX_APP_TITLE}]]</title>
 	<link rel="shortcut icon" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_STATIC} + '/favicon/favicon.ico'" />
 	<link rel="apple-touch-icon" sizes="180x180" th:href="${BOOTJX_CDN_URL}+'/_common/static/'+${BOOTJX_CDN_STATIC} + '/favicon/apple-touch-icon.png'">

@@ -72,6 +72,9 @@ public class BootJxConfigService {
 		model.put("BOOTJX_APP_TITLE", bootJxAppTitle);
 		model.put("BOOTJX_APP_DESC", bootJxAppDesc);
 		model.put("BOOTJX_APP_SITE", bootJxAppSite);
+
+		model.put("BOOTJX_UPGRADE_INSECURE_REQUESTS", "true");
+
 		return model;
 	}
 
@@ -115,6 +118,11 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel cdnVersion(String bootJxCdnVersion) {
 			map.put("BOOTJX_CDN_VERSION", bootJxCdnVersion);
+			return this;
+		}
+
+		public BootJxConfigModel preventUpgradeInsecureRequest() {
+			map.put("BOOTJX_UPGRADE_INSECURE_REQUESTS", "false");
 			return this;
 		}
 
