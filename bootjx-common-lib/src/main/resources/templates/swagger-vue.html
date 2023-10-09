@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	class="loadable loading">
+<head>
+	<style th:replace="common/cdn.html :: metas"> </style>
+	<style th:replace="common/loader.html :: style"> </style>
+	<style th:replace="common/cdn.html :: header"> </style>
+	<style th:replace="common/cdn.html :: const"> </style>
+	<script>
+		window.CONST.extend({
+			provider : "whatsapp"
+		});
+	</script>
+</head>
+<body>
+	<style th:replace="common/loader.html :: loader"> </style>
+	<style th:replace="common/cdn.html :: body"> </style>
+</body>
+</html>

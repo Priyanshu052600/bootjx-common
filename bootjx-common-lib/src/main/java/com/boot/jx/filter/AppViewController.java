@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boot.jx.AppConfig;
 import com.boot.jx.AppConfigPackage.AppCommonConfig;
+import com.boot.jx.cdn.BootJxConfigService;
 import com.boot.jx.swagger.DefaultSwaggerConfig;
 import com.boot.utils.ArgUtil;
 
@@ -26,6 +27,9 @@ public class AppViewController {
 
 	@Autowired(required = false)
 	private DefaultSwaggerConfig defaultSwaggerConfig;
+
+	@Autowired(required = false)
+	private BootJxConfigService bootJxConfigService;
 
 	@RequestMapping(value = { "/swagger-ui.html" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public String swagger(Model model) {
@@ -55,6 +59,18 @@ public class AppViewController {
 		model.addAttribute("APP_NAME", appConfig.getAppName());
 		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
 		return "swagger-uix";
+	}
+
+	@RequestMapping(value = { "/swagger-vue" }, method = { RequestMethod.GET, RequestMethod.POST })
+	public String swaggerVue(Model model) {
+		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
+		model.addAttribute("POSTMAN_CONTEXT", appConfig.getAppPrefix());
+		if (ArgUtil.is(bootJxConfigService)) {
+			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("swagger").cdnAEntry("swagger")
+					.preventUpgradeInsecureRequest().map());
+		}
+		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
+		return "swagger-vue";
 	}
 
 	@GetMapping({ "favicon.ico", "/favicon.ico", "/favicon.icon", "/favicon.**" })
