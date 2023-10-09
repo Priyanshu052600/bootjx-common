@@ -21,6 +21,9 @@ public class BootJxConfigService {
 	@Value("${bootjx.cdn.url:}")
 	String bootJxCdnUrl;
 
+	@Value("${bootjx.cdn.swagger:}")
+	String bootJxCdnSwagger;
+
 	@Value("${bootjx.cdn.version:}")
 	String bootJxCdnVersion;
 
@@ -45,19 +48,23 @@ public class BootJxConfigService {
 	@Autowired
 	private CommonHttpRequest commonHttpRequest;
 
-	public String getCdnUrl() {
+	public String getCdnUrl(boolean isSwagger) {
 		String debugCdnUrl = commonHttpRequest.get("BOOTJX_CDN_URL");
 		if (ArgUtil.is(debugCdnUrl) && !(debugCdnUrl.startsWith("http://") || debugCdnUrl.startsWith("https://"))) {
 			debugCdnUrl = CryptoUtil.getEncoder().message(debugCdnUrl).decodeBase64().toString();
 		}
-		return ArgUtil.parseAsString(debugCdnUrl, bootJxCdnUrl);
+		return ArgUtil.parseAsString(debugCdnUrl, isSwagger ? bootJxCdnSwagger : bootJxCdnUrl);
 	}
 
-	public BootJxConfigModel bootJxAttributesModel() {
-		BootJxConfigModel model = new BootJxConfigModel();
-		String cdnUrl = getCdnUrl();
+	public String getCdnUrl() {
+		return this.getCdnUrl(false);
+	}
 
-		model.put("BOOTJX_CDN_URL", cdnUrl);
+	public BootJxConfigModel bootJxAttributesModel(boolean isSwagger) {
+		BootJxConfigModel model = new BootJxConfigModel();
+		String cdnUrl = getCdnUrl(isSwagger);
+
+		model.cdnUrl(cdnUrl);
 		model.cdnApp(bootJxCdnApp);
 		model.cdnContext(bootJxCdnContext);
 		model.cdnStatic(bootJxCdnStatic);
@@ -78,6 +85,10 @@ public class BootJxConfigService {
 		return model;
 	}
 
+	public BootJxConfigModel bootJxAttributesModel() {
+		return this.bootJxAttributesModel(false);
+	}
+
 	public Map<String, Object> bootJxAttributes() {
 		BootJxConfigModel model = this.bootJxAttributesModel();
 		return model.map();
@@ -93,6 +104,11 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel() {
 			this(new HashMap<String, Object>());
+		}
+
+		public BootJxConfigModel cdnUrl(String cdnUrl) {
+			map.put("BOOTJX_CDN_URL", cdnUrl);
+			return this;
 		}
 
 		public BootJxConfigModel cdnStatic(String cdnStatic) {
@@ -134,5 +150,6 @@ public class BootJxConfigService {
 			this.map.put(key, value);
 			return this;
 		}
+
 	}
 }

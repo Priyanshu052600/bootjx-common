@@ -66,8 +66,8 @@ public class AppViewController {
 		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
 		model.addAttribute("POSTMAN_CONTEXT", appConfig.getAppPrefix());
 		if (ArgUtil.is(bootJxConfigService)) {
-			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("swagger").cdnAEntry("swagger")
-					.preventUpgradeInsecureRequest().map());
+			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel(true).cdnApp("swagger")
+					.cdnAEntry("swagger").preventUpgradeInsecureRequest().map());
 		}
 		model.addAttribute("APP_CONTEXT", appConfig.getAppPrefix());
 		return "swagger-vue";
