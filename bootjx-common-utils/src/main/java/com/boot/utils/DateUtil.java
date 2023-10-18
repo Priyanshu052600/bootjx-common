@@ -1216,5 +1216,20 @@ public final class DateUtil {
 		return offset;
 	}
 
-	
+	public static String convertDatetostringWithddMmYyyywithHMinute(Date date) {
+
+		if (date == null)
+			return null;
+
+		String dateString = null;
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+			// Date date = new Date();
+			dateString = format.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateString;
+	}
+
 }

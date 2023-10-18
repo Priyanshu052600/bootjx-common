@@ -82,6 +82,7 @@ public class AppConfig {
 	public static final String JAX_APP_URL = "${jax.app.url}";
 	public static final String JAX_POSTMAN_URL = "${jax.postman.url}";
 	public static final String JAX_AUTH_URL = "${jax.auth.url}";
+	public static final String JAX_CASHIER_URL = "${jax.cashier.url}";
 
 	public static final String JAX_SSO_URL = "${jax.sso.url}";
 
@@ -214,6 +215,10 @@ public class AppConfig {
 	@Value(JAX_AUTH_URL)
 	@AppParamKey(AppParam.JAX_AUTH_URL)
 	private String authURL;
+	
+	@Value(JAX_CASHIER_URL)
+	@AppParamKey(AppParam.JAX_CASHIER_URL)
+	private String cashierURL;
 
 	@Value("${app.response.ok}")
 	private boolean appResponseOK;
@@ -501,6 +506,14 @@ public class AppConfig {
 	
 	public String getAppInstanceType() {
 		return AppParam.APP_INSTANCE_TYPE.getValue();
+	}
+
+	public String getCashierURL() {
+		return cashierURL;
+	}
+
+	public void setCashierURL(String cashierURL) {
+		this.cashierURL = cashierURL;
 	}
 
 }
