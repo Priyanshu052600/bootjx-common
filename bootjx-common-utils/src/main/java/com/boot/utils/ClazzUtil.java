@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
@@ -28,7 +29,10 @@ public class ClazzUtil {
 	}
 
 	public static Pattern getGenericTypePattern(Class<?> clazz) {
-		return Pattern.compile("^" + clazz.getName() + "<(.*)>$");
+		String clsName = clazz.getName();
+		clsName = StringUtils.replace(clsName, ".", "\\.");
+		clsName = StringUtils.replace(clsName, "$", "\\$");
+		return Pattern.compile("^" + clsName + "<(.*)>$");
 	}
 
 	public static String getClassName(Object target) {
