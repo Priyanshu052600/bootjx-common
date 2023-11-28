@@ -486,6 +486,10 @@ public class RestService {
 			}));
 		}
 
+		public MapModel asMapModelSafe() {
+			return MapModel.fromSafe(this.as(String.class));
+		}
+
 		public MapModel asListModel() {
 			return MapModel.from(this.as(new ParameterizedTypeReference<List<Object>>() {
 			}));
