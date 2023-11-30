@@ -30,7 +30,9 @@ public class AppMVConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-	registry.addInterceptor(appRequestInterceptor);
+		if (appRequestInterceptor != null) {
+			registry.addInterceptor(appRequestInterceptor);
+		}
     }
 
     @Override
