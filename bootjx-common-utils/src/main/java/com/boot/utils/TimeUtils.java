@@ -89,6 +89,22 @@ public class TimeUtils {
 			return millis;
 		}
 
+		public long toSeconds() {
+			return millis / 1000;
+		}
+
+		public long toMinutes() {
+			return millis / Constants.MILLIS_IN_MIN;
+		}
+
+		public long toHours() {
+			return millis / Constants.MILLIS_IN_HOUR;
+		}
+
+		public long toDays() {
+			return millis / Constants.MILLIS_IN_DAY;
+		}
+
 		public void setMillis(long millis) {
 			this.millis = millis;
 		}
