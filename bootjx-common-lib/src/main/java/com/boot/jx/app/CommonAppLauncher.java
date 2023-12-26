@@ -3,10 +3,16 @@ package com.boot.jx.app;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.catalina.connector.Connector;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 import com.boot.utils.ArgUtil;
 
@@ -52,5 +58,22 @@ public class CommonAppLauncher extends SpringBootServletInitializer {
 
 		// System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 		return new SpringApplicationBuilder(applicationClass).run(args);
+	}
+
+	@Value("${server.tomcat.relaxed-query-chars}")
+	String relaxedQueryChars;
+
+	@Bean
+	public ConfigurableServletWebServerFactory webServerFactory() {
+		TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+		factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
+			@Override
+			public void customize(Connector connector) {
+				if (ArgUtil.is(relaxedQueryChars)) {
+					connector.setProperty("relaxedQueryChars", relaxedQueryChars);
+				}
+			}
+		});
+		return factory;
 	}
 }
