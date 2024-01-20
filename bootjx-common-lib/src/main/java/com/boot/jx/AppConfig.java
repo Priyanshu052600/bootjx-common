@@ -83,6 +83,7 @@ public class AppConfig {
 	public static final String JAX_POSTMAN_URL = "${jax.postman.url}";
 	public static final String JAX_AUTH_URL = "${jax.auth.url}";
 	public static final String JAX_CASHIER_URL = "${jax.cashier.url}";
+	public static final String JAX_SERVICE_URL = "${jax.service.url}";
 
 	public static final String JAX_SSO_URL = "${jax.sso.url}";
 
@@ -219,6 +220,10 @@ public class AppConfig {
 	@Value(JAX_CASHIER_URL)
 	@AppParamKey(AppParam.JAX_CASHIER_URL)
 	private String cashierURL;
+	
+	@Value(JAX_SERVICE_URL)
+	@AppParamKey(AppParam.JAX_SERVICE_URL)
+	private String jaxServiceURL;
 
 	@Value("${app.response.ok}")
 	private boolean appResponseOK;
@@ -514,6 +519,14 @@ public class AppConfig {
 
 	public void setCashierURL(String cashierURL) {
 		this.cashierURL = cashierURL;
+	}
+
+	public String getJaxURL() {
+		return jaxServiceURL;
+	}
+
+	public void getJaxURL(String jaxServiceURL) {
+		this.jaxServiceURL = jaxServiceURL;
 	}
 
 }
