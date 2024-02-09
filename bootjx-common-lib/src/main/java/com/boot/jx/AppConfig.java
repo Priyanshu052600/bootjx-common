@@ -81,9 +81,10 @@ public class AppConfig {
 	public static final String JAX_CDN_CONTEXT = "${jax.cdn.context}";
 	public static final String JAX_APP_URL = "${jax.app.url}";
 	public static final String JAX_POSTMAN_URL = "${jax.postman.url}";
-	public static final String JAX_AUTH_URL = "${jax.auth.url}";
-	public static final String JAX_CASHIER_URL = "${jax.cashier.url}";
-	public static final String JAX_SERVICE_URL = "${jax.service.url}";
+	public static final String JAX_AUTH_URL = "${jax.auth.url:#{null}}";
+	public static final String JAX_CASHIER_URL = "${jax.cashier.url:#{null}}";
+	public static final String JAX_SERVICE_URL = "${jax.service.url:#{null}}";
+	public static final String JAX_PRICER_URL = "${jax.pricer.url:#{null}}";
 
 	public static final String JAX_SSO_URL = "${jax.sso.url}";
 
@@ -224,6 +225,10 @@ public class AppConfig {
 	@Value(JAX_SERVICE_URL)
 	@AppParamKey(AppParam.JAX_SERVICE_URL)
 	private String jaxServiceURL;
+	
+	@Value(JAX_PRICER_URL)
+	@AppParamKey(AppParam.JAX_PRICER_URL)
+	private String pricerURL;
 
 	@Value("${app.response.ok}")
 	private boolean appResponseOK;
@@ -529,4 +534,11 @@ public class AppConfig {
 		this.jaxServiceURL = jaxServiceURL;
 	}
 
+	public String getPricerURL() {
+		return pricerURL;
+	}
+
+	public void setPricerURL(String pricerURL) {
+		this.pricerURL = pricerURL;
+	}
 }
