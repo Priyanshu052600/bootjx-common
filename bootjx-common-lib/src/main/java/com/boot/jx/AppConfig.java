@@ -90,6 +90,7 @@ public class AppConfig {
 
 	public static final String SPRING_REDIS_HOST = "${spring.redis.host}";
 	public static final String SPRING_REDIS_PORT = "${spring.redis.port}";
+	public static final String APP_PATH_LOGOUT = "${app.path.logout:#}";
 
 	@Value(APP_ENV)
 	@AppParamKey(AppParam.APP_ENV)
@@ -262,6 +263,9 @@ public class AppConfig {
 
 	@Value("${encrypted.app.property}")
 	String appSpecifcDecryptedProp;
+	
+	@Value(APP_PATH_LOGOUT) 
+    String logoutPath;
 
 	public boolean isCookieHttpOnly() {
 		return cookieHttpOnly;
@@ -540,5 +544,13 @@ public class AppConfig {
 
 	public void setPricerURL(String pricerURL) {
 		this.pricerURL = pricerURL;
+	}
+
+	public String getLogoutPath() {
+		return logoutPath;
+	}
+
+	public void setLogoutPath(String logoutPath) {
+		this.logoutPath = logoutPath;
 	}
 }

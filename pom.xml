@@ -27,6 +27,8 @@
 		<java.version>17</java.version>
 		<boot.jx.version>3.0.8-SNAPSHOT</boot.jx.version>
 		<git.repo.url>ssh://git@github.com/bootloader/bootjx-common.git</git.repo.url>
+		<bucket4j.version>7.3.0</bucket4j.version>
+		<redisson.version>3.12.0</redisson.version>
 	</properties>
  	<scm>
         <url>${git.repo.url}</url> 
@@ -42,20 +44,43 @@
 				<version>${boot.jx.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.boot.jx</groupId>
+				<groupId>
+					com.boot.jx</groupId>
 				<artifactId>bootjx-common-lib</artifactId>
-				<version>${boot.jx.version}</version>
+				<version>
+					${boot.jx.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.boot.jx</groupId>
+				<groupId>
+					com.boot.jx</groupId>
 				<artifactId>bootjx-common-mongo</artifactId>
-				<version>${boot.jx.version}</version>
+				<version>
+					${boot.jx.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.boot.jx</groupId>
+				<groupId>
+					com.boot.jx</groupId>
 				<artifactId>bootjx-common-db</artifactId>
-				<version>${boot.jx.version}</version>
+				<version>
+					${boot.jx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>
+					com.github.vladimir-bukhtoyarov</groupId>
+				<artifactId>bucket4j-core</artifactId>
+				<version>
+					${bucket4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.vladimir-bukhtoyarov</groupId>
+				<artifactId>bucket4j-caffeine</artifactId>
+				<version>${bucket4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.redisson</groupId>
+				<artifactId>redisson</artifactId>
+				<version>${redisson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -143,6 +168,7 @@
 		<module>bootjx-common-db</module>
 		<module>bootjx-common-mongo</module>
 		<!-- Common Servers -->
+		<module>bootjx-common-limitter</module>
 	</modules>
 
 	<distributionManagement>

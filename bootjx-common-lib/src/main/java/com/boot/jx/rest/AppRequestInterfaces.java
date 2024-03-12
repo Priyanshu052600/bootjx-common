@@ -49,4 +49,9 @@ public final class AppRequestInterfaces {
 
 	}
 
+	public interface AppAuthFilterAlways extends AppAuthFilter {
+		public default boolean isAlways() {
+			return true;
+		}
+	}
 }
