@@ -3,6 +3,7 @@ package com.boot.jx.exception;
 import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus.Series;
 import org.springframework.http.client.ClientHttpResponse;
 
 import com.boot.utils.ArgUtil;
@@ -20,7 +21,8 @@ public class ApiHttpExceptions {
 
 		UNAUTHORIZED(401), ACCESS_DENIED(403), HTTP_NOT_FOUND(404),
 
-		OTP_REQUIRED(461), MOTP_REQUIRED(461), EOTP_REQUIRED(463), DOTP_REQUIRED(464), USER_NOT_FOUND(465),HANDSHAKE_REQUIRED(466),
+		OTP_REQUIRED(461), MOTP_REQUIRED(461), EOTP_REQUIRED(463), DOTP_REQUIRED(464), USER_NOT_FOUND(465),
+		HANDSHAKE_REQUIRED(466),
 
 		UNKNOWN(520);
 
@@ -55,6 +57,64 @@ public class ApiHttpExceptions {
 			return HttpStatus.valueOf(code);
 		}
 
+	}
+
+	public static class ApiHttpStatus {
+		int statusCode;
+		HttpStatus status;
+		String statusText;
+
+		public HttpStatus getStatus() {
+			return status;
+		}
+
+		public void setStatus(HttpStatus status) {
+			this.status = status;
+		}
+
+		public int getStatusCode() {
+			return statusCode;
+		}
+
+		public void setStatusCode(int statusCode) {
+			this.statusCode = statusCode;
+		}
+
+		public Series series() {
+			return status == null ? null : status.series();
+		}
+
+		public ApiHttpStatus update(ClientHttpResponse response) throws IOException {
+			statusCode = response.getRawStatusCode();
+			for (HttpStatus ostatus : HttpStatus.values()) {
+				if (status.value() == statusCode) {
+					this.status = ostatus;
+					break;
+				}
+			}
+			if (this.status == null) {
+				this.status = HttpStatus.resolve((statusCode / 100) * 100);
+			}
+
+			this.statusText = response.getStatusText();
+			return this;
+		}
+
+		public boolean is(HttpStatus status) {
+			return this.status == status;
+		}
+
+		public static ApiHttpStatus from(ClientHttpResponse response) throws IOException {
+			return new ApiHttpStatus().update(response);
+		}
+
+		public String getStatusText() {
+			return statusText;
+		}
+
+		public void setStatusText(String statusText) {
+			this.statusText = statusText;
+		}
 	}
 
 	public static class ApiHttpException extends AmxException {

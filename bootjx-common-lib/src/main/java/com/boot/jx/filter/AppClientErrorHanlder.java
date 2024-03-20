@@ -14,6 +14,7 @@ import com.boot.jx.exception.ApiHttpExceptions.ApiErrorException;
 import com.boot.jx.exception.ApiHttpExceptions.ApiHttpClientException;
 import com.boot.jx.exception.ApiHttpExceptions.ApiHttpNotFoundException;
 import com.boot.jx.exception.ApiHttpExceptions.ApiHttpServerException;
+import com.boot.jx.exception.ApiHttpExceptions.ApiHttpStatus;
 import com.boot.jx.exception.ApiHttpExceptions.ApiStatusCodes;
 import com.boot.jx.exception.ExceptionFactory;
 import com.boot.jx.exception.IExceptionEnum;
@@ -26,7 +27,10 @@ public class AppClientErrorHanlder implements ResponseErrorHandler {
 
 	@Override
 	public boolean hasError(ClientHttpResponse response) throws IOException {
-		if (response.getStatusCode() != HttpStatus.OK) {
+
+		ApiHttpStatus status = ApiHttpStatus.from(response);
+
+		if (!status.is(HttpStatus.OK)) {
 			return true;
 		}
 		String apiErrorJson = (String) response.getHeaders().getFirst(AppConstants.ERROR_HEADER_KEY);
@@ -43,8 +47,10 @@ public class AppClientErrorHanlder implements ResponseErrorHandler {
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
 
-		HttpStatus statusCode = response.getStatusCode();
-		String statusText = response.getStatusText();
+		ApiHttpStatus status = ApiHttpStatus.from(response);
+
+		// HttpStatus statusCode = response.getStatusCode();
+		String statusText = status.getStatusText();
 		String apiErrorJson = ArgUtil.parseAsString(response.getHeaders().getFirst(AppConstants.ERROR_HEADER_KEY));
 		AmxApiError apiError = throwError(apiErrorJson, ApiStatusCodes.UNKNOWN, response);
 
@@ -54,22 +60,22 @@ public class AppClientErrorHanlder implements ResponseErrorHandler {
 		boolean hasExceptionHeader = !ArgUtil
 				.isEmpty(response.getHeaders().getFirst(AppConstants.EXCEPTION_HEADER_KEY));
 
-		if (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
-			if (statusCode == HttpStatus.BAD_GATEWAY) {
-				apiError = throwError(null, ApiStatusCodes.HTTP_SERVER_ERROR, response, statusCode);
-				throw new ApiHttpServerException(statusCode, apiError);
+		if (status.series() == HttpStatus.Series.SERVER_ERROR) {
+			if (status.is(HttpStatus.BAD_GATEWAY)) {
+				apiError = throwError(null, ApiStatusCodes.HTTP_SERVER_ERROR, response, status.getStatus());
+				throw new ApiHttpServerException(status.getStatus(), apiError);
 			} else {
 				String body = IoUtils.inputstream_to_string(response.getBody());
 				apiError = throwError(body, ApiStatusCodes.HTTP_SERVER_ERROR, response);
 			}
-			throw new ApiHttpServerException(statusCode, apiError);
+			throw new ApiHttpServerException(status.getStatus(), apiError);
 		} else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
 			String body2 = IoUtils.inputstream_to_string(response.getBody());
 			apiError = throwError(body2, ApiStatusCodes.UNKNOWN_CLIENT_ERROR, response);
 			if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-				throw new ApiHttpNotFoundException(statusCode, apiError);
+				throw new ApiHttpNotFoundException(status.getStatus(), apiError);
 			} else {
-				throw new ApiHttpClientException(statusCode, apiError);
+				throw new ApiHttpClientException(status.getStatus(), apiError);
 			}
 		} else if (hasExceptionHeader) {
 			String body = IoUtils.inputstream_to_string(response.getBody());
