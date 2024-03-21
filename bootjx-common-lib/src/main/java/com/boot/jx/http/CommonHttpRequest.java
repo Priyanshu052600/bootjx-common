@@ -257,7 +257,7 @@ public class CommonHttpRequest extends ACommonHttpRequest {
 	 */
 	public String get(String contextKey) {
 		String value = AppContextUtil.get(contextKey);
-		if (request != null) {
+		if (value == null && request != null) {
 			value = getRequestParam(contextKey);
 			AppContextUtil.set(contextKey, value);
 		}

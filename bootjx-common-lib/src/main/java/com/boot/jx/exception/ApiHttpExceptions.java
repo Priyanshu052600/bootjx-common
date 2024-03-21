@@ -87,7 +87,7 @@ public class ApiHttpExceptions {
 		public ApiHttpStatus update(ClientHttpResponse response) throws IOException {
 			statusCode = response.getRawStatusCode();
 			for (HttpStatus ostatus : HttpStatus.values()) {
-				if (status.value() == statusCode) {
+				if (ostatus.value() == statusCode) {
 					this.status = ostatus;
 					break;
 				}
