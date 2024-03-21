@@ -20,6 +20,7 @@ import com.boot.jx.tunnel.TunnelMessage;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.ContextUtil;
 import com.boot.utils.JsonUtil;
+import com.boot.utils.PhoneUtil;
 import com.boot.utils.TimeUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -40,6 +41,10 @@ public class App { // Noncompliant
 	private static Logger LOGGER = LoggerFactory.getLogger(App.class);
 
 	public static void main(String[] args) {
+		System.out.println(PhoneUtil.phone("+91 86572 52925"));
+	}
+	
+	public static void main5(String[] args) {
 		System.out.println(FileFormat.from("audio/webm;codecs=opus"));
 		System.out.println(FileFormat.from("audio/webm; codecs=opus"));
 		System.out.println(FileFormat.from("audio/webm"));
