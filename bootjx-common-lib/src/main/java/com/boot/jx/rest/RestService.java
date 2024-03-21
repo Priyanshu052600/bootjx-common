@@ -1,6 +1,7 @@
 package com.boot.jx.rest;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -309,6 +310,11 @@ public class RestService {
 
 		public Ajax acceptJson() {
 			headers.add("accept", "application/json");
+			return this;
+		}
+
+		public Ajax authBearer(String token) {
+			headers.add("Authorization", "Bearer " + token);
 			return this;
 		}
 
