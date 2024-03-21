@@ -130,13 +130,15 @@ public class ConfigMeta implements Serializable {
 	private String optionsLabel;
 	private String optionsSource;
 
-	@Target({ ElementType.FIELD })
+	@Target({ ElementType.FIELD, ElementType.TYPE })
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface ConfigMetaProperty {
 		String title() default "";
 
 		String desc() default "";
 
+		String context() default "";
+		
 		String path() default "";
 
 		String pathRaw() default "";

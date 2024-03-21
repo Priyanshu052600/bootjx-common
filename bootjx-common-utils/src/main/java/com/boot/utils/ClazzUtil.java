@@ -1,8 +1,12 @@
 package com.boot.utils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -61,6 +65,20 @@ public class ClazzUtil {
 	public static Class<?> getUltimateClass(Object target) {
 		Class<?> c = AopProxyUtils.ultimateTargetClass(target);
 		return c;
+	}
+
+	public static List<Field> getAllFields(Class<?> clazz, List<Field> fields) {
+		fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+
+		if (clazz.getSuperclass() != null) {
+			getAllFields(clazz.getSuperclass(), fields);
+		}
+		return fields;
+	}
+
+	public static Field[] getAllFields(Class<?> clazz) {
+		List<Field> list = getAllFields(clazz, new LinkedList<Field>());
+		return list.toArray(new Field[list.size()]);
 	}
 
 	public static <A extends Annotation> A findMethodAnnotation(Object target, Method method,
