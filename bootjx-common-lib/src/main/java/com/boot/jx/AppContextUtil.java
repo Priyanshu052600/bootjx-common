@@ -357,6 +357,9 @@ public class AppContextUtil {
 		MDC.put(TenantContextHolder.TENANT, getTenant());
 	}
 
+	/**
+	 * TODO:- Shoud sessionId be retained here? for tracing, to be evaluated
+	 */
 	public static void clear() {
 		MDC.clear();
 		ContextUtil.clear();
