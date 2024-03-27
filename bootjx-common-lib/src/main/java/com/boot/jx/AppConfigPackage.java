@@ -1,5 +1,6 @@
 package com.boot.jx;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class AppConfigPackage {
 	}
 
 	public interface AppSharedConfig {
-		default void clear(Map<String, String> map) {
+		default void clear(AppSharedConfigChange change) {
 			// DO NOTHING
 		};
 
@@ -38,13 +39,56 @@ public class AppConfigPackage {
 		};
 	}
 
+	public static class AppSharedConfigChange implements Serializable {
+		private static final long serialVersionUID = 6496200861213027301L;
+		String configType;
+		String configId;
+		Map<String, String> details;
+
+		public String getConfigType() {
+			return configType;
+		}
+
+		public void setConfigType(String configType) {
+			this.configType = configType;
+		}
+
+		public String getConfigId() {
+			return configId;
+		}
+
+		public void setConfigId(String configId) {
+			this.configId = configId;
+		}
+
+		public Map<String, String> getDetails() {
+			return details;
+		}
+
+		public void setDetails(Map<String, String> details) {
+			this.details = details;
+		}
+
+		public Map<String, String> details() {
+			if (this.details == null) {
+				this.details = new HashMap<String, String>();
+			}
+			return details;
+		}
+
+		public AppSharedConfigChange put(String key, String value) {
+			this.details().put(key, value);
+			return this;
+		}
+	}
+
 	@Autowired(required = false)
 	private List<AppSharedConfig> listAppSharedConfig;
 
-	public void clear(Map<String, String> map) {
+	public void clear(AppSharedConfigChange change) {
 		if (ArgUtil.is(listAppSharedConfig)) {
 			for (AppSharedConfig appSharedConfig : listAppSharedConfig) {
-				appSharedConfig.clear(map);
+				appSharedConfig.clear(change);
 				LOGGER.info("for class {}", ClazzUtil.getUltimateClassName(appSharedConfig));
 			}
 		}
