@@ -30,6 +30,16 @@
 				for(var key in obj){
 					this[key] = obj[key]
 				}
+			},
+			config : function(key,value){
+				if(typeof key == 'object'){
+					for(let k in key){
+						this.CONFIG[k] = key[k]
+					}
+				}
+				else
+					this.CONFIG[key] = value
+					
 			}
 		};
 	</script>
