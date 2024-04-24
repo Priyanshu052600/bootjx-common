@@ -26,15 +26,20 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.StringUtils;
 
 @Service
 public class ProxyService {
 
 	@Autowired
 	CommonHttpRequest httpRequest;
+
+	@Autowired
+	AppConfig appConfig;
 
 	public static Logger LOGGER = LoggerService.getLogger(ProxyService.class);
 
@@ -46,9 +51,8 @@ public class ProxyService {
 		ThreadContext.put("traceId", traceId);
 		// log if required in this line
 		URI uri = new URI("https", null, domain, -1, null, null, null);
-		
-		
-		//LOGGER.info("URL " + domain + " " + path);
+
+		// LOGGER.info("URL " + domain + " " + path);
 
 		// replacing context path form urI to match actual gateway URI
 		uri = UriComponentsBuilder.fromUri(uri).path(path).query(request.getQueryString()).build(true).toUri();
@@ -103,6 +107,15 @@ public class ProxyService {
 					.body(e.getResponseBodyAsString());
 		}
 
+	}
+
+	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
+			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
+	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body, HttpMethod method,
+			HttpServletRequest request, HttpServletResponse response) throws URISyntaxException, MalformedURLException {
+		String path = request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
+		return this.processProxyRequest(targetUrl, path, body, HttpMethod.valueOf(request.getMethod()), request,
+				response);
 	}
 
 	@Recover
