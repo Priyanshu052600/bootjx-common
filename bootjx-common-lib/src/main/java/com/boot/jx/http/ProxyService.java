@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.ThreadContext;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,7 +31,6 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
-import com.boot.utils.StringUtils;
 
 @Service
 public class ProxyService {
@@ -40,6 +40,9 @@ public class ProxyService {
 
 	@Autowired
 	AppConfig appConfig;
+
+	@Value("${app.proxy.token}")
+	private String appProxyToken;
 
 	public static Logger LOGGER = LoggerService.getLogger(ProxyService.class);
 
@@ -86,6 +89,7 @@ public class ProxyService {
 			}
 		}
 
+		headers.set("app-proxy-token", appProxyToken);
 		headers.set("TRACE", traceId);
 		headers.remove(HttpHeaders.ACCEPT_ENCODING);
 		headers.remove(HttpHeaders.ORIGIN);
