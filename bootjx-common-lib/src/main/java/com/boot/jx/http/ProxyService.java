@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +50,9 @@ public class ProxyService {
 
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
 			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
-	public ResponseEntity<String> processProxyRequest(String domain, String path, String body, HttpMethod method,
-			HttpServletRequest request, HttpServletResponse response) throws URISyntaxException, MalformedURLException {
+	public ResponseEntity<String> processProxyRequest(String domain, String path, String body,
+			Map<String, String> addheaders, HttpMethod method, HttpServletRequest request, HttpServletResponse response)
+			throws URISyntaxException, MalformedURLException {
 		String traceId = AppContextUtil.getTraceId();
 		ThreadContext.put("traceId", traceId);
 		// log if required in this line
@@ -90,6 +93,13 @@ public class ProxyService {
 		}
 
 		headers.set("app-proxy-token", appProxyToken);
+
+		if (ArgUtil.is(addheaders)) {
+			for (Entry<String, String> addHeader : addheaders.entrySet()) {
+				headers.set(addHeader.getKey(), addHeader.getValue());
+			}
+		}
+
 		headers.set("TRACE", traceId);
 		headers.remove(HttpHeaders.ACCEPT_ENCODING);
 		headers.remove(HttpHeaders.ORIGIN);
@@ -115,11 +125,19 @@ public class ProxyService {
 
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
 			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
-	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body, HttpMethod method,
+	public ResponseEntity<String> processProxyRequest(String domain, String path, String body, HttpMethod method,
 			HttpServletRequest request, HttpServletResponse response) throws URISyntaxException, MalformedURLException {
+		return this.processProxyRequest(domain, path, body, null, method, request, response);
+	}
+
+	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
+			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
+	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body,
+			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
+			throws URISyntaxException, MalformedURLException {
 		String path = request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
-		return this.processProxyRequest(targetUrl, path, body, HttpMethod.valueOf(request.getMethod()), request,
-				response);
+		return this.processProxyRequest(targetUrl, path, body, addheaders, HttpMethod.valueOf(request.getMethod()),
+				request, response);
 	}
 
 	@Recover
