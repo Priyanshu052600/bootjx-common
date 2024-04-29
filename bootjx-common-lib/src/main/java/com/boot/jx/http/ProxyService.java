@@ -52,7 +52,7 @@ public class ProxyService {
 
 	public static Logger LOGGER = LoggerService.getLogger(ProxyService.class);
 
-	public static void main(String[] args) throws ParseException, IOException, URISyntaxException {
+	public static void nomain(String[] args) throws ParseException, IOException, URISyntaxException {
 		URLBuilder parsedDomain = Urly.parse("https://app.mehery.xyz/nexus");
 
 		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1,
