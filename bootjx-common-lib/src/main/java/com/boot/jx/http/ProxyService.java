@@ -1,8 +1,10 @@
 package com.boot.jx.http;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,6 +35,8 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.URLBuilder;
+import com.boot.utils.Urly;
 
 @Service
 public class ProxyService {
@@ -48,17 +52,34 @@ public class ProxyService {
 
 	public static Logger LOGGER = LoggerService.getLogger(ProxyService.class);
 
+	public static void main(String[] args) throws ParseException, IOException, URISyntaxException {
+		URLBuilder parsedDomain = Urly.parse("https://app.mehery.xyz/nexus");
+
+		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1,
+				parsedDomain.getRelativeURL(), null, null);
+
+		// replacing context path form urI to match actual gateway URI
+		uri = UriComponentsBuilder.fromUri(uri).path("a/b").build(true).toUri();
+
+		System.out.println(uri.toURL().toString());
+
+	}
+
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
 			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
 	public ResponseEntity<String> processProxyRequest(String domain, String path, String body,
 			Map<String, String> addheaders, HttpMethod method, HttpServletRequest request, HttpServletResponse response)
 			throws URISyntaxException, MalformedURLException {
+		// LOGGER.info(method.name()": " + domain + "/" + path);
+
 		String traceId = AppContextUtil.getTraceId();
 		ThreadContext.put("traceId", traceId);
 		// log if required in this line
-		URI uri = new URI("https", null, domain, -1, null, null, null);
 
-		// LOGGER.info("URL " + domain + " " + path);
+		URLBuilder parsedDomain = Urly.parse(domain);
+
+		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1,
+				parsedDomain.getRelativeURL(), null, null);
 
 		// replacing context path form urI to match actual gateway URI
 		uri = UriComponentsBuilder.fromUri(uri).path(path).query(request.getQueryString()).build(true).toUri();

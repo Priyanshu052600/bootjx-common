@@ -5,11 +5,25 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The Class URLBuilder.
  */
 public class URLBuilder {
+
+	public static String URL_VALIDATOR = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+	public static boolean isValid(String s) {
+		try {
+			Pattern patt = Pattern.compile(URL_VALIDATOR);
+			Matcher matcher = patt.matcher(s);
+			return matcher.matches();
+		} catch (RuntimeException e) {
+			return false;
+		}
+	}
 
 	/** The params. */
 	private StringBuilder folders, params;
@@ -194,10 +208,16 @@ public class URLBuilder {
 			url = new URL("https://localhost/" + urlString);
 			builder = new URLBuilder();
 		} else {
+			if (!isValid(urlString)) {
+				urlString = "https://" + urlString;
+			}
 			url = new URL(urlString);
 			builder = new URLBuilder(url.getAuthority());
 			builder.setConnectionType(url.getProtocol());
 		}
+
+		builder.setConnectionType(url.getProtocol());
+		builder.setHost(url.getHost());
 
 		builder.setPath(url.getPath());
 		builder.addParameter(url.getQuery());
@@ -206,6 +226,18 @@ public class URLBuilder {
 
 	public File toFile() {
 		return new File(folders.toString());
+	}
+
+	public String getConnectionType() {
+		return connType;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 
 }

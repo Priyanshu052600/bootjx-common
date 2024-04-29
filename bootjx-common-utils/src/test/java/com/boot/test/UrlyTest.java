@@ -1,6 +1,7 @@
 package com.boot.test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 
@@ -20,6 +21,23 @@ public class UrlyTest { // Noncompliant
 	 * @throws URISyntaxException
 	 */
 	public static void main(String[] args) throws ParseException, IOException, URISyntaxException {
+		URLBuilder x = Urly.parse("https://app.domain.xyz/agent");
+		URI uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
+		System.out.println(x.getConnectionType() + ":// " + x.getHost() + x.getRelativeURL());
+
+		// URI uri = new URI("https", null, x.getURL(), -1, null, null, null);
+		x = Urly.parse("app.domain.xyz");
+		uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
+
+		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
+
+		x = Urly.parse("app.domain.xyz/agent");
+
+		uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
+		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
+	}
+
+	public static void main2(String[] args) throws ParseException, IOException, URISyntaxException {
 		URLBuilder x = Urly.parse(url);
 		System.out.println(x.getURL());
 		System.out.println(x.getRelativeURL());
