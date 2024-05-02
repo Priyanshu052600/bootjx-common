@@ -89,11 +89,11 @@ public class ProxyService {
 		// replacing context path form urI to match actual gateway URI
 		uri = UriComponentsBuilder.fromUri(uri).path("/" + path).query(request.getQueryString()).build(true).toUri();
 
-		System.out.println("---" + uri.toString());
+		// System.out.println("---" + uri.toString());
 
-		if (ArgUtil.is(uri)) {
-			return null;
-		}
+//		if (ArgUtil.is(uri)) {
+//			return null;
+//		}
 
 		HttpHeaders headers = new HttpHeaders();
 		Enumeration<String> headerNames = request.getHeaderNames();
