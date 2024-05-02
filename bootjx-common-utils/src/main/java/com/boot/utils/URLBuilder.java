@@ -194,6 +194,12 @@ public class URLBuilder {
 		return uri.toString();
 	}
 
+	public String getPath() throws URISyntaxException, MalformedURLException {
+		URI uri = new URI(null, null, "/" + StringUtils.trim(folders.toString().replaceAll("/+", "/"), '/'), null,
+				null);
+		return uri.toString();
+	}
+
 	/**
 	 * Parses the.
 	 *

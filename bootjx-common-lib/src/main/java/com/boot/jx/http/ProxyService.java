@@ -35,6 +35,7 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.StringUtils;
 import com.boot.utils.URLBuilder;
 import com.boot.utils.Urly;
 
@@ -56,10 +57,10 @@ public class ProxyService {
 		URLBuilder parsedDomain = Urly.parse("https://app.mehery.xyz/nexus");
 
 		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1,
-				parsedDomain.getRelativeURL(), null, null);
+				StringUtils.trim(parsedDomain.getPath()), null, null);
 
 		// replacing context path form urI to match actual gateway URI
-		uri = UriComponentsBuilder.fromUri(uri).path("a/b").build(true).toUri();
+		uri = UriComponentsBuilder.fromUri(uri).path("/a/b").build(true).toUri();
 
 		System.out.println(uri.toURL().toString());
 
@@ -78,11 +79,21 @@ public class ProxyService {
 
 		URLBuilder parsedDomain = Urly.parse(domain);
 
-		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1,
-				parsedDomain.getRelativeURL(), null, null);
+		URI uri = new URI(parsedDomain.getConnectionType(), null, parsedDomain.getHost(), -1, parsedDomain.getPath(),
+				null, null);
+
+		// System.out.println("---domain:" + domain);
+		// System.out.println("---path:" + path);
+		// System.out.println("---uri:" + uri.toString());
 
 		// replacing context path form urI to match actual gateway URI
-		uri = UriComponentsBuilder.fromUri(uri).path(path).query(request.getQueryString()).build(true).toUri();
+		uri = UriComponentsBuilder.fromUri(uri).path("/" + path).query(request.getQueryString()).build(true).toUri();
+
+		System.out.println("---" + uri.toString());
+
+		if (ArgUtil.is(uri)) {
+			return null;
+		}
 
 		HttpHeaders headers = new HttpHeaders();
 		Enumeration<String> headerNames = request.getHeaderNames();
