@@ -87,7 +87,7 @@ public class ProxyService {
 		// System.out.println("---uri:" + uri.toString());
 
 		// replacing context path form urI to match actual gateway URI
-		uri = UriComponentsBuilder.fromUri(uri).path("/" + path).query(request.getQueryString()).build(true).toUri();
+		uri = UriComponentsBuilder.fromUri(uri).path(path).query(request.getQueryString()).build(true).toUri();
 
 		// System.out.println("---" + uri.toString());
 
@@ -167,7 +167,7 @@ public class ProxyService {
 	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body,
 			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
 			throws URISyntaxException, MalformedURLException {
-		String path = request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
+		String path = "/" + request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
 		return this.processProxyRequest(targetUrl, path, body, addheaders, HttpMethod.valueOf(request.getMethod()),
 				request, response);
 	}
