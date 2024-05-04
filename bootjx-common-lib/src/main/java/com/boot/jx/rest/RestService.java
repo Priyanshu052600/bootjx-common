@@ -1,7 +1,6 @@
 package com.boot.jx.rest;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -50,7 +49,7 @@ import com.boot.utils.ClazzUtil;
 import com.boot.utils.JsonUtil;
 
 @Component
-public class RestService {
+public class RestService implements AjaxRestService {
 
 	public static final Pattern PATTERN_OUT = ClazzUtil.getGenericTypePattern(IMetaRequestOutFilter.class);
 
