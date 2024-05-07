@@ -30,13 +30,18 @@ public class AppConfigPackage {
 			// DO NOTHING
 		};
 
+		@Deprecated
+		default void clear(Map<String, String> data) {
+			// DO NOTHING
+		};
+
 		default String name() {
 			return null;
 		};
 
 		default Map<String, Object> getExternalConfig(Map<String, Object> config) {
 			return config;
-		};
+		}
 	}
 
 	public static class AppSharedConfigChange implements Serializable {
@@ -94,6 +99,22 @@ public class AppConfigPackage {
 		}
 	}
 
+	public void clear() {
+		if (ArgUtil.is(listAppSharedConfig)) {
+			this.clear(new AppSharedConfigChange());
+		}
+	}
+
+	@Deprecated
+	public void clear(Map<String, String> data) {
+		if (ArgUtil.is(listAppSharedConfig)) {
+			for (AppSharedConfig appSharedConfig : listAppSharedConfig) {
+				appSharedConfig.clear(data);
+				LOGGER.info("for class {}", ClazzUtil.getUltimateClassName(appSharedConfig));
+			}
+		}
+	}
+
 	public Map<String, Object> getExternalConfig() {
 		Map<String, Object> config = new HashMap<String, Object>();
 		if (ArgUtil.is(listAppSharedConfig)) {
@@ -103,4 +124,5 @@ public class AppConfigPackage {
 		}
 		return config;
 	}
+
 }
