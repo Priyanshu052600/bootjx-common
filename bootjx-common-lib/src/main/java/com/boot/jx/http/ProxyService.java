@@ -172,6 +172,12 @@ public class ProxyService {
 				request, response);
 	}
 
+	public ResponseEntity<String> forwardRequestNoRetry(String sourcePrefix, String targetUrl, String body,
+			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
+			throws URISyntaxException, MalformedURLException {
+		return this.forwardRequest(sourcePrefix, targetUrl, body, addheaders, request, response);
+	}
+
 	@Recover
 	public ResponseEntity<String> recoverFromRestClientErrors(Exception e, String body, HttpMethod method,
 			HttpServletRequest request, HttpServletResponse response, String traceId) {
