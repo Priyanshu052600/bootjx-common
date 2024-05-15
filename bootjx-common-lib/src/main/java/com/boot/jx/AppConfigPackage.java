@@ -94,7 +94,7 @@ public class AppConfigPackage {
 		if (ArgUtil.is(listAppSharedConfig)) {
 			for (AppSharedConfig appSharedConfig : listAppSharedConfig) {
 				appSharedConfig.clear(change);
-				LOGGER.info("for class {}", ClazzUtil.getUltimateClassName(appSharedConfig));
+				LOGGER.debug("for class {}", ClazzUtil.getUltimateClassName(appSharedConfig));
 			}
 		}
 	}
