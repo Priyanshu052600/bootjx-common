@@ -311,6 +311,12 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 		return (C) this;
 	}
 
+	@SuppressWarnings("unchecked")
+	public C authBearer(String accessToken) {
+		this.header("Authorization", "Bearer " + accessToken);
+		return (C) this;
+	}
+
 	public Map<String, String> getHeaders() {
 		return headers;
 	}
