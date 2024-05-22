@@ -26,6 +26,18 @@ import com.mongodb.client.MongoIterable;
 
 public class MongoUtils {
 
+	public static Criteria[] toArray(List<Criteria> criterias) {
+		return criterias.toArray(criterias.toArray(new Criteria[criterias.size()]));
+	}
+
+	public static Criteria anyCriteria(List<Criteria> criterias) {
+		return new Criteria().orOperator(toArray(criterias));
+	}
+
+	public static Criteria allCriteria(List<Criteria> criterias) {
+		return new Criteria().andOperator(toArray(criterias));
+	}
+
 	public static <T> List<T> toList(DistinctIterable<T> distinctIterable) {
 		return CollectionUtil.asList(distinctIterable);
 	}
