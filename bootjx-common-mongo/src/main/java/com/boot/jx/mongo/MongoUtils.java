@@ -30,10 +30,22 @@ public class MongoUtils {
 		return criterias.toArray(criterias.toArray(new Criteria[criterias.size()]));
 	}
 
+	/**
+	 * Will create new Criteria with any of matching conditions in list
+	 * 
+	 * @param criterias
+	 * @return
+	 */
 	public static Criteria anyCriteria(List<Criteria> criterias) {
 		return new Criteria().orOperator(toArray(criterias));
 	}
 
+	/**
+	 * Will create new Criteria with all matching conditions in list
+	 * 
+	 * @param criterias
+	 * @return
+	 */
 	public static Criteria allCriteria(List<Criteria> criterias) {
 		return new Criteria().andOperator(toArray(criterias));
 	}
