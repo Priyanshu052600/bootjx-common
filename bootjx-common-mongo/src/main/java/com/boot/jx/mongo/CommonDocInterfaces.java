@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.model.AuditCreateEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditUpdateEntity;
 import com.boot.model.TimeModels.ITimeStampIndex;
@@ -49,6 +50,8 @@ public class CommonDocInterfaces {
 		public String getCollectionName();
 
 		public IMongoQueryBuilder<T> build();
+
+		public IMongoQueryBuilder<T> audit(AuditDetailProvider provider);
 	}
 
 	public static interface Patchable<T extends Patchable<T>> {

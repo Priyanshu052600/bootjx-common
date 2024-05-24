@@ -70,14 +70,20 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 	}
 
 	public void beforeSaveInternal(Object objectToSave, String collectionName) {
+
+		TimeStampIndex timeindex = TimeStampIndex.now();
+		if (ArgUtil.is(auditDetailProvider)) {
+			auditDetailProvider.getAuditUser();
+		}
+
 		if (objectToSave instanceof UpdatedTimeStampIndexSupport) {
-			((UpdatedTimeStampIndexSupport) objectToSave).setUpdated(TimeStampIndex.now());
+			((UpdatedTimeStampIndexSupport) objectToSave).setUpdated(timeindex);
 		}
 
 		if (objectToSave instanceof CreatedTimeStampIndexSupport) {
 			CreatedTimeStampIndexSupport objectToSaveCreted = (CreatedTimeStampIndexSupport) objectToSave;
 			if (ArgUtil.isEmpty(objectToSaveCreted.getCreated())) {
-				objectToSaveCreted.setCreated(TimeStampIndex.now());
+				objectToSaveCreted.setCreated(timeindex);
 			}
 		}
 
@@ -187,7 +193,7 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 		if (ArgUtil.is(builder.getUpdate())) {
 			try {
 				builder.build();
-				builder.updatedStamp();
+				builder.audit(auditDetailProvider).updatedStamp();
 				// LOGGER.info("Query:{}", builder.getQuery().toString());
 				// LOGGER.info("Update:{}", builder.getUpdate().toString());
 				ret = mongoTemplate.updateFirst(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
@@ -207,7 +213,7 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 		if (ArgUtil.is(builder.getUpdate())) {
 			try {
 				builder.build();
-				builder.updatedStamp();
+				builder.audit(auditDetailProvider).updatedStamp();
 				// LOGGER.info("Query:{}", builder.getQuery().toString());
 				// LOGGER.info("Update:{}", builder.getUpdate().toString());
 				ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
@@ -234,7 +240,7 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 		if (ArgUtil.is(builder.getUpdate())) {
 			try {
 				builder.build();
-				builder.updatedStamp();
+				builder.audit(auditDetailProvider).updatedStamp();
 				ret = mongoTemplate.upsert(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
 			} catch (Exception e) {
 				LOGGER.warn("Query:{}", builder.getQuery().toString());

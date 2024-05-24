@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
@@ -41,6 +42,14 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 	Class<T> docClass;
 	String collectionName;
 	private boolean skipUpdateStamp;
+
+	private AuditDetailProvider auditDetailProvider;
+
+	@SuppressWarnings("unchecked")
+	public M audit(AuditDetailProvider auditDetailProvider) {
+		this.auditDetailProvider = auditDetailProvider;
+		return (M) this;
+	}
 
 	public Query query() {
 		if (this.query == null) {
@@ -329,11 +338,17 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 
 		if (isUpdatedTimeStampSupport || isCreatedTimeStampSupport) {
 			TimeStampIndex timeStampIndex = TimeStampIndex.from(updatedStamp);
+
+			if (ArgUtil.is(this.auditDetailProvider)) {
+				timeStampIndex.by(auditDetailProvider.getAuditUser());
+			}
+
 			if (isUpdatedTimeStampSupport && !skipUpdateStamp) {
 				this.set("updated.stamp", timeStampIndex.getStamp());
 				this.set("updated.hour", timeStampIndex.getHour());
 				this.set("updated.day", timeStampIndex.getDay());
 				this.set("updated.week", timeStampIndex.getWeek());
+				this.set("updated.byUser", timeStampIndex.getByUser());
 			}
 			if (isCreatedTimeStampSupport) {
 				this.setOnInsert("created", timeStampIndex);
