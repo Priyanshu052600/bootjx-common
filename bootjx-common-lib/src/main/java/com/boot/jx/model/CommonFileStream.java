@@ -32,8 +32,25 @@ public class CommonFileStream extends CommonFileAbstract<CommonFileStream> {
 
 	@Override
 	public MultipartFile toMultipartFile(InputStream inputStream) throws IOException, FileNotFoundException {
-		File file = File.createTempFile("tmp", "." + this.getExtension());
 		byte[] binary = IOUtils.toByteArray(inputStream);
+		return toMultipartFile(binary);
+	}
+
+	@Override
+	public MultipartFile toMultipartFile(CommonFileAbstract<?> fromFile) throws IOException, FileNotFoundException {
+		byte[] binary = null;
+		if (ArgUtil.is(fromFile.getBody())) {
+			binary = fromFile.getBody();
+		} else {
+			InputStream inputStream = fromFile.toInputStream();
+			binary = IOUtils.toByteArray(inputStream);
+		}
+		return toMultipartFile(binary);
+	}
+
+	@Override
+	public MultipartFile toMultipartFile(byte[] binary) throws IOException, FileNotFoundException {
+		File file = File.createTempFile("tmp", "." + this.getExtension());
 		FileUtils.writeByteArrayToFile(file, binary);
 
 		String mimeType = this.getContentType();

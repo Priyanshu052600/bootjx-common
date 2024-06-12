@@ -306,6 +306,12 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 	}
 
 	@SuppressWarnings("unchecked")
+	public C body(byte[] byteBody) {
+		this.setBody(byteBody);
+		return (C) this;
+	}
+
+	@SuppressWarnings("unchecked")
 	public C header(String headerKey, String headerValue) {
 		this.headers().put(headerKey, headerValue);
 		return (C) this;
@@ -350,7 +356,18 @@ public class CommonFileAbstract<C extends CommonFileAbstract<C>> implements Seri
 		return null;
 	}
 
+	public MultipartFile toMultipartFile(CommonFileAbstract<?> file) throws IOException, FileNotFoundException {
+		return null;
+	}
+
+	public MultipartFile toMultipartFile(byte[] binary) throws IOException, FileNotFoundException {
+		return null;
+	}
+
 	public MultipartFile toMultipartFile() throws FileNotFoundException, IOException {
+		if (ArgUtil.is(this.body)) {
+			return toMultipartFile(this.body);
+		}
 		return toMultipartFile(toInputStream());
 	}
 
