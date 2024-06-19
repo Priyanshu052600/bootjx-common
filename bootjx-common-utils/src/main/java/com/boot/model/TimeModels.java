@@ -107,6 +107,43 @@ public class TimeModels {
 
 	}
 
+	public interface TimeStampUpdatedSupport {
+		public ITimeStampIndex<?> getUpdated();
+
+		public void setUpdated(ITimeStampIndex<?> updated);
+	}
+
+	public interface TimeStampCreatedSupport {
+		public ITimeStampIndex<?> getCreated();
+
+		public void setCreated(ITimeStampIndex<?> created);
+	}
+
+	public interface TimeStampSupport extends TimeStampUpdatedSupport, TimeStampCreatedSupport {
+	}
+
+	public static class TimeStampSupportedModel implements TimeStampSupport {
+		private ITimeStampIndex<?> updated;
+
+		public ITimeStampIndex<?> getUpdated() {
+			return updated;
+		}
+
+		public void setUpdated(ITimeStampIndex<?> updated) {
+			this.updated = updated;
+		}
+
+		private ITimeStampIndex<?> created;
+
+		public ITimeStampIndex<?> getCreated() {
+			return created;
+		}
+
+		public void setCreated(ITimeStampIndex<?> created) {
+			this.created = created;
+		}
+	}
+
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static class ITimeStampIndexImpl extends ITimeStampIndexAbstract<ITimeStampIndexImpl> {
 		private static final long serialVersionUID = 4863858945194917227L;

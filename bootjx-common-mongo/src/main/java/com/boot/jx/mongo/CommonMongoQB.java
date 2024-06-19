@@ -17,6 +17,8 @@ import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.UpdatedTimeStampIndexSupport;
+import com.boot.model.TimeModels.TimeStampCreatedSupport;
+import com.boot.model.TimeModels.TimeStampUpdatedSupport;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.PatternUtil;
 
@@ -318,7 +320,8 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 	@Override
 	public boolean isUpdatedTimeStampSupport() {
 		if (ArgUtil.is(this.docClass)) {
-			return UpdatedTimeStampIndexSupport.class.isAssignableFrom(this.docClass);
+			return UpdatedTimeStampIndexSupport.class.isAssignableFrom(this.docClass)
+					|| TimeStampUpdatedSupport.class.isAssignableFrom(this.docClass);
 		}
 		return false;
 	}
@@ -326,7 +329,8 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 	@Override
 	public boolean isCreatedTimeStampSupport() {
 		if (ArgUtil.is(this.docClass)) {
-			return CreatedTimeStampIndexSupport.class.isAssignableFrom(this.docClass);
+			return CreatedTimeStampIndexSupport.class.isAssignableFrom(this.docClass)
+					|| TimeStampCreatedSupport.class.isAssignableFrom(this.docClass);
 		}
 		return false;
 	}

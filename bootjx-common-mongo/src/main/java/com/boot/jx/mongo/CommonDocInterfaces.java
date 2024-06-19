@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,6 +19,7 @@ import com.boot.jx.model.AuditCreateEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditUpdateEntity;
 import com.boot.model.TimeModels.ITimeStampIndex;
 import com.boot.model.TimeModels.TimeStampIndexKeyDeserializer;
+import com.boot.model.TimeModels.TimeStampSupport;
 import com.boot.model.UtilityModels.ProtectedJsonProperty;
 import com.boot.model.UtilityModels.PublicJsonProperty;
 import com.boot.utils.ArgUtil;
@@ -406,9 +409,20 @@ public class CommonDocInterfaces {
 		}
 
 		public interface TimeStampIndexSupport extends CreatedTimeStampIndexSupport, UpdatedTimeStampIndexSupport {
-			public TimeStampIndex getCreated();
+		}
 
-			public void setCreated(TimeStampIndex created);
+		@CompoundIndexes({ @CompoundIndex(name = "created_stamp", def = "{ 'created.stamp': 1 }"),
+				@CompoundIndex(name = "created_hour", def = "{ 'created.hour': 1 }"),
+				@CompoundIndex(name = "created_day", def = "{ 'created.day': 1 }"),
+				@CompoundIndex(name = "created_week", def = "{ 'created.week': 1 }"),
+				@CompoundIndex(name = "created_byUser", def = "{ 'created.byUser': 1 }"),
+				@CompoundIndex(name = "updated_hour", def = "{ 'updated.hour': 1 }"),
+				@CompoundIndex(name = "updated_day", def = "{ 'updated.day': 1 }"),
+				@CompoundIndex(name = "updated_week", def = "{ 'updated.week': 1 }"),
+				@CompoundIndex(name = "updated_byUser", def = "{ 'updated.byUser': 1 }"),
+
+		})
+		public interface TimeStampDocSupport extends TimeStampSupport {
 		}
 
 		public static class UpdatedTimeStampDoc implements UpdatedTimeStampIndexSupport {

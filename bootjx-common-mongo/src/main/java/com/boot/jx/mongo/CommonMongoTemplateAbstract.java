@@ -25,6 +25,8 @@ import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampInde
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.UpdatedTimeStampIndexSupport;
 import com.boot.jx.mongo.CommonMongoQueryBuilder.DocQueryBuilder;
 import com.boot.jx.mongo.MongoUtils.MongoResultProcessor;
+import com.boot.model.TimeModels.TimeStampCreatedSupport;
+import com.boot.model.TimeModels.TimeStampUpdatedSupport;
 import com.boot.utils.ArgUtil;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -73,15 +75,26 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 
 		TimeStampIndex timeindex = TimeStampIndex.now();
 		if (ArgUtil.is(auditDetailProvider)) {
-			auditDetailProvider.getAuditUser();
+			timeindex.by(auditDetailProvider.getAuditUser());
 		}
 
 		if (objectToSave instanceof UpdatedTimeStampIndexSupport) {
 			((UpdatedTimeStampIndexSupport) objectToSave).setUpdated(timeindex);
 		}
 
+		if (objectToSave instanceof TimeStampUpdatedSupport) {
+			((TimeStampUpdatedSupport) objectToSave).setUpdated(timeindex);
+		}
+
 		if (objectToSave instanceof CreatedTimeStampIndexSupport) {
 			CreatedTimeStampIndexSupport objectToSaveCreted = (CreatedTimeStampIndexSupport) objectToSave;
+			if (ArgUtil.isEmpty(objectToSaveCreted.getCreated())) {
+				objectToSaveCreted.setCreated(timeindex);
+			}
+		}
+
+		if (objectToSave instanceof TimeStampCreatedSupport) {
+			TimeStampCreatedSupport objectToSaveCreted = (TimeStampCreatedSupport) objectToSave;
 			if (ArgUtil.isEmpty(objectToSaveCreted.getCreated())) {
 				objectToSaveCreted.setCreated(timeindex);
 			}
