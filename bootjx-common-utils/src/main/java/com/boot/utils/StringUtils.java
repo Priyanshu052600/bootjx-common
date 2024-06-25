@@ -1,5 +1,6 @@
 package com.boot.utils;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -510,6 +511,32 @@ public final class StringUtils {
 
 	public static String sanitize(String str) {
 		return sanitize(str, Constants.UNDERSCORE);
+	}
+
+	public static String slugify(String str) {
+		if (str == null) {
+			return Constants.BLANK;
+		}
+		// Convert to lowercase
+		String slug = str.toLowerCase();
+
+		// Normalize the string to remove diacritical marks (accents)
+		slug = Normalizer.normalize(slug, Normalizer.Form.NFD);
+		slug = slug.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+		// Replace spaces with hyphens
+		slug = slug.replaceAll("\\s+", "-");
+
+		// Remove all non-alphanumeric characters except hyphens
+		slug = slug.replaceAll("[^a-z0-9\\-]", "");
+
+		// Remove multiple consecutive hyphens
+		slug = slug.replaceAll("\\-+", "-");
+
+		// Trim hyphens from start and end
+		slug = slug.replaceAll("^-|-$", "");
+
+		return slug;
 	}
 
 	public static String[] split(String str, String regex) {
