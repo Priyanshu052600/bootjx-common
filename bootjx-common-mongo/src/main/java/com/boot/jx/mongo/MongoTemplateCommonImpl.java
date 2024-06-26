@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.ScriptOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
@@ -47,8 +48,19 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 		super(mongoDbFactory);
 	}
 
+	public MongoTemplateCommonImpl(MongoDbFactory factory, MappingMongoConverter mongoConverter) {
+		super(factory, mongoConverter);
+	}
+
 	protected MongoTemplate getCommonMongoTemplate() {
-		return commonMongoSourceProvider.getSource().getMongoTemplate();
+		if (commonMongoSourceProvider == null) {
+			return null;
+		}
+		CommonMongoSource source = commonMongoSourceProvider.getSource();
+		if (source == null) {
+			return null;
+		}
+		return source.getMongoTemplate();
 	}
 
 	public void setMongoSourceProvider(CommonMongoSourceProvider commonMongoSourceProvider) {
@@ -472,7 +484,11 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 
 	@Override
 	public MongoConverter getConverter() {
-		return getCommonMongoTemplate().getConverter();
+		MongoTemplate tmp = getCommonMongoTemplate();
+		if (tmp == null) {
+			return null;
+		}
+		return tmp.getConverter();
 	}
 
 	@Override

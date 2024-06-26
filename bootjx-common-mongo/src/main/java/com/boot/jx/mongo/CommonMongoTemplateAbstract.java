@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -39,7 +38,7 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 	@Autowired
 	protected MongoTemplate mongoTemplate;
 
-	protected MongoConverter mongoConverter;
+	//protected MongoConverter mongoConverter;
 
 	@Autowired(required = false)
 	protected AuditDetailProvider auditDetailProvider;

@@ -1,10 +1,17 @@
 package com.boot.jx.mongo;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.convert.DbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.http.CommonHttpRequest.ApiRequestDetail;
@@ -119,7 +126,8 @@ public class CommonMongoSource {
 					LOGGER.info("mongoTemplateNoDb is NULL So creating One {} {}", getDataSourceUrl());
 					mongoDbFactoryNoDb = getMongoDbFactory();
 					if (ArgUtil.is(mongoDbFactoryNoDb)) {
-						mongoTemplateNoDb = new MongoTemplate(mongoDbFactoryNoDb);
+						mongoTemplateNoDb = new MongoTemplate(mongoDbFactoryNoDb,
+								mappingMongoConverter(mongoDbFactoryNoDb));
 						LOGGER.debug("mongoTemplateNoDb was NULL So created One");
 					} else {
 						LOGGER.error("mongoDbFactoryNoDb was NULL So cannot create One");
@@ -135,7 +143,8 @@ public class CommonMongoSource {
 					LOGGER.info("mongoTemplate is NULL So creating One {} {}", getDataSourceUrl());
 					mongoDbFactoryDefault = getMongoDbFactory();
 					if (ArgUtil.is(mongoDbFactoryDefault)) {
-						mongoTemplateDefault = new MongoTemplate(mongoDbFactoryDefault);
+						mongoTemplateDefault = new MongoTemplate(mongoDbFactoryDefault,
+								mappingMongoConverter(mongoDbFactoryDefault));
 						LOGGER.debug("mongoTemplateDefault was NULL So created One");
 						ready = true;
 					} else {
@@ -152,7 +161,7 @@ public class CommonMongoSource {
 					LOGGER.debug("mongoTemplate is NULL So creating One {} {}", getDataSourceUrl());
 					mongoDbFactory = getMongoDbFactory();
 					if (ArgUtil.is(mongoDbFactory)) {
-						mongoTemplate = new MongoTemplate(mongoDbFactory);
+						mongoTemplate = new MongoTemplate(mongoDbFactory, mappingMongoConverter(mongoDbFactory));
 						LOGGER.debug("mongoTemplate was NULL So created One");
 						ready = true;
 					} else {
@@ -206,4 +215,23 @@ public class CommonMongoSource {
 		this.tenantDB = tenantDB;
 	}
 
+	public MappingMongoConverter mappingMongoConverter(MongoDbFactory factory) {
+		DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
+		MongoCustomConversions conversions = customConversions();
+
+		MongoMappingContext mappingContext = new MongoMappingContext();
+		mappingContext.setSimpleTypeHolder(conversions.getSimpleTypeHolder());
+		mappingContext.afterPropertiesSet();
+
+		MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mappingContext);
+		converter.setCustomConversions(conversions);
+		converter.setMapKeyDotReplacement(DotReplacingConverters.DOT_REPLACEMENT);
+		converter.afterPropertiesSet();
+		return converter;
+	}
+
+	public MongoCustomConversions customConversions() {
+		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
+				new DotReplacingConverters.DotReplacingReader()));
+	}
 }

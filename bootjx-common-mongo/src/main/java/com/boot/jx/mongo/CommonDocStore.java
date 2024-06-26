@@ -8,13 +8,13 @@ import org.springframework.data.mongodb.core.query.Query;
 
 public class CommonDocStore {
 
-    @Autowired
-    protected MongoConverter mongoConverter;
+	@Autowired
+	protected MongoConverter mongoConverter;
 
-    @Autowired
-    protected CommonMongoTemplate commonMongoTemplate;
+	@Autowired
+	protected CommonMongoTemplate commonMongoTemplate;
 
-    public <T> List<T> find(Query query, Class<T> entityClass) {
-	return commonMongoTemplate.find(query, entityClass);
-    }
+	public <T> List<T> find(Query query, Class<T> entityClass) {
+		return commonMongoTemplate.find(query, entityClass);
+	}
 }

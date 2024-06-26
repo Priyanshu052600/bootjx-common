@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
@@ -19,6 +20,9 @@ public class CommonMongoConfig {
 
 	@Bean
 	public MongoTemplate mongoTemplate() {
-		return new MongoTemplateCommonImpl(commonMongoSourceProvider.getSource().getMongoDbFactory(dataSourceUrl));
+		CommonMongoSource source = commonMongoSourceProvider.getSource();
+		MongoDbFactory factory = source.getMongoDbFactory(dataSourceUrl);
+		return new MongoTemplateCommonImpl(factory, source.mappingMongoConverter(factory));
 	}
+
 }
