@@ -539,6 +539,18 @@ public final class StringUtils {
 		return slug;
 	}
 
+	public static String slugifyFileName(String fileName) {
+		String fileExtension = Constants.BLANK;
+		String fileBaseName = String.format("%s", fileName);
+		int index = fileBaseName.lastIndexOf('.');
+
+		if (index > 0) {
+			fileExtension = "." + fileBaseName.substring(index + 1);
+			fileBaseName = fileBaseName.substring(0, index);
+		}
+		return slugify(String.format("%s", fileBaseName)) + fileExtension;
+	}
+
 	public static String[] split(String str, String regex) {
 		if (str == null) {
 			return new String[0];
