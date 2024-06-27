@@ -216,7 +216,7 @@ public class CommonMongoSource {
 	}
 
 	public MappingMongoConverter mappingMongoConverter(MongoDbFactory factory) {
-		//return null;
+		// return null;
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
 		MongoCustomConversions conversions = customConversions();
 
@@ -233,6 +233,9 @@ public class CommonMongoSource {
 
 	public MongoCustomConversions customConversions() {
 		return new MongoCustomConversions(Collections.emptyList());
+		// Commentiong code below, below lines causes mongo to not use default convertor
+		// and any object(pojo not map) in document faces issues of not able to find
+		// codec
 //		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
 //				new DotReplacingConverters.DotReplacingReader()));
 	}
