@@ -1,6 +1,6 @@
 package com.boot.jx.mongo;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -216,6 +216,7 @@ public class CommonMongoSource {
 	}
 
 	public MappingMongoConverter mappingMongoConverter(MongoDbFactory factory) {
+		//return null;
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
 		MongoCustomConversions conversions = customConversions();
 
@@ -231,7 +232,8 @@ public class CommonMongoSource {
 	}
 
 	public MongoCustomConversions customConversions() {
-		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
-				new DotReplacingConverters.DotReplacingReader()));
+		return new MongoCustomConversions(Collections.emptyList());
+//		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
+//				new DotReplacingConverters.DotReplacingReader()));
 	}
 }
