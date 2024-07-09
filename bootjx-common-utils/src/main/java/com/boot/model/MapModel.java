@@ -562,6 +562,11 @@ public class MapModel implements JsonSerializerType<Object> {
 		return this;
 	}
 
+	public MapModel remove(JsonPath jsonPath) {
+		jsonPath.remove(this.map());
+		return this;
+	}
+
 	public boolean containsKey(String key) {
 		if (this.map == null) {
 			return false;
