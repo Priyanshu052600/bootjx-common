@@ -347,6 +347,16 @@ public final class StringUtils {
 		}
 	}
 
+	public static String ellipsis(String str, int length) {
+		if (str == null || str.length() <= 0 || length <= 0) {
+			return Constants.BLANK;
+		} else if (str.length() <= length) {
+			return str;
+		} else {
+			return str.substring(0, length - 3) + "...";
+		}
+	}
+
 	private static String mask(String strText, int start, int end, char maskChar) {
 
 		if (strText == null || strText.equals(""))
