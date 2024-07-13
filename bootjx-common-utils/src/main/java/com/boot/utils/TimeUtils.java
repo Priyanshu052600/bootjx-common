@@ -124,6 +124,12 @@ public class TimeUtils {
 			tp.fromString(string);
 			return tp;
 		}
+
+		public static TimePeriod of(String string) {
+			TimePeriod tp = new TimePeriod();
+			tp.fromString(string);
+			return tp;
+		}
 	}
 
 	public static final Pattern PERIODS = Pattern.compile("^([0-9\\s]*)(" + String.join("|", TimeUnits.keys()) + ")$");

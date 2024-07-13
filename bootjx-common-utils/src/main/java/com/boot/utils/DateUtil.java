@@ -22,6 +22,8 @@ import java.util.TimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.boot.utils.TimeUtils.TimePeriod;
+
 /**
  * The Class DateUtil.
  */
@@ -41,7 +43,7 @@ public final class DateUtil {
 	private static final String DEFAULT_DATE_FORMAT = "dd/MM/yyyy";
 
 	public static final String DD_MMM_YY_DATE_FORMAT = "dd-MMM-yy";
-	
+
 	public static final String DD_MM_YYYY_DATE_FORMAT = "dd-MM-YYYY";
 
 	private static final String DEFAULT_DATE_FORMAT_EVENT = "dd-MMM-yyyy";
@@ -80,8 +82,8 @@ public final class DateUtil {
 	public static final String DATE_FORMAT_DD_MM_YYYYY = "dd/MM/yyyy";
 
 	public static final String DATE_FORMAT_MMMM_DD_YYYY = "MMMM dd yyyy";
-	
-	/** month: 'MMM YYYY',  'Nov 2021' **/ 
+
+	/** month: 'MMM YYYY', 'Nov 2021' **/
 	public static final String MMM_YYYY_FORMAT = "MMM YYYY";
 	/** yyyyMMdd format **/
 	public static final String YYYYMMDD_DATE_FORMAT = "yyyyMMdd";
@@ -96,11 +98,11 @@ public final class DateUtil {
 	public static final long DAYS_IN_YEAR = 365;
 
 	public static final long DAYS_IN_WEEK = 7;
-	
+
 	public static final long MIN_30 = 30 * 60 * 1000L;
-	
-	public static final long ONE_HR =60 * 60 * 1000L;
-	
+
+	public static final long ONE_HR = 60 * 60 * 1000L;
+
 	public static final long MIN = 60 * 1000L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DateUtil.class);
@@ -231,12 +233,12 @@ public final class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat(DD_MMM_YY_DATE_FORMAT);
 		return format.format(date);
 	}
-	
+
 	public static String formatDateDDMMMYYYY(Date date) {
 		SimpleDateFormat format = new SimpleDateFormat(DD_MM_YYYY_DATE_FORMAT);
 		return format.format(date);
 	}
-	
+
 	public static String formatDateYYYYMMDD(Date date) {
 		SimpleDateFormat format = new SimpleDateFormat(YYYY_MM_DD_DATE_FORMAT);
 		return format.format(date);
@@ -1065,7 +1067,7 @@ public final class DateUtil {
 				&& calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
 				&& calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
 	}
-	
+
 	public static boolean isValidDateFormat(String dateFormat) {
 		try {
 			new SimpleDateFormat(dateFormat);
@@ -1074,9 +1076,10 @@ public final class DateUtil {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Checks whethere given date is future or not. Today is valid future date
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -1085,9 +1088,10 @@ public final class DateUtil {
 		date = removeTime(date);
 		return date.after(today) || date.equals(today);
 	}
-	
+
 	/**
 	 * today date min epochtimestamp value
+	 * 
 	 * @return
 	 */
 	public static long todayStartTime() {
@@ -1096,8 +1100,10 @@ public final class DateUtil {
 		long longTodayStartTime = todayStartTime.toInstant().toEpochMilli();
 		return longTodayStartTime;
 	}
+
 	/**
 	 * today date max epochtimestamp value
+	 * 
 	 * @return
 	 */
 	public static long todayEndTime() {
@@ -1106,115 +1112,128 @@ public final class DateUtil {
 		long longTodayendTime = todayEndTime.toInstant().toEpochMilli();
 		return longTodayendTime;
 	}
+
 	/**
 	 * Current month start Time in long
 	 */
 	/** remove hour min,second from timestamp **/
-	
-	public static String foramtTimeStampDateAsString(long timeStamp,String  dateformat) {
+
+	public static String foramtTimeStampDateAsString(long timeStamp, String dateformat) {
 		if (ArgUtil.isEmptyString(dateformat))
-			dateformat =MMM_YYYY_FORMAT; 
+			dateformat = MMM_YYYY_FORMAT;
 		String dateString = null;
 		try {
-			 Date dateTimeStamp=new Date(timeStamp);
-			 SimpleDateFormat format = new SimpleDateFormat(dateformat);
-			 dateString = format.format(dateTimeStamp);
-			
+			Date dateTimeStamp = new Date(timeStamp);
+			SimpleDateFormat format = new SimpleDateFormat(dateformat);
+			dateString = format.format(dateTimeStamp);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return dateString;
 	}
-	
-	public static Timestamp getStartTimestamp(int month,int year) { 
-		  Calendar calendar = Calendar.getInstance(); 
-		  calendar.setTime(new Date()); 
-		  calendar.set(Calendar.MONTH, month);
-		  calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH)); 
-		  calendar.set(Calendar.YEAR,year);
-		  calendar.set(Calendar.HOUR_OF_DAY, 0); 
-		  calendar.set(Calendar.MINUTE, 0); 
-		  calendar.set(Calendar.SECOND, 0); 
-		  calendar.set(Calendar.MILLISECOND, 0); 
-		  return new Timestamp(calendar.getTimeInMillis()); 
-		}
-	
-	public static Timestamp getEndTimestamp(int month,int year) { 
-		  Calendar calendar = Calendar.getInstance(); 
-		  calendar.setTime(new Date()); 
-		  calendar.set(Calendar.MONTH, month);
-		  calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
-		  calendar.set(Calendar.YEAR,year);
-		  calendar.set(Calendar.HOUR_OF_DAY, 0); 
-		  calendar.set(Calendar.MINUTE, 0); 
-		  calendar.set(Calendar.SECOND, 0); 
-		  calendar.set(Calendar.MILLISECOND, 0); 
-		  return new Timestamp(calendar.getTimeInMillis()); 
-		}
-	
+
+	public static Timestamp getStartTimestamp(int month, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return new Timestamp(calendar.getTimeInMillis());
+	}
+
+	public static Timestamp getEndTimestamp(int month, int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return new Timestamp(calendar.getTimeInMillis());
+	}
+
 	public static int getMonthValue(String monthName) {
-		String monthNumber="0";
+		String monthNumber = "0";
 		try {
-		SimpleDateFormat inputFormat = new SimpleDateFormat("MMM");
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(inputFormat.parse(monthName));
-		SimpleDateFormat outputFormat = new SimpleDateFormat("MM"); // 01-12
-		 monthNumber =outputFormat.format(cal.getTime()); 
-		}catch(Exception e) {	// TODO Auto-generated catch block
+			SimpleDateFormat inputFormat = new SimpleDateFormat("MMM");
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(inputFormat.parse(monthName));
+			SimpleDateFormat outputFormat = new SimpleDateFormat("MM"); // 01-12
+			monthNumber = outputFormat.format(cal.getTime());
+		} catch (Exception e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Integer.parseInt(monthNumber);
 	}
-	
-	
-	public static long getDateMinAndMaxTime(String dateStr,int hr,int min,String strZone,TemporalAdjuster lt) {
-	    dateStr=dateStr+"T00:00:00.00";
-	    LocalDateTime ldt= LocalDateTime.parse(dateStr);
-       // create ZoneOffset
-        ZoneOffset zoneOffset= ZoneOffset.ofHoursMinutes(3, 0);
-        
-        // create a ZonID
-        ZoneId zone= ZoneId.of(strZone);
-        
-        ZonedDateTime todayStartTime = ZonedDateTime.ofInstant(ldt, zoneOffset, zone);
-        
+
+	public static long getDateMinAndMaxTime(String dateStr, int hr, int min, String strZone, TemporalAdjuster lt) {
+		dateStr = dateStr + "T00:00:00.00";
+		LocalDateTime ldt = LocalDateTime.parse(dateStr);
+		// create ZoneOffset
+		ZoneOffset zoneOffset = ZoneOffset.ofHoursMinutes(3, 0);
+
+		// create a ZonID
+		ZoneId zone = ZoneId.of(strZone);
+
+		ZonedDateTime todayStartTime = ZonedDateTime.ofInstant(ldt, zoneOffset, zone);
+
 		// use the same datetime to create the end of the day using the maximum time for
 		ZonedDateTime endToday = todayStartTime.with(lt);
 		long timeStamp = endToday.toInstant().toEpochMilli();
-		
+
 		return timeStamp;
-}
-	
+	}
+
 	public static String getCovertDate(String date) {
 		String dt = null;
-		if(ArgUtil.is(date)){
+		if (ArgUtil.is(date)) {
 			String[] dtStr = date.split("/");
-			dt =dtStr[2]+"-"+dtStr[1]+"-"+dtStr[0]; 
+			dt = dtStr[2] + "-" + dtStr[1] + "-" + dtStr[0];
 		}
 		return dt;
 	}
-	
+
 	public static String getTimeZone(String toffset) {
 		String timeZone = java.util.TimeZone.getDefault().getID();
-		if(ArgUtil.is(toffset)) {
-			String[] hrStr =toffset.split("::");
-			if(ArgUtil.is(hrStr)) {
-				timeZone =hrStr[0]; 
+		if (ArgUtil.is(toffset)) {
+			String[] hrStr = toffset.split("::");
+			if (ArgUtil.is(hrStr)) {
+				timeZone = hrStr[0];
 			}
 		}
 		return timeZone;
 	}
-	
-	public static  String getOffSetd(String toffset) {
+
+	public static String getOffSetd(String toffset) {
 		String offset = "00:00";
-		if(ArgUtil.is(toffset)) {
-			String[] hrStr =toffset.split("::");
-			if(ArgUtil.is(hrStr)) {
-				offset =hrStr[1].substring(hrStr[1].indexOf('+')+1);
+		if (ArgUtil.is(toffset)) {
+			String[] hrStr = toffset.split("::");
+			if (ArgUtil.is(hrStr)) {
+				offset = hrStr[1].substring(hrStr[1].indexOf('+') + 1);
 			}
 		}
 		return offset;
 	}
 
-	
+	public static String toISOString(long stamp) {
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+		df.setTimeZone(tz);
+		return df.format(new Date(stamp));
+	}
+
+	public static String toISOString(TimePeriod after) {
+		return toISOString(System.currentTimeMillis() + after.toMillis());
+	}
+
+	public static String toISOString() {
+		return toISOString(System.currentTimeMillis());
+	}
 }
