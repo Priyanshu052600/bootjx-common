@@ -27,6 +27,8 @@ public class GridFieldDescriptorDTO implements GridFieldDescriptor {
 	private String condition;
 	
 	private String fieldType;
+	
+	private String filterDependsOn;
 
 	private String filterType;
 
@@ -145,6 +147,17 @@ public class GridFieldDescriptorDTO implements GridFieldDescriptor {
 	public String getFieldType() {
 		return fieldType;
 	}
+	
+	@Override
+	public String getFilterDependsOn() {
+		return filterDependsOn;
+	}
+
+	@Override
+	public void setFilterDependsOn(String filterDependsOn) {
+		this.filterDependsOn = filterDependsOn;
+	}
+
 
 	@Override
 	public String getFilterType() {

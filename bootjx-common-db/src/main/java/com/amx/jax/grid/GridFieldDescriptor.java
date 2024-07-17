@@ -48,6 +48,10 @@ public interface GridFieldDescriptor extends Serializable {
 	void setFieldType(String fieldType);
 
 	String getFieldType();
+	
+	void setFilterDependsOn(String filterDependsOn);
+
+	String getFilterDependsOn();
 
 	public default boolean isDBColumn() {
 		return ArgUtil.is(this.getFieldDataType());

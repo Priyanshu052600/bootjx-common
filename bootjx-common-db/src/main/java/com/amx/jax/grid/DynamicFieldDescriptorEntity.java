@@ -64,6 +64,9 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 
 	@Column(name = "FIELD_TYPE")
 	private String fieldType;
+	
+	@Column(name = "FILTER_DEPENDS_ON")
+	private String filterDependsOn;
 
 	@Column(name = "FILTER_TYPE")
 	private String filterType;
@@ -239,6 +242,16 @@ public class DynamicFieldDescriptorEntity implements GridFieldDescriptor {
 	@Override
 	public String getFieldType() {
 		return fieldType;
+	}
+	
+	@Override
+	public String getFilterDependsOn() {
+		return filterDependsOn;
+	}
+
+	@Override
+	public void setFilterDependsOn(String filterDependsOn) {
+		this.filterDependsOn = filterDependsOn;
 	}
 
 	@Override
