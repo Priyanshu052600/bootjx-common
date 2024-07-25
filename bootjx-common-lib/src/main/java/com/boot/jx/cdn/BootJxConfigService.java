@@ -45,15 +45,49 @@ public class BootJxConfigService {
 	@Value("${bootjx.app.site:}")
 	String bootJxAppSite;
 
+	public static class BootJxConfigProvider {
+		public String cdnUrl(String cdnUrl) {
+			return cdnUrl;
+		}
+
+		public String cdnApp(String cdnApp) {
+			return cdnApp;
+		}
+
+		public String cdnContext(String cdnContext) {
+			return cdnContext;
+		}
+
+		public String cdnStatic(String cdnStatic) {
+			return cdnStatic;
+		}
+
+		public String cdnVersion(String cdnVersion) {
+			return cdnVersion;
+		}
+	}
+
 	@Autowired
 	private CommonHttpRequest commonHttpRequest;
+
+	private BootJxConfigProvider defaultProfider = new BootJxConfigProvider();
+
+	@Autowired(required = false)
+	private BootJxConfigProvider bootJxConfigProvider;
+
+	private BootJxConfigProvider provider() {
+		if (bootJxConfigProvider == null) {
+			return defaultProfider;
+		}
+		return bootJxConfigProvider;
+	}
 
 	public String getCdnUrl(boolean isSwagger) {
 		String debugCdnUrl = commonHttpRequest.get("BOOTJX_CDN_URL");
 		if (ArgUtil.is(debugCdnUrl) && !(debugCdnUrl.startsWith("http://") || debugCdnUrl.startsWith("https://"))) {
 			debugCdnUrl = CryptoUtil.getEncoder().message(debugCdnUrl).decodeBase64().toString();
 		}
-		return ArgUtil.parseAsString(debugCdnUrl, isSwagger ? bootJxCdnSwagger : bootJxCdnUrl);
+		return ArgUtil.parseAsString(debugCdnUrl, isSwagger ? bootJxCdnSwagger : provider().cdnUrl(bootJxCdnUrl));
 	}
 
 	public String getCdnUrl() {
@@ -65,10 +99,10 @@ public class BootJxConfigService {
 		String cdnUrl = getCdnUrl(isSwagger);
 
 		model.cdnUrl(cdnUrl);
-		model.cdnApp(bootJxCdnApp);
-		model.cdnContext(bootJxCdnContext);
-		model.cdnStatic(bootJxCdnStatic);
-		model.cdnVersion(bootJxCdnVersion);
+		model.cdnApp(provider().cdnApp(bootJxCdnApp));
+		model.cdnContext(provider().cdnContext(bootJxCdnContext));
+		model.cdnStatic(provider().cdnStatic(bootJxCdnStatic));
+		model.cdnVersion(provider().cdnVersion(bootJxCdnVersion));
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
 			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
@@ -123,12 +157,12 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
 			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
-			this.cdnAEntry(bootJxCdnApp);
+			this.cdnEntry(bootJxCdnApp);
 			return this;
 		}
 
-		public BootJxConfigModel cdnAEntry(String bootJxCdnApp) {
-			map.put("BOOTJX_CDN_ENTRY", bootJxCdnApp);
+		public BootJxConfigModel cdnEntry(String bootJxCdnEntry) {
+			map.put("BOOTJX_CDN_ENTRY", bootJxCdnEntry);
 			return this;
 		}
 
