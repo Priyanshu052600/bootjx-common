@@ -23,7 +23,7 @@ public class TunnelMessage<M> implements Serializable {
 
 	M data;
 
-	TunnelMessage(M data) {
+	public TunnelMessage(M data) {
 		this.id = UniqueID.generateString();
 		this.timestamp = System.currentTimeMillis();
 		this.data = data;
