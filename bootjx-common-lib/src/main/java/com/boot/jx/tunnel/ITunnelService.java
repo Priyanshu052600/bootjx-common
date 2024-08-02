@@ -1,5 +1,6 @@
 package com.boot.jx.tunnel;
 
+import com.boot.jx.AppContext;
 import com.boot.jx.tunnel.ITunnelDefs.TunnelQueue;
 
 public interface ITunnelService {
@@ -19,6 +20,8 @@ public interface ITunnelService {
 
 	public <T> TunnelQueue<T> getQueue(String queueName);
 
-	public <T>  void taskEnd(String topic, T messagePayload, Thread parentThread) throws InterruptedException;
+	public <T> void taskEnd(String topic, T messagePayload, Thread parentThread) throws InterruptedException;
+
+	public <T> long taskPublish(String topic, T messagePayload, AppContext context);
 
 }

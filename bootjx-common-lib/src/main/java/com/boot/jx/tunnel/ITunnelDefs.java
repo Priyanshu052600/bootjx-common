@@ -1,9 +1,11 @@
 package com.boot.jx.tunnel;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import com.boot.jx.AppContext;
 import com.boot.model.MapModel;
 
 public class ITunnelDefs {
@@ -22,6 +24,15 @@ public class ITunnelDefs {
 		void debounce(TunnelTask task);
 
 		void throttle(TunnelTask task);
+	}
+
+	public interface TunnelFilter {
+		@SuppressWarnings("rawtypes")
+		public void postSubscriptions(List<ITunnelSubscriber> listeners);
+
+		public <T> boolean beforeTaskPublish(String topic, T messagePayload);
+
+		public <T> boolean beforeTaskPublish(String topic, T messagePayload, AppContext context);
 	}
 
 	public static class TunnelTask implements ITunnelEvent {
