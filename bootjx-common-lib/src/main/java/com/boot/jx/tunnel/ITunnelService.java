@@ -6,8 +6,6 @@ import com.boot.jx.tunnel.ITunnelDefs.TunnelQueue;
 public interface ITunnelService {
 	public <T> long shout(String topic, T messagePayload);
 
-	public <T> long shout(ITunnelEventsDict topic, T messagePayload);
-
 	public <T> long audit(String topic, T messagePayload);
 
 	public <T> long send(String topic, T messagePayload);

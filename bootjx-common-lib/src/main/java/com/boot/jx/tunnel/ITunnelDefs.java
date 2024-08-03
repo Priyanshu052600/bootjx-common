@@ -27,12 +27,22 @@ public class ITunnelDefs {
 	}
 
 	public interface TunnelFilter {
-		@SuppressWarnings("rawtypes")
-		public void postSubscriptions(List<ITunnelSubscriber> listeners);
+		public boolean postSubscriptions(List<String> listeners);
 
-		public <T> boolean beforeTaskPublish(String topic, T messagePayload);
-
+		/**
+		 * 
+		 * @param <T>
+		 * @param topic
+		 * @param messagePayload
+		 * @param context
+		 * @return - <code>false</code> if event needs to be prevented from trigger
+		 *         otherwise return <code>true</code>
+		 */
 		public <T> boolean beforeTaskPublish(String topic, T messagePayload, AppContext context);
+
+		public <T> void afterTaskPublic(String topic, T messagePayload, AppContext context);
+
+		public void onMasterUpdate(TunnelEvent message);
 	}
 
 	public static class TunnelTask implements ITunnelEvent {

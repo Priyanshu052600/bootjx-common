@@ -16,7 +16,9 @@ public class TunnelTaskDoc extends TimeStampDoc implements IDocument {
 
 	private String topic;
 	private String platform;
+
 	private String service;
+
 	private boolean active;
 
 	public String getId() {
