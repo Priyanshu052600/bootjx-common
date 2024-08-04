@@ -22,4 +22,6 @@ public interface ITunnelService {
 
 	public <T> long taskPublish(String topic, T messagePayload, AppContext context);
 
+	public <T extends ChronoTask> long schedule(T event);
+
 }

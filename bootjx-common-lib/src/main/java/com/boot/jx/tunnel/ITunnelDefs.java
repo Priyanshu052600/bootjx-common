@@ -43,6 +43,8 @@ public class ITunnelDefs {
 		public <T> void afterTaskPublic(String topic, T messagePayload, AppContext context);
 
 		public void onMasterUpdate(TunnelEvent message);
+
+		public ChronoTask schedule(ChronoTask chronoTask);
 	}
 
 	public static class TunnelTask implements ITunnelEvent {

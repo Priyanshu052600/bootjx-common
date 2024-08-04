@@ -20,9 +20,12 @@ import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonMongoTemplate;
 import com.boot.jx.rest.RestService;
 import com.boot.jx.scope.tnt.Tenants;
+import com.boot.jx.tunnel.ChronoTask;
 import com.boot.jx.tunnel.ITunnelDefs.TunnelFilter;
 import com.boot.jx.tunnel.TunnelEvent;
 import com.boot.jx.tunnel.TunnelMessage;
+import com.boot.model.MapModel;
+import com.boot.model.MapModel.MapPathEntry;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.JsonUtil;
 
@@ -36,6 +39,9 @@ public class TunnelFilterMongoImpl implements TunnelFilter {
 
 	@Value("${bootjx.tunnel.cross.url}")
 	private String crossUrl;
+
+	@Value("${bootjx.tunnel.scheduler}")
+	private String scheduler;
 
 	@Autowired
 	RestService restService;
@@ -150,5 +156,17 @@ public class TunnelFilterMongoImpl implements TunnelFilter {
 	public void onMasterUpdate(TunnelEvent message) {
 		LOGGER.info("======onMasterUpdate==={}", JsonUtil.toJson(message));
 		this.myTopics = null;
+	}
+
+	@Override
+	public ChronoTask schedule(ChronoTask chronoTask) {
+		if (ArgUtil.is(scheduler)) {
+			MapModel resp = restService.ajax(crossUrl).postJson(chronoTask).asMapModel();
+			MapPathEntry id = resp.keyEntry("id");
+			if (id.exists()) {
+				chronoTask.setTaskId(id.asString());
+			}
+		}
+		return chronoTask;
 	}
 }

@@ -2,7 +2,12 @@ package com.boot.jx.tunnel;
 
 public interface ITunnelSubscriber<M> {
 
-	void onMessage(String channel, M message);
+	default void onListen(String channel, M message) {
+	}
+
+	default void onMessage(String channel, M message) {
+		this.onListen(channel, message);
+	}
 
 	default String getTopic() {
 		return null;
