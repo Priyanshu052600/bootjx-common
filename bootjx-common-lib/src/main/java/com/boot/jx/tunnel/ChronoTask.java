@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.boot.model.MapModel;
+import com.boot.model.UtilityModels.JsonIgnoreNull;
 import com.boot.utils.JsonUtil;
 
-public class ChronoTask implements ITunnelEvent {
+public class ChronoTask implements ITunnelEvent, JsonIgnoreNull {
 	private static final long serialVersionUID = 1L;
 	protected String topic;
 	protected String startAt;
