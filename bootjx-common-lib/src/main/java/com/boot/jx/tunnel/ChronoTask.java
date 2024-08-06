@@ -12,7 +12,7 @@ public class ChronoTask implements ITunnelEvent {
 	protected String startAt;
 	protected boolean repeat;
 	protected String interval;
-	protected long executionCount;
+	protected long repeatCount;
 	protected String endAt;
 
 	protected Map<String, Object> data;
@@ -58,12 +58,12 @@ public class ChronoTask implements ITunnelEvent {
 		this.interval = interval;
 	}
 
-	public long getExecutionCount() {
-		return executionCount;
+	public long getRepeatCount() {
+		return repeatCount;
 	}
 
-	public void setExecutionCount(long executionCount) {
-		this.executionCount = executionCount;
+	public void setRepeatCount(long repeatCount) {
+		this.repeatCount = repeatCount;
 	}
 
 	public String getEndAt() {
@@ -122,8 +122,8 @@ public class ChronoTask implements ITunnelEvent {
 		}
 
 		@SuppressWarnings("unchecked")
-		public T executionCount(long executionCount) {
-			this.executionCount = executionCount;
+		public T repeatCount(long repeatCount) {
+			this.repeatCount = repeatCount;
 			return (T) this;
 		}
 
