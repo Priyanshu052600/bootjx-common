@@ -161,7 +161,7 @@ public class TunnelFilterMongoImpl implements TunnelFilter {
 	@Override
 	public ChronoTask schedule(ChronoTask chronoTask) {
 		if (ArgUtil.is(scheduler)) {
-			MapModel resp = restService.ajax(crossUrl).postJson(chronoTask).asMapModel();
+			MapModel resp = restService.ajax(scheduler).postJson(chronoTask).asMapModel();
 			MapPathEntry id = resp.keyEntry("id");
 			if (id.exists()) {
 				chronoTask.setTaskId(id.asString());
