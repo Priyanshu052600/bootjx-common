@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 
 	protected Long timestamp;
+	protected String serverVersion;
 
 	// Spring Norms
 	protected String status = "200"; // 400
@@ -373,5 +374,13 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 		}
 		this.extra.put(paramKey, paramValue);
 		return this;
+	}
+
+	public String getServerVersion() {
+		return serverVersion;
+	}
+
+	public void setServerVersion(String serverVersion) {
+		this.serverVersion = serverVersion;
 	}
 }
