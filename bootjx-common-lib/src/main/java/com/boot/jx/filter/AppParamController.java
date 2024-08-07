@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.boot.jx.AppConfig;
 import com.boot.jx.AppConfigPackage;
-import com.boot.jx.AppConfigPackage.AppSharedConfigChange;
 import com.boot.jx.AppParam;
 import com.boot.jx.AppTenantConfig;
 import com.boot.jx.api.ApiResponse;

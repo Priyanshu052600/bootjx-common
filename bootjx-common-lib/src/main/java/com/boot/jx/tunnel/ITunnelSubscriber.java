@@ -13,4 +13,8 @@ public interface ITunnelSubscriber<M> {
 		return null;
 	};
 
+	default void setSampleEvent(M message) {
+		// This is only for help
+	}
+
 }

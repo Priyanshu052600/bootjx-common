@@ -44,7 +44,18 @@ public class ITunnelDefs {
 
 		public void onMasterUpdate(TunnelEvent message);
 
-		public ChronoTask schedule(ChronoTask chronoTask);
+		public ChronoScheduler schedule(ChronoScheduler chronoTask);
+	}
+
+	public static interface Schedulable {
+		public void setScheduler(ChronoScheduler scheduler);
+
+		public ChronoScheduler getScheduler();
+
+	}
+
+	public interface ITunnelEvent extends Serializable {
+
 	}
 
 	public static class TunnelTask implements ITunnelEvent {

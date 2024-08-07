@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -13,8 +14,6 @@ import com.boot.jx.convertor.StringToEnumIgnoringCaseConverterFactory;
 import com.boot.jx.convertor.StringToTimePeriod;
 import com.boot.jx.filter.AppRequestInterceptor;
 import com.boot.utils.TimeUtils;
-
-import org.springframework.core.convert.converter.Converter;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)

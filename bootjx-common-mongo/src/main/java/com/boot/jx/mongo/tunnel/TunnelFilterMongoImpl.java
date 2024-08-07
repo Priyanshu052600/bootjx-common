@@ -20,7 +20,7 @@ import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonMongoTemplate;
 import com.boot.jx.rest.RestService;
 import com.boot.jx.scope.tnt.Tenants;
-import com.boot.jx.tunnel.ChronoTask;
+import com.boot.jx.tunnel.ChronoScheduler;
 import com.boot.jx.tunnel.ITunnelDefs.TunnelFilter;
 import com.boot.jx.tunnel.TunnelEvent;
 import com.boot.jx.tunnel.TunnelMessage;
@@ -159,7 +159,7 @@ public class TunnelFilterMongoImpl implements TunnelFilter {
 	}
 
 	@Override
-	public ChronoTask schedule(ChronoTask chronoTask) {
+	public ChronoScheduler schedule(ChronoScheduler chronoTask) {
 		if (ArgUtil.is(scheduler)) {
 			MapModel resp = restService.ajax(scheduler).postJson(chronoTask).asMapModel();
 			MapPathEntry id = resp.keyEntry("id");

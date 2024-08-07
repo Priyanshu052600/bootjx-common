@@ -3,12 +3,14 @@ package com.boot.jx.tunnel;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.boot.jx.tunnel.ITunnelDefs.ITunnelEvent;
 import com.boot.model.MapModel;
 import com.boot.model.UtilityModels.JsonIgnoreNull;
 import com.boot.utils.JsonUtil;
 
-public class ChronoTask implements ITunnelEvent, JsonIgnoreNull {
+public class ChronoScheduler implements ITunnelEvent, JsonIgnoreNull {
 	private static final long serialVersionUID = 1L;
+
 	protected String topic;
 	protected String startAt;
 	protected boolean repeat;
@@ -83,7 +85,7 @@ public class ChronoTask implements ITunnelEvent, JsonIgnoreNull {
 		this.data = data;
 	}
 
-	public static class ChronoTaskChained<T> extends ChronoTask {
+	public static class ChronoTaskChained<T> extends ChronoScheduler {
 		private static final long serialVersionUID = 5621731217111619405L;
 
 		@SuppressWarnings("unchecked")

@@ -1,6 +1,8 @@
 package com.boot.jx.tunnel;
 
 import com.boot.jx.AppContext;
+import com.boot.jx.tunnel.ITunnelDefs.ITunnelEvent;
+import com.boot.jx.tunnel.ITunnelDefs.Schedulable;
 import com.boot.jx.tunnel.ITunnelDefs.TunnelQueue;
 
 public interface ITunnelService {
@@ -22,6 +24,6 @@ public interface ITunnelService {
 
 	public <T> long taskPublish(String topic, T messagePayload, AppContext context);
 
-	public <T extends ChronoTask> long schedule(T event);
+	public <T extends Schedulable> long schedule(T event);
 
 }
