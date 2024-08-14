@@ -100,7 +100,6 @@ public class ProxyService {
 
 		HttpHeaders headers = new HttpHeaders();
 		Enumeration<String> headerNames = request.getHeaderNames();
-		headers.setContentType(MediaType.valueOf(request.getContentType()));
 
 		String replacerPrefix = null;
 		String replacerValue = null;
