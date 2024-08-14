@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -113,6 +114,9 @@ public class CommonHttpRequest extends ACommonHttpRequest {
 
 	@Autowired
 	private AppConfig appConfig;
+
+	@Autowired(required = false)
+	private HttpSession httpSession;
 
 	private static Map<String, ApiRequest> API_REQUEST_MAP = Collections
 			.synchronizedMap(new HashMap<String, ApiRequest>());
@@ -737,4 +741,5 @@ public class CommonHttpRequest extends ACommonHttpRequest {
 	public HttpServletResponse getResponse() {
 		return response;
 	}
+
 }
