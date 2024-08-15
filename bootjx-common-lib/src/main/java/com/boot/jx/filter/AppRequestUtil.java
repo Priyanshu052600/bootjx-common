@@ -34,7 +34,7 @@ public class AppRequestUtil {
 	}
 
 	public static boolean isLocal() {
-		return LOCAL_LOGGER || false;
+		return LOCAL_LOGGER || true;
 	}
 
 	public static LinkedMultiValueMap<String, String> getHeader(HttpServletRequest req) {
