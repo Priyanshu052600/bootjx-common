@@ -31,10 +31,11 @@ public class AppRequestUtil {
 
 	public static void isLocalEnable() {
 		LOCAL_LOGGER = !LOCAL_LOGGER;
+		
 	}
 
 	public static boolean isLocal() {
-		return LOCAL_LOGGER || true;
+		return LOCAL_LOGGER || false;
 	}
 
 	public static LinkedMultiValueMap<String, String> getHeader(HttpServletRequest req) {
