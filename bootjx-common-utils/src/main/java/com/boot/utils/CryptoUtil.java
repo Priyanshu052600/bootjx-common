@@ -390,7 +390,7 @@ public final class CryptoUtil {
 		secretKey = new SecretKeySpec(keyBytes, algo);
 		Mac mac = Mac.getInstance(algo);
 		mac.init(secretKey);
-		byte[] text = data.getBytes();
+		byte[] text = ArgUtil.nonEmpty(data, Constants.BLANK).getBytes();
 		return new String(Base64.getEncoder().encode(mac.doFinal(text))).trim();
 	}
 
