@@ -132,6 +132,31 @@ public class TimeUtils {
 		}
 	}
 
+	public static class TimePeriodTimer implements Serializable {
+		private static final long serialVersionUID = 2559424270082600562L;
+		long startStamp;
+
+		public long getStartStamp() {
+			return startStamp;
+		}
+
+		public void setStartStamp(long startStamp) {
+			this.startStamp = startStamp;
+		}
+
+		public TimePeriod now() {
+			TimePeriod timePeriod = new TimePeriod();
+			timePeriod.setMillis(System.currentTimeMillis() - startStamp);
+			return timePeriod;
+		}
+
+		public static TimePeriodTimer start() {
+			TimePeriodTimer timer = new TimePeriodTimer();
+			timer.setStartStamp(System.currentTimeMillis());
+			return timer;
+		}
+	}
+
 	public static final Pattern PERIODS = Pattern.compile("^([0-9\\s]*)(" + String.join("|", TimeUnits.keys()) + ")$");
 
 	public static long toMillis(String period) {
