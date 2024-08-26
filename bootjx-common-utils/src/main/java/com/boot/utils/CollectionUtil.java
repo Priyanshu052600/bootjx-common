@@ -352,4 +352,5 @@ public final class CollectionUtil {
 		}
 		return numbersList.stream().filter(x -> ArgUtil.is(numbersList)).distinct().collect(Collectors.toList());
 	}
+
 }
