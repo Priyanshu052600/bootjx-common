@@ -186,6 +186,18 @@ public class MapModel implements JsonSerializerType<Object> {
 			return ArgUtil.is(value);
 		}
 
+		public boolean isEmpty() {
+			return ArgUtil.isEmpty(value);
+		}
+
+		public boolean isMissing() {
+			return value == null;
+		}
+
+		public boolean isPresent() {
+			return value != null;
+		}
+
 		public boolean is(Object compare) {
 			return ArgUtil.areEqual(this.value, compare);
 		}
