@@ -46,6 +46,7 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 	protected List<M> details;
 	protected List<ApiFieldError> errors = null;
 	protected List<ApiFieldError> warnings = null;
+	protected List<Object> traces = null;
 	protected List<String> logs = null;
 	protected Map<String, Object> params = null;
 	protected Map<String, Object> extra = null;
@@ -304,6 +305,13 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 		return this;
 	}
 
+	protected AResponse<M> traces() {
+		if (this.traces == null) {
+			this.traces = new ArrayList<Object>();
+		}
+		return this;
+	}
+
 	public void addWarning(ApiFieldError warning) {
 		if (ArgUtil.is(warning)) {
 			if (!ArgUtil.is(this.warningKey) && ArgUtil.is(warning.getCodeKey())) {
@@ -326,6 +334,10 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 
 	public void addLog(String log) {
 		this.logs().getLogs().add(log);
+	}
+
+	public void addTrace(Object log) {
+		this.traces().getTraces().add(log);
 	}
 
 	public List<String> getLogs() {
@@ -382,5 +394,13 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 
 	public void setServerVersion(String serverVersion) {
 		this.serverVersion = serverVersion;
+	}
+
+	public List<Object> getTraces() {
+		return traces;
+	}
+
+	public void setTraces(List<Object> traces) {
+		this.traces = traces;
 	}
 }

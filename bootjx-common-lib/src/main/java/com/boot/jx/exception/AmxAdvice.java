@@ -107,6 +107,10 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 			apiError.addLog(log);
 		}
 
+		for (Object log : ApiResponseUtil.getTraces()) {
+			apiError.addTrace(log);
+		}
+
 		apiError.setServerVersion(appConfig.getAppAppBuildStamp());
 		return new ResponseEntity<AmxApiError>(apiError, getHttpStatus(ex));
 	}
@@ -151,6 +155,10 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 
 		for (String log : ApiResponseUtil.getLogs()) {
 			apiError.addLog(log);
+		}
+
+		for (Object log : ApiResponseUtil.getTraces()) {
+			apiError.addTrace(log);
 		}
 
 		apiError.setServerVersion(appConfig.getAppAppBuildStamp());
@@ -300,6 +308,10 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 		for (String log : ApiResponseUtil.getLogs()) {
 			apiError.addLog(log);
 		}
+		for (Object log : ApiResponseUtil.getTraces()) {
+			apiError.addTrace(log);
+		}
+
 		apiError.setServerVersion(appConfig.getAppAppBuildStamp());
 		return new ResponseEntity<AmxApiError>(apiError, ex.getHttpStatus());
 	}
@@ -318,6 +330,9 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 		}
 		for (String log : ApiResponseUtil.getLogs()) {
 			body.addLog(log);
+		}
+		for (Object log : ApiResponseUtil.getTraces()) {
+			body.addTrace(log);
 		}
 		body.setServerVersion(appConfig.getAppAppBuildStamp());
 		return body;

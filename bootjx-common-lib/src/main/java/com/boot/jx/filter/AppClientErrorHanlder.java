@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import com.boot.jx.AppConstants;
+import com.boot.jx.api.ApiResponseUtil;
 import com.boot.jx.exception.AmxApiError;
 import com.boot.jx.exception.AmxApiException;
 import com.boot.jx.exception.ApiHttpExceptions.ApiErrorException;
@@ -63,15 +64,20 @@ public class AppClientErrorHanlder implements ResponseErrorHandler {
 		if (status.series() == HttpStatus.Series.SERVER_ERROR) {
 			if (status.is(HttpStatus.BAD_GATEWAY)) {
 				apiError = throwError(null, ApiStatusCodes.HTTP_SERVER_ERROR, response, status.getStatus());
+
+				ApiResponseUtil.addTrace(apiError);
 				throw new ApiHttpServerException(status.getStatus(), apiError);
 			} else {
 				String body = IoUtils.inputstream_to_string(response.getBody());
 				apiError = throwError(body, ApiStatusCodes.HTTP_SERVER_ERROR, response);
 			}
+			ApiResponseUtil.addTrace(apiError);
 			throw new ApiHttpServerException(status.getStatus(), apiError);
 		} else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
 			String body2 = IoUtils.inputstream_to_string(response.getBody());
 			apiError = throwError(body2, ApiStatusCodes.UNKNOWN_CLIENT_ERROR, response);
+
+			ApiResponseUtil.addTrace(apiError);
 			if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
 				throw new ApiHttpNotFoundException(status.getStatus(), apiError);
 			} else {
@@ -80,6 +86,8 @@ public class AppClientErrorHanlder implements ResponseErrorHandler {
 		} else if (hasExceptionHeader) {
 			String body = IoUtils.inputstream_to_string(response.getBody());
 			apiError = throwError(body, ApiStatusCodes.UNKNOWN, response);
+
+			ApiResponseUtil.addTrace(apiError);
 			throw new ApiErrorException(apiError);
 		}
 

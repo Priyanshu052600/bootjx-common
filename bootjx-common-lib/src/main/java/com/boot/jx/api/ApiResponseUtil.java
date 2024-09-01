@@ -56,6 +56,30 @@ public class ApiResponseUtil {
 	}
 
 	@SuppressWarnings("unchecked")
+	public static List<Object> getTraces() {
+		Object userDeviceClientObject = ContextUtil.map().get(AppConstants.REQUEST_TRACES_XKEY);
+		List<Object> warnings = null;
+		if (userDeviceClientObject == null) {
+			warnings = new ArrayList<Object>();
+			ContextUtil.map().put(AppConstants.REQUEST_TRACES_XKEY, warnings);
+		} else {
+			warnings = (List<Object>) userDeviceClientObject;
+		}
+		return warnings;
+	}
+
+	public static void addTrace(Object trace) {
+		List<Object> amxTraces = getTraces();
+		for (Object amxTrace : amxTraces) {
+			// Find duplicate Warnings
+			if (amxTrace.toString().equals(trace.toString())) {
+				return;
+			}
+		}
+		amxTraces.add(trace);
+	}
+
+	@SuppressWarnings("unchecked")
 	public static List<ApiFieldError> getWarnings() {
 		Object userDeviceClientObject = ContextUtil.map().get(AppConstants.REQUEST_WARNING_XKEY);
 		List<ApiFieldError> warnings = null;
