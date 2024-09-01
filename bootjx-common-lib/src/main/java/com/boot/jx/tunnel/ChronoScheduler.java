@@ -6,9 +6,10 @@ import java.util.Map;
 import com.boot.jx.tunnel.ITunnelDefs.ITunnelEvent;
 import com.boot.model.MapModel;
 import com.boot.model.UtilityModels.JsonIgnoreNull;
+import com.boot.model.UtilityModels.JsonIgnoreUnknown;
 import com.boot.utils.JsonUtil;
 
-public class ChronoScheduler implements ITunnelEvent, JsonIgnoreNull {
+public class ChronoScheduler implements ITunnelEvent, JsonIgnoreNull, JsonIgnoreUnknown {
 	private static final long serialVersionUID = 1L;
 
 	protected String topic;
