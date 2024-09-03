@@ -31,7 +31,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class CommonDocInterfaces {
 
@@ -487,11 +489,19 @@ public class CommonDocInterfaces {
 
 	}
 
-	public class ResourceDocumentKeyDeserializer extends KeyDeserializer {
+	public static class ResourceDocumentKeyDeserializer extends KeyDeserializer {
 		@Override
 		public Object deserializeKey(String key, DeserializationContext deserializationContext)
 				throws IOException, JsonProcessingException {
 			return JsonUtil.getMapper().readValue(key, ResourceDocumentImpl.class);
 		}
+	}
+
+	static {
+		ObjectMapper objectMapper = JsonUtil.getMapper();
+		SimpleModule module = new SimpleModule();
+		module.addKeyDeserializer(ResourceDocumentImpl.class, new ResourceDocumentKeyDeserializer());
+		objectMapper.registerModule(module);
+
 	}
 }

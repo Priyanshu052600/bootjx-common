@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class TimeModels {
 
@@ -163,5 +165,12 @@ public class TimeModels {
 				throws IOException, JsonProcessingException {
 			return JsonUtil.getMapper().readValue(key, ITimeStampIndexImpl.class);
 		}
+	}
+
+	static {
+		ObjectMapper objectMapper = JsonUtil.getMapper();
+		SimpleModule module = new SimpleModule();
+		module.addKeyDeserializer(ITimeStampIndexImpl.class, new TimeStampIndexKeyDeserializer());
+		objectMapper.registerModule(module);
 	}
 }
