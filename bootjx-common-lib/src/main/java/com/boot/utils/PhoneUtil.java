@@ -21,4 +21,16 @@ public class PhoneUtil {
 		}
 		return phoneNo;
 	}
+
+	public static final String PLUS_SIGN = "+";
+
+	/** adding + sign in a phone if not there **/
+	public static String addPlusSign(String phoneNo) {
+		if (ArgUtil.is(phoneNo)) {
+			if (!phoneNo.startsWith(PLUS_SIGN)) {
+				phoneNo = PLUS_SIGN.concat(phoneNo);
+			}
+		}
+		return phoneNo;
+	}
 }
