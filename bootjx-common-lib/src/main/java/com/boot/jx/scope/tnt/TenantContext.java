@@ -3,6 +3,7 @@ package com.boot.jx.scope.tnt;
 import java.util.List;
 
 import com.boot.common.ScopedBeanFactory;
+import com.boot.jx.scope.tnt.TenantDefinations.TenantSpecific;
 
 public class TenantContext<T> extends ScopedBeanFactory<String, T> {
 

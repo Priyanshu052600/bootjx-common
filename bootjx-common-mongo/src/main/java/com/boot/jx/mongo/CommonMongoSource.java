@@ -28,6 +28,10 @@ public class CommonMongoSource {
 	public static final String USE_NO_DB = "USE_NO_DB";
 	public static final String READ_ONLY_DB = "READ_ONLY_DB";
 
+	public enum USE_DB {
+		USE_DEFAULT_DB, USE_NO_DB, READ_ONLY_DB
+	}
+
 	private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
 	private String dataSourceUrl;
@@ -65,11 +69,22 @@ public class CommonMongoSource {
 		return ArgUtil.is(apiDetails) && apiDetails.hasRule(useNoDb);
 	}
 
+	public static USE_DB getRule() {
+		if (hasRule(USE_NO_DB)) {
+			return USE_DB.USE_NO_DB;
+		} else if (hasRule(USE_DEFAULT_DB)) {
+			return USE_DB.USE_DEFAULT_DB;
+		} else if (hasRule(READ_ONLY_DB)) {
+			return USE_DB.READ_ONLY_DB;
+		}
+		return null;
+	}
+
 	public static boolean isReadOnly() {
 		return hasRule(READ_ONLY_DB);
 	}
 
-	public MongoDbFactory getMongoDbFactory(String dataSourceUrl) {
+	private MongoDbFactory mongoDbFactory(String dataSourceUrl, USE_DB useDb) {
 		String tnt = tenant;
 		String dbtnt = tenantDB;
 		MongoClientURI mongoClientURI = new MongoClientURI(dataSourceUrl);
@@ -83,11 +98,11 @@ public class CommonMongoSource {
 		}
 
 		String dataBaseName = (globalDBProfix + "_" + dbtnt);
-		if (hasRule(USE_NO_DB)) {
+		if (ArgUtil.is(useDb, USE_DB.USE_NO_DB)) {
 			// dataBaseName = "nodb";
 			dataBaseName = mongoClientURI.getDatabase();
 		} else if ((!ArgUtil.areEqual(StringUtils.trim(dataSourceUrl), StringUtils.trim(globalDataSourceUrl))
-				|| Tenants.isDefault(tnt) || (hasRule(USE_DEFAULT_DB)))) {
+				|| Tenants.isDefault(tnt) || (ArgUtil.is(useDb, USE_DB.USE_DEFAULT_DB)))) {
 			dataBaseName = mongoClientURI.getDatabase();
 		}
 		LOGGER.info("MONGODB: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
@@ -95,36 +110,44 @@ public class CommonMongoSource {
 		return new SimpleMongoDbFactory(sharedMongoClient, dataBaseName);
 	}
 
-	public MongoDbFactory getMongoDbFactory() {
-		if (hasRule(USE_NO_DB)) {
+	public MongoDbFactory getMongoDbFactory(String dataSourceUrl) {
+		return this.mongoDbFactory(dataSourceUrl, getRule());
+	}
+
+	public MongoDbFactory mongoDbFactory(USE_DB useDb) {
+		if (ArgUtil.is(USE_DB.USE_NO_DB, useDb)) {
 			if (mongoDbFactoryNoDb == null && ArgUtil.is(dataSourceUrl)) {
-				mongoDbFactoryNoDb = getMongoDbFactory(dataSourceUrl);
+				mongoDbFactoryNoDb = mongoDbFactory(dataSourceUrl, useDb);
 				LOGGER.warn("mongoDbFactoryNoDb was NULL So created One");
 			}
 			return mongoDbFactoryNoDb;
-		} else if (hasRule(USE_DEFAULT_DB)) {
+		} else if (ArgUtil.is(USE_DB.USE_DEFAULT_DB, useDb)) {
 			if (mongoDbFactoryDefault == null && ArgUtil.is(dataSourceUrl)) {
-				mongoDbFactoryDefault = getMongoDbFactory(dataSourceUrl);
-				LOGGER.warn("mongoDbFactoryNoDb was NULL So created One");
+				mongoDbFactoryDefault = mongoDbFactory(dataSourceUrl, useDb);
+				LOGGER.warn("mongoDbFactoryDefault was NULL So created One");
 			}
 			return mongoDbFactoryDefault;
 		} else {
 			if (mongoDbFactory == null && ArgUtil.is(dataSourceUrl)) {
-				mongoDbFactory = getMongoDbFactory(dataSourceUrl);
-				LOGGER.warn("mongoTemplate was NULL So created One");
+				mongoDbFactory = mongoDbFactory(dataSourceUrl, useDb);
+				LOGGER.warn("mongoDbFactory was NULL So created One");
 				ready = true;
 			}
 			return mongoDbFactory;
 		}
 	}
 
-	public MongoTemplate getMongoTemplate() {
+	public MongoDbFactory getMongoDbFactory() {
+		return this.mongoDbFactory(getRule());
+	}
 
-		if (hasRule(USE_NO_DB)) {
+	public MongoTemplate mongoTemplate(USE_DB useDb) {
+
+		if (ArgUtil.is(USE_DB.USE_NO_DB, useDb)) {
 			if (mongoTemplateNoDb == null) {
 				synchronized (lockNoDb) {
 					LOGGER.info("mongoTemplateNoDb is NULL So creating One {} {}", getDataSourceUrl());
-					mongoDbFactoryNoDb = getMongoDbFactory();
+					mongoDbFactoryNoDb = mongoDbFactory(useDb);
 					if (ArgUtil.is(mongoDbFactoryNoDb)) {
 						mongoTemplateNoDb = new MongoTemplate(mongoDbFactoryNoDb,
 								mappingMongoConverter(mongoDbFactoryNoDb));
@@ -134,14 +157,14 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.error("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getDb().getName());
+				LOGGER.info("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getDb().getName());
 			}
 			return mongoTemplateNoDb;
-		} else if (hasRule(USE_DEFAULT_DB)) {
+		} else if (ArgUtil.is(USE_DB.USE_DEFAULT_DB, useDb)) {
 			if (mongoTemplateDefault == null) {
 				synchronized (lockDefault) {
 					LOGGER.info("mongoTemplate is NULL So creating One {} {}", getDataSourceUrl());
-					mongoDbFactoryDefault = getMongoDbFactory();
+					mongoDbFactoryDefault = mongoDbFactory(useDb);
 					if (ArgUtil.is(mongoDbFactoryDefault)) {
 						mongoTemplateDefault = new MongoTemplate(mongoDbFactoryDefault,
 								mappingMongoConverter(mongoDbFactoryDefault));
@@ -152,7 +175,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.error("mongoDbFactoryDefault = {}", mongoTemplateNoDb.getDb().getName());
+				LOGGER.info("mongoDbFactoryDefault = {}", mongoDbFactoryDefault.getDb().getName());
 			}
 			return mongoTemplateDefault;
 		} else {
@@ -169,10 +192,18 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.debug("mongoDbFactory = {}", mongoDbFactory.getDb().getName());
+				LOGGER.info("mongoDbFactory = {}", mongoDbFactory.getDb().getName());
 			}
 			return mongoTemplate;
 		}
+	}
+
+	public MongoTemplate getMongoTemplate() {
+		return mongoTemplate(getRule());
+	}
+
+	public MongoTemplate getDefaultMongoTemplate() {
+		return mongoTemplate(USE_DB.USE_DEFAULT_DB);
 	}
 
 	public boolean isReady() {
@@ -239,4 +270,5 @@ public class CommonMongoSource {
 //		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
 //				new DotReplacingConverters.DotReplacingReader()));
 	}
+
 }

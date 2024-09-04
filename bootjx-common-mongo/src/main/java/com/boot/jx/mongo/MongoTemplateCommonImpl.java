@@ -44,12 +44,19 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 	@Autowired
 	public CommonMongoSourceProvider commonMongoSourceProvider;
 
+	private boolean onlyDefault = false;
+
 	public MongoTemplateCommonImpl(MongoDbFactory mongoDbFactory) {
 		super(mongoDbFactory);
 	}
 
 	public MongoTemplateCommonImpl(MongoDbFactory factory, MappingMongoConverter mongoConverter) {
 		super(factory, mongoConverter);
+	}
+
+	public MongoTemplateCommonImpl onlyDefault(boolean onlyDefault) {
+		this.onlyDefault = onlyDefault;
+		return this;
 	}
 
 	protected MongoTemplate getCommonMongoTemplate() {
@@ -59,6 +66,9 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 		CommonMongoSource source = commonMongoSourceProvider.getSource();
 		if (source == null) {
 			return null;
+		}
+		if (onlyDefault) {
+			return source.getDefaultMongoTemplate();
 		}
 		return source.getMongoTemplate();
 	}

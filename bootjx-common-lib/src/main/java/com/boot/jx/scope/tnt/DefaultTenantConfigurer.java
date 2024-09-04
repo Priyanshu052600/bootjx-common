@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.http.CommonHttpRequest.ApiRequestDetail;
 import com.boot.jx.scope.tnt.TenantAuthContext.TenantAuthFilter;
+import com.boot.jx.scope.tnt.TenantDefinations.TenantSpecific;
 
 @Component
 @TenantSpecific("DEFAULT")
