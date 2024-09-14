@@ -157,7 +157,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.info("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getDb().getName());
+				LOGGER.debug("mongoDbFactoryNoDb = {}", mongoDbFactoryNoDb.getDb().getName());
 			}
 			return mongoTemplateNoDb;
 		} else if (ArgUtil.is(USE_DB.USE_DEFAULT_DB, useDb)) {
@@ -175,7 +175,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.info("mongoDbFactoryDefault = {}", mongoDbFactoryDefault.getDb().getName());
+				LOGGER.debug("mongoDbFactoryDefault = {}", mongoDbFactoryDefault.getDb().getName());
 			}
 			return mongoTemplateDefault;
 		} else {
@@ -192,7 +192,7 @@ public class CommonMongoSource {
 					}
 				}
 			} else {
-				LOGGER.info("mongoDbFactory = {}", mongoDbFactory.getDb().getName());
+				LOGGER.debug("mongoDbFactory = {}", mongoDbFactory.getDb().getName());
 			}
 			return mongoTemplate;
 		}
