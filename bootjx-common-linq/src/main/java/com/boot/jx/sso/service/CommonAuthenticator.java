@@ -26,31 +26,31 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonAuthenticator.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private LinkedinAuthenticator linkedinAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private OultlookAuthenticator oultlookAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private FacebookAuthenticator facebookAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private GoogleAuthenticator googleAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private TwitterAuthenticator twitterAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private OtplessAuthenticator otplessAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private FirebaseAuthenticator firebaseAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private TruecallerAuthenticator truecallerAuthenticator;
 
-	@Autowired
+	@Autowired(required = false)
 	private TelegramAuthenticator telegramAuthenticator;
 
 	public BasicAuthenticator find(String provider, String partner) {
@@ -147,6 +147,5 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 	public TruecallerAuthenticator getTruecallerAuthenticator() {
 		return truecallerAuthenticator;
 	}
-
 
 }

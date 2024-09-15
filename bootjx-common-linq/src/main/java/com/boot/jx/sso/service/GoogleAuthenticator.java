@@ -12,9 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager;
+import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.rest.RestService;
-import com.boot.jx.sso.service.AuthStateManager.AuthState;
 import com.boot.model.MapModel;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.FileUtil;
@@ -94,7 +95,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 	@Override
 	public String createAuthUrl(String provider, ChannelPartner partner)
 			throws MalformedURLException, URISyntaxException {
-		return this.createAuthUrl(provider, partner, getUrl("/linq/app/v1/connect/google/callback"));
+		return this.createAuthUrl(provider, partner, redirectUrl(provider, partner));
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 		String code = commonHttpRequest.getRequestParam("code");
 		String scope = commonHttpRequest.getRequestParam("scope");
 
-		String redirectUrl = "/linq/app/v1/connect/google/callback";
+		String redirectUrl = redirectPath(provider, partner);
 		if (ArgUtil.is(stateStr)) {
 			AuthState state = ssoSessionBean.fromState(stateStr);
 			redirectUrl = state.getRedirectUrl();

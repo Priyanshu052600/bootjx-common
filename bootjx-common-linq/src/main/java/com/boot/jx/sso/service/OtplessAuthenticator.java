@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.rest.RestService;
 import com.boot.model.MapModel;

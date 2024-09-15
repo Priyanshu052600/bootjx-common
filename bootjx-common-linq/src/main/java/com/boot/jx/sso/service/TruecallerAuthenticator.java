@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.sso.model.BasicAuthWebhookRespHolder;
-import com.boot.jx.sso.service.AuthStateManager.AuthState;
 import com.boot.model.MapModel;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.Urly;
@@ -29,16 +29,16 @@ public class TruecallerAuthenticator extends AbstractAuthenticator {
 	private static final String AUTHORITY = "https://login.microsoftonline.com";
 	private static String scopes = "User.Read";
 
-	@Value("${truecaller.app.name}")
+	@Value("${truecaller.app.name:}")
 	String appName;
 
-	@Value("${truecaller.app.key}")
+	@Value("${truecaller.app.key:}")
 	String appKey;
 
-	@Value("${truecaller.app.domain}")
+	@Value("${truecaller.app.domain:}")
 	String appDomain;
 
-	@Value("${truecaller.callback.url}")
+	@Value("${truecaller.callback.url:}")
 	String callbackUrl;
 
 	@Override

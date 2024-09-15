@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager;
+import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.http.CommonHttpRequest;
-import com.boot.jx.sso.service.AuthStateManager.AuthState;
 import com.boot.model.MapModel;
+import com.boot.utils.ArgUtil;
 import com.boot.utils.FileUtil;
 import com.boot.utils.Urly;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -50,28 +52,28 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 	private FirebaseOptions firebaseOptions;
 	private FirebaseAuth firebaseAuth;
 
-	@Value("${firebase.db.url}")
+	@Value("${firebase.db.url:}")
 	String firebaseDbUrl;
 
-	@Value("${firebase.project.id}")
+	@Value("${firebase.project.id:}")
 	String firebaseProjectid;
 
-	@Value("${firebase.web.apikey}")
+	@Value("${firebase.web.apikey:}")
 	String firebaseWebApikey;
 
-	@Value("${firebase.storage.bucket}")
+	@Value("${firebase.storage.bucket:}")
 	String firebaseStorageBucket;
 
-	@Value("${firebase.msg.senderId}")
+	@Value("${firebase.msg.senderId:}")
 	String firebaseMsgSenderId;
 
-	@Value("${firebase.auth.domain}")
+	@Value("${firebase.auth.domain:}")
 	String firebaseAuthDomain;
 
-	@Value("${firebase.measurementId}")
+	@Value("${firebase.measurementId:}")
 	String firebaseMeasurementId;
 
-	@Value("${firebase.appId}")
+	@Value("${firebase.appId:}")
 	String firebaseAppId;
 
 	public GoogleCredentials googleCreds() {
@@ -79,9 +81,11 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 			try {
 				InputStream leftStream = FileUtil.getExternalOrInternalResourceAsStream(
 						"providers/truelinq-firebase-adminsdk.json", FirebaseAuthenticator.class);
-				googleCredentials = GoogleCredentials.fromStream(leftStream).createScoped(Arrays.asList(SCOPES));
-				leftStream.close();
-				googleCredentials.refresh();
+				if (ArgUtil.is(leftStream)) {
+					googleCredentials = GoogleCredentials.fromStream(leftStream).createScoped(Arrays.asList(SCOPES));
+					leftStream.close();
+					googleCredentials.refresh();
+				}
 				return googleCredentials;
 
 			} catch (IOException e) {
@@ -93,10 +97,13 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 
 	public FirebaseOptions firebaseOptions() {
 		if (this.firebaseOptions == null) {
-			this.firebaseOptions = FirebaseOptions.builder().setCredentials(googleCreds())
-					.setDatabaseUrl(firebaseDbUrl + "/").setProjectId(firebaseProjectid)
+			GoogleCredentials creds = googleCreds();
+			if (ArgUtil.is(creds)) {
+				this.firebaseOptions = FirebaseOptions.builder().setCredentials(creds)
+						.setDatabaseUrl(firebaseDbUrl + "/").setProjectId(firebaseProjectid)
 
-					.setStorageBucket(firebaseStorageBucket).build();
+						.setStorageBucket(firebaseStorageBucket).build();
+			}
 		}
 		return firebaseOptions;
 	}
@@ -110,7 +117,10 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 
 	@PostConstruct
 	public void init() {
-		FirebaseApp.initializeApp(firebaseOptions());
+		FirebaseOptions options = firebaseOptions();
+		if (ArgUtil.is(options)) {
+			FirebaseApp.initializeApp(options);
+		}
 	}
 
 	@Autowired

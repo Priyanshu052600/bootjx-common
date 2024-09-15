@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager;
+import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.rest.RestService;
-import com.boot.jx.sso.service.AuthStateManager.AuthState;
 import com.boot.model.MapModel;
 import com.boot.utils.Urly;
 import com.javachinna.oauth2.user.CommonOAuth2UserInfo;
@@ -36,10 +37,10 @@ public class OultlookAuthenticator extends AbstractAuthenticator {
 	@Autowired
 	CommonHttpRequest commonHttpRequest;
 
-	@Value("${outlook.app.client.id}")
+	@Value("${outlook.app.client.id:}")
 	String clientId;
 
-	@Value("${outlook.app.client.secret}")
+	@Value("${outlook.app.client.secret:}")
 	String clientSecret;
 
 	@Autowired
