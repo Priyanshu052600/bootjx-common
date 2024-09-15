@@ -58,6 +58,12 @@
 				<artifactId>bootjx-common-db</artifactId>
 				<version>${boot.jx.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.boot.jx</groupId>
+				<artifactId>bootjx-common-linq</artifactId>
+				<version>${boot.jx.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -120,6 +126,7 @@
 		<module>bootjx-common-lib</module>
 		<module>bootjx-common-db</module>
 		<module>bootjx-common-mongo</module>
+		<module>bootjx-common-linq</module>
 		<!-- Common Servers -->
 		<module>bootjx-demo-server</module>
 	</modules>
