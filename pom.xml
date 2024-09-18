@@ -64,6 +64,14 @@
 				<artifactId>bootjx-common-linq</artifactId>
 				<version>${boot.jx.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.boot.jx</groupId>
+				<artifactId>bootjx-common-test</artifactId>
+				<version>${boot.jx.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -128,6 +136,7 @@
 		<module>bootjx-common-mongo</module>
 		<module>bootjx-common-linq</module>
 		<!-- Common Servers -->
+		<module>bootjx-common-test</module>
 		<module>bootjx-demo-server</module>
 	</modules>
 	

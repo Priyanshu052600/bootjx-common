@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>bootjx-common-mongo</artifactId>
+	<artifactId>bootjx-common-test</artifactId>
 	<packaging>jar</packaging>
-	<name>bootjx-common-mongo</name>
+	<name>bootjx-common-test</name>
 	<url>http://maven.apache.org</url>
 
-	<description>Common mongo DB libs for amx modules</description>
+	<description>Common mongo test modules</description>
 
 	<parent>
 		<groupId>com.boot.jx</groupId>
@@ -22,17 +22,28 @@
 	</properties>
 
 	<dependencies>
-
+		
 		<dependency>
 			<groupId>com.boot.jx</groupId>
-			<artifactId>bootjx-common-lib</artifactId>
+			<artifactId>bootjx-common-mongo</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+		    <groupId>de.flapdoodle.embed</groupId>
+		    <artifactId>de.flapdoodle.embed.mongo</artifactId>
+		</dependency>
+
 	</dependencies>
 
 </project>
