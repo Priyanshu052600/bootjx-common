@@ -1,7 +1,5 @@
 package com.boot.json;
 
-import com.boot.utils.Constants;
-
 /**
  * The Interface JsonSerializerType.
  *

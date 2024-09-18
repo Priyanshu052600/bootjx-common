@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.boot.utils.ArgUtil;
 import com.boot.utils.StringUtils;
-import com.javachinna.oauth2.user.SocialEnums.ChannelPartner;
 import com.javachinna.oauth2.user.SocialEnums.ChannelProvider;
 
 public abstract class BasicOAuth2UserInfo implements Serializable {

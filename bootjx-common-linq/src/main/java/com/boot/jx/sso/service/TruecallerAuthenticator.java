@@ -5,14 +5,12 @@ import java.net.URISyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.sso.model.BasicAuthWebhookRespHolder;
 import com.boot.model.MapModel;
-import com.boot.utils.ArgUtil;
 import com.boot.utils.Urly;
 import com.javachinna.oauth2.user.CommonOAuth2UserInfo;
 import com.javachinna.oauth2.user.OAuth2UserInfo;
