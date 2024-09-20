@@ -15,14 +15,18 @@ import com.boot.jx.logger.LoggerService;
 import com.boot.jx.model.AuditCreateEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditIdentifier;
 import com.boot.jx.model.AuditCreateEntity.AuditUpdateEntity;
+import com.boot.jx.model.ModelPatch;
+import com.boot.jx.model.ModelPatch.ModelPatches;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditActivityDoc;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditableByIdEntity;
 import com.boot.jx.mongo.CommonDocInterfaces.DocVersion;
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
+import com.boot.jx.mongo.CommonDocInterfaces.SimpleDocument;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.UpdatedTimeStampIndexSupport;
 import com.boot.jx.mongo.CommonMongoQueryBuilder.DocQueryBuilder;
+import com.boot.jx.mongo.CommonMongoQueryBuilder.SimpleDocQueryBuilder;
 import com.boot.jx.mongo.MongoUtils.MongoResultProcessor;
 import com.boot.jx.scope.tnt.TenantDefinations.TenantDefaultQualifier;
 import com.boot.model.TimeModels.TimeStampCreatedSupport;
@@ -215,6 +219,24 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			}
 		}
 		return newVersion;
+	}
+
+	public <T extends SimpleDocument> UpdateResult patch(ModelPatches patches, Class<T> clazz)
+			throws InstantiationException, IllegalAccessException {
+		SimpleDocQueryBuilder qb = SimpleDocQueryBuilder.byId(patches.getId(), clazz);
+		for (ModelPatch patch : patches.getPatches()) {
+			switch (patch.getCommand()) {
+			case SET:
+				qb.setunset(patch.getField(), patch.getValue());
+				break;
+			case UNSET:
+				qb.unset(patch.getField());
+				break;
+			default:
+				break;
+			}
+		}
+		return update(qb);
 	}
 
 	@Override

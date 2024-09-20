@@ -34,7 +34,7 @@ public class ModelPatch implements Serializable, JsonIgnoreUnknown {
 	}
 
 	public static enum ModelPatchCommand {
-		SET, ADD, UPDATE, DELETE, REMOVE
+		SET, UNSET, ADD, UPDATE, DELETE, REMOVE, COMMAND
 	}
 
 	ModelPatchCommand command;

@@ -102,6 +102,13 @@ public class CommonMongoQueryBuilder extends MongoQueryBuilder<Object> {
 			return new SimpleDocQueryBuilder(doc);
 		}
 
+		public static <T extends SimpleDocument> SimpleDocQueryBuilder byId(String id, Class<T> clazz)
+				throws InstantiationException, IllegalAccessException {
+			T doc = clazz.newInstance();
+			doc.setId(id);
+			return new SimpleDocQueryBuilder(doc);
+		}
+
 	}
 
 	public static SimpleDocQueryBuilder doc(SimpleDocument doc) {
