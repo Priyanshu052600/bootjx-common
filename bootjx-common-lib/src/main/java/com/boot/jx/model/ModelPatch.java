@@ -4,14 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.boot.model.MapModel.MapEntry;
+import com.boot.model.UtilityModels.JsonIgnoreNull;
 import com.boot.model.UtilityModels.JsonIgnoreUnknown;
 
-public class ModelPatch implements Serializable, JsonIgnoreUnknown {
+public class ModelPatch implements Serializable, JsonIgnoreUnknown, JsonIgnoreNull {
 	private static final long serialVersionUID = -3704316273095128587L;
 
 	public static class ModelPatches {
 
 		String id;
+
+		String method;
 
 		List<ModelPatch> patches;
 
@@ -31,10 +34,18 @@ public class ModelPatch implements Serializable, JsonIgnoreUnknown {
 			this.patches = patches;
 		}
 
+		public String getMethod() {
+			return method;
+		}
+
+		public void setMethod(String method) {
+			this.method = method;
+		}
+
 	}
 
 	public static enum ModelPatchCommand {
-		SET, UNSET, ADD, UPDATE, DELETE, REMOVE, COMMAND
+		SET, UNSET, ADD, UPDATE, DELETE, REMOVE
 	}
 
 	ModelPatchCommand command;

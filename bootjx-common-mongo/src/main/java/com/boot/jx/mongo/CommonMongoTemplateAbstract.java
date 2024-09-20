@@ -303,6 +303,22 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 		return ret;
 	}
 
+	public <T> UpdateResult updateMulti(IMongoQueryBuilder<T> builder) {
+		UpdateResult ret = null;
+		if (ArgUtil.is(builder.getUpdate())) {
+			try {
+				builder.build();
+				builder.audit(auditDetailProvider).updatedStamp();
+				ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+			} catch (Exception e) {
+				LOGGER.warn("Query:{}", builder.getQuery().toString());
+				LOGGER.warn("Update:{}", builder.getUpdate().toString());
+				throw e;
+			}
+		}
+		return ret;
+	}
+
 	public DeleteResult trash(Object object) {
 		if (object instanceof AuditCreateEntity && ArgUtil.is(auditDetailProvider)) {
 			String collectionName = "ZTRASH_" + mongoTemplate.getCollectionName(object.getClass());
