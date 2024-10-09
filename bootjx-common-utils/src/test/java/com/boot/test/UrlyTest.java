@@ -39,6 +39,14 @@ public class UrlyTest { // Noncompliant
 		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
 		System.out.println("SUBDOMAIN: " + x.getSubdomain());
 		System.out.println("DOMAIN: " + x.getBasedomain());
+		
+		
+		x = Urly.parse("domain.xyz/agent");
+
+		uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
+		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
+		System.out.println("SUBDOMAIN: " + x.getSubdomain());
+		System.out.println("DOMAIN: " + x.getBasedomain());
 
 	}
 
