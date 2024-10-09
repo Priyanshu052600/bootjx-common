@@ -248,7 +248,13 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 				builder.audit(auditDetailProvider).updatedStamp();
 				// LOGGER.info("Query:{}", builder.getQuery().toString());
 				// LOGGER.info("Update:{}", builder.getUpdate().toString());
-				ret = mongoTemplate.updateFirst(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+
+				if (ArgUtil.is(builder.getCollectionName())) {
+					ret = mongoTemplate.updateFirst(builder.getQuery(), builder.getUpdate(),
+							builder.getCollectionName());
+				} else {
+					ret = mongoTemplate.updateFirst(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				}
 				builder.setUpdate(null);
 			} catch (Exception e) {
 				LOGGER.debug("Query:{}", builder.getQuery().toString());
@@ -268,7 +274,12 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 				builder.audit(auditDetailProvider).updatedStamp();
 				// LOGGER.info("Query:{}", builder.getQuery().toString());
 				// LOGGER.info("Update:{}", builder.getUpdate().toString());
-				ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				if (ArgUtil.is(builder.getCollectionName())) {
+					ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(),
+							builder.getCollectionName());
+				} else {
+					ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				}
 				builder.setUpdate(null);
 			} catch (Exception e) {
 				LOGGER.debug("Query:{}", builder.getQuery().toString());
@@ -293,7 +304,11 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			try {
 				builder.build();
 				builder.audit(auditDetailProvider).updatedStamp();
-				ret = mongoTemplate.upsert(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				if (ArgUtil.is(builder.getCollectionName())) {
+					ret = mongoTemplate.upsert(builder.getQuery(), builder.getUpdate(), builder.getCollectionName());
+				} else {
+					ret = mongoTemplate.upsert(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				}
 			} catch (Exception e) {
 				LOGGER.warn("Query:{}", builder.getQuery().toString());
 				LOGGER.warn("Update:{}", builder.getUpdate().toString());
@@ -309,7 +324,12 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			try {
 				builder.build();
 				builder.audit(auditDetailProvider).updatedStamp();
-				ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				if (ArgUtil.is(builder.getCollectionName())) {
+					ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(),
+							builder.getCollectionName());
+				} else {
+					ret = mongoTemplate.updateMulti(builder.getQuery(), builder.getUpdate(), builder.getDocClass());
+				}
 			} catch (Exception e) {
 				LOGGER.warn("Query:{}", builder.getQuery().toString());
 				LOGGER.warn("Update:{}", builder.getUpdate().toString());
