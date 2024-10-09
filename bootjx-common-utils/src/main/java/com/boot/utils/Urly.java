@@ -51,6 +51,10 @@ public class Urly {
 		}
 	}
 
+	public static String getBaseDomainName(String url) throws MalformedURLException {
+		return getDomainName(url).replaceFirst(getSubDomainName(url) + ".", "");
+	}
+
 	/**
 	 * Gets the builder.
 	 *

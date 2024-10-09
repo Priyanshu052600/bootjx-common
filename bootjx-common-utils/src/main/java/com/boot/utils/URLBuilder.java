@@ -30,6 +30,7 @@ public class URLBuilder {
 
 	/** The host. */
 	private String connType, host;
+	private String subdomain, basedomain;
 
 	/**
 	 * Sets the connection type.
@@ -227,6 +228,10 @@ public class URLBuilder {
 
 		builder.setPath(url.getPath());
 		builder.addParameter(url.getQuery());
+
+		builder.setSubdomain(Urly.getSubDomainName(builder.getHost()));
+		builder.setBasedomain(Urly.getBaseDomainName(builder.getHost()));
+
 		return builder;
 	}
 
@@ -244,6 +249,22 @@ public class URLBuilder {
 
 	public void setHost(String host) {
 		this.host = host;
+	}
+
+	public String getSubdomain() {
+		return subdomain;
+	}
+
+	public void setSubdomain(String subdomain) {
+		this.subdomain = subdomain;
+	}
+
+	public String getBasedomain() {
+		return basedomain;
+	}
+
+	public void setBasedomain(String basedomain) {
+		this.basedomain = basedomain;
 	}
 
 }

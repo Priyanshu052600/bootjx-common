@@ -30,11 +30,16 @@ public class UrlyTest { // Noncompliant
 		uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
 
 		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
+		System.out.println("SUBDOMAIN: " + x.getSubdomain());
+		System.out.println("DOMAIN: " + x.getBasedomain());
 
 		x = Urly.parse("app.domain.xyz/agent");
 
 		uri = new URI(x.getConnectionType(), null, x.getHost(), -1, null, null, null);
 		System.out.println(x.getConnectionType() + "://" + x.getHost() + x.getRelativeURL());
+		System.out.println("SUBDOMAIN: " + x.getSubdomain());
+		System.out.println("DOMAIN: " + x.getBasedomain());
+
 	}
 
 	public static void main2(String[] args) throws ParseException, IOException, URISyntaxException {

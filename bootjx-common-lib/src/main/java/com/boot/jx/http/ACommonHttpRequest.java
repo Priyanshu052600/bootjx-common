@@ -34,6 +34,5 @@ public abstract class ACommonHttpRequest {
 
 	public String getBaseDomain() {
 		return getServerName().replaceFirst(getSubDomain() + ".", "");
-
 	}
 }
