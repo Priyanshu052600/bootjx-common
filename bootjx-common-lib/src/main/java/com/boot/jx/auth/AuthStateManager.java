@@ -69,6 +69,10 @@ public abstract class AuthStateManager implements Serializable {
 			this.domain = domain;
 		}
 
+		public static AuthState fromString(String stateStr) {
+			return MapModel.decoder(stateStr).decodeBase64().detokenize().decrypt().toObzect(AuthState.class);
+		}
+
 	}
 
 	private String csrfToken;

@@ -153,6 +153,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 					userinfo.setEmail(payload.getEmail());
 					userinfo.setName(ArgUtil.parseAsString(payload.get("name")));
 					userinfo.setPicture(ArgUtil.parseAsString(payload.get("picture")));
+					
 					return userinfo;
 
 				} else {
