@@ -33,18 +33,29 @@ public class SSOUrlUtility {
 		return linkBase;
 	}
 
-	public String getOrigin(String subdomain) {
+	public String getOrigin(String subdomain, URLBuilder linkBaseTemp) {
 		if (!ArgUtil.is(subdomain)) {
-			subdomain = linkBase().getSubdomain();
+			subdomain = linkBaseTemp.getSubdomain();
 		}
 		if (ArgUtil.is(subdomain)) {
-			return "https://" + subdomain + "." + linkBase().getBasedomain();
+			return "https://" + subdomain + "." + linkBaseTemp.getBasedomain();
 		}
-		return "https://" + linkBase().getBasedomain();
+		return "https://" + linkBaseTemp.getBasedomain();
+	}
+
+	public String getOrigin(String subdomain) {
+		return this.getOrigin(subdomain, linkBase());
+	}
+
+	public String getOrigin(URLBuilder linkBaseTemp) {
+		if (!ArgUtil.is(linkBaseTemp)) {
+			linkBaseTemp = linkBase();
+		}
+		return this.getOrigin(null, linkBaseTemp);
 	}
 
 	private String getOrigin() {
-		return this.getOrigin(null);
+		return this.getOrigin(null, linkBase());
 	}
 
 	public String getUrl(String path) {
@@ -72,4 +83,5 @@ public class SSOUrlUtility {
 		}
 		return path;
 	}
+
 }

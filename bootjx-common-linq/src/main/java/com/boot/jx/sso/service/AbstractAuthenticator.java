@@ -1,5 +1,7 @@
 package com.boot.jx.sso.service;
 
+import java.net.MalformedURLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.rest.RestService;
 import com.boot.jx.sso.SSOUrlUtility;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.URLBuilder;
+import com.boot.utils.Urly;
 import com.javachinna.oauth2.user.SocialEnums.ChannelPartner;
 
 public abstract class AbstractAuthenticator implements BasicAuthenticator {
@@ -30,8 +34,19 @@ public abstract class AbstractAuthenticator implements BasicAuthenticator {
 	@Autowired
 	private SSOUrlUtility urlService;
 
+	public URLBuilder linkBase() {
+		URLBuilder linkBase;
+		try {
+			linkBase = Urly.parse(commonHttpRequest.getServerHost());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			linkBase = null;
+		}
+		return linkBase;
+	}
+
 	public String getOrigin() {
-		return urlService.getOrigin(commonHttpRequest.getSubDomain());
+		return urlService.getOrigin(linkBase());
 	}
 
 	private String getLinqBaseUrl() {
