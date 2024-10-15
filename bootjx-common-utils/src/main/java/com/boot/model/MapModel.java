@@ -51,6 +51,10 @@ public class MapModel implements JsonSerializerType<Object> {
 			return ArgUtil.parseAsString(value);
 		}
 
+		public String toString() {
+			return this.asString();
+		}
+
 		/**
 		 * Save as {@link #defaultValue(Object)} but type is always {@link String}
 		 * 
