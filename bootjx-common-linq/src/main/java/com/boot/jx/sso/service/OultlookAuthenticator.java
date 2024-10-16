@@ -44,9 +44,6 @@ public class OultlookAuthenticator extends AbstractAuthenticator {
 	String clientSecret;
 
 	@Autowired
-	AuthStateManager authStateManager;
-
-	@Autowired
 	RestService restService;
 
 	@PostConstruct

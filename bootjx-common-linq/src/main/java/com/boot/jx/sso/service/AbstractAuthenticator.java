@@ -25,7 +25,7 @@ public abstract class AbstractAuthenticator implements BasicAuthenticator {
 	@Autowired
 	protected CommonHttpRequest commonHttpRequest;
 
-	@Autowired
+	@Autowired(required = false)
 	protected AuthStateManager authStateManager;
 
 	@Autowired

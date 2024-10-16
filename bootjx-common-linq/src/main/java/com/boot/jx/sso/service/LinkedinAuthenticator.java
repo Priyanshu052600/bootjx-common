@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.boot.jx.auth.AuthStateManager;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.jx.rest.RestService;
 import com.boot.model.MapModel;
@@ -36,9 +35,6 @@ public class LinkedinAuthenticator extends AbstractAuthenticator {
 
 	@Value("${linkedin.app.client.secret:}")
 	String linkedinAppClientSecret;
-
-	@Autowired
-	AuthStateManager authStateManager;
 
 	@Autowired
 	RestService restService;

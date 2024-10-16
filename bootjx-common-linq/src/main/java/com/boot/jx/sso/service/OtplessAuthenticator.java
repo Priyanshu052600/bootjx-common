@@ -37,9 +37,6 @@ public class OtplessAuthenticator extends AbstractAuthenticator {
 	CommonHttpRequest commonHttpRequest;
 
 	@Autowired
-	AuthStateManager authStateManager;
-
-	@Autowired
 	RestService restService;
 
 	@PostConstruct

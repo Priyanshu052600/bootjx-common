@@ -123,12 +123,6 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 		}
 	}
 
-	@Autowired
-	AuthStateManager ssoSessionBean;
-
-	@Autowired
-	AuthStateManager authStateManager;
-
 	@Override
 	public String createAuthUrl(String provider, ChannelPartner partner)
 			throws MalformedURLException, URISyntaxException {
@@ -138,7 +132,7 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 	@Override
 	public String createAuthUrl(String provider, ChannelPartner partner, String redirectUri)
 			throws MalformedURLException, URISyntaxException {
-		AuthState state = ssoSessionBean.createState();
+		AuthState state = authStateManager.createState();
 
 		return Urly.parse(getUrl("/linq/pub/v1/connect/firebase/" + provider))//
 				.queryParam("response_type", "code") //

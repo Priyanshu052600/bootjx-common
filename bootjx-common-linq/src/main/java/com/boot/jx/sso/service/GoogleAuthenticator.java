@@ -87,9 +87,6 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 	}
 
 	@Autowired
-	AuthStateManager ssoSessionBean;
-
-	@Autowired
 	RestService restService;
 
 	@Override
@@ -101,7 +98,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 	@Override
 	public String createAuthUrl(String provider, ChannelPartner partner, String redirectUrl)
 			throws MalformedURLException, URISyntaxException {
-		AuthState state = ssoSessionBean.createState();
+		AuthState state = authStateManager.createState();
 		state.setRedirectUrl(redirectUrl);
 
 		MapModel googleCreds = googleCreds();
@@ -121,7 +118,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 
 		String redirectUrl = redirectPath(provider, partner);
 		if (ArgUtil.is(stateStr)) {
-			AuthState state = ssoSessionBean.fromState(stateStr);
+			AuthState state = authStateManager.fromState(stateStr);
 			redirectUrl = state.getRedirectUrl();
 		}
 
@@ -153,7 +150,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 					userinfo.setEmail(payload.getEmail());
 					userinfo.setName(ArgUtil.parseAsString(payload.get("name")));
 					userinfo.setPicture(ArgUtil.parseAsString(payload.get("picture")));
-					
+
 					return userinfo;
 
 				} else {

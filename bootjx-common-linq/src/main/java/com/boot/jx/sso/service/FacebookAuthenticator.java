@@ -47,9 +47,6 @@ public class FacebookAuthenticator extends AbstractAuthenticator {
 	String clientSecret;
 
 	@Autowired
-	AuthStateManager authStateManager;
-
-	@Autowired
 	RestService restService;
 
 	@PostConstruct
