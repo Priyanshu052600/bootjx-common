@@ -413,4 +413,8 @@ public final class JsonUtil {
 		});
 	}
 
+	public static void print(Object json) {
+		System.out.println(JsonUtil.toJsonPrettyPrint(json));
+	}
+
 }
