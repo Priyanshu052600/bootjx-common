@@ -496,6 +496,15 @@ public class MapModel implements JsonSerializerType<Object> {
 		return this.list;
 	}
 
+	public <T> List<T> listOf(Class<T> classType) {
+		List<Object> list = this.list();
+		List<T> newList = new ArrayList<T>();
+		for (Object object : list) {
+			newList.add(JsonUtil.parse(object, classType));
+		}
+		return newList;
+	}
+
 	public Map<String, Object> toMap() {
 		return this.map();
 	}
