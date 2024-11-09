@@ -138,7 +138,7 @@ public class ConfigMeta implements Serializable {
 		String desc() default "";
 
 		String context() default "";
-		
+
 		String path() default "";
 
 		String pathRaw() default "";
@@ -173,7 +173,10 @@ public class ConfigMeta implements Serializable {
 
 		String optionsKey() default "";
 
+		String[] optionValues() default {};
+
 		String defaultValue() default "";
+
 	}
 
 	public ConfigMeta() {
