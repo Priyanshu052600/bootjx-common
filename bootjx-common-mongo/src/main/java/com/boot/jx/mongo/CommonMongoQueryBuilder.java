@@ -75,7 +75,44 @@ public class CommonMongoQueryBuilder extends MongoQueryBuilder<Object> {
 		}
 
 		public String getId() {
-			return null;
+			return getId(doc);
+		}
+
+	}
+
+	public static class SimpleDocQuery<T extends SimpleDocument> extends DocQueryBuilder<T> {
+
+		public SimpleDocQuery(T doc) {
+			super(doc);
+		}
+
+		private String id;
+
+		@Override
+		public T newDoc(String id) {
+			this.id = id;
+			return doc;
+		}
+
+		@Override
+		public String getId(SimpleDocument doc) {
+			return doc.getId();
+		}
+
+		@Override
+		public String getId() {
+			return this.id;
+		}
+
+		public static <T extends SimpleDocument> SimpleDocQuery<T> doc(T doc) {
+			return new SimpleDocQuery<T>(doc);
+		}
+
+		public static <T extends SimpleDocument> SimpleDocQuery<T> byId(String id, Class<T> clazz)
+				throws InstantiationException, IllegalAccessException {
+			T doc = clazz.newInstance();
+			doc.setId(id);
+			return new SimpleDocQuery<T>(doc);
 		}
 
 	}
