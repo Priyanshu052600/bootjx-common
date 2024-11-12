@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.boot.jx.api.AmxResponseSchemes.ApiDataMetaResponse;
 import com.boot.jx.api.AmxResponseSchemes.ApiResultsMetaCompactResponse;
@@ -227,6 +228,10 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 		return buildResults(resultList, meta);
 	}
 
+	public static <TS, MS> ApiResponse<TS, MS> buildList(Set<TS> resultList, MS meta) {
+		return buildResults(CollectionUtil.asList(resultList), meta);
+	}
+
 	public static <TS, MS> ApiResponse<TS, MS> buildList(TS[] resultArray, MS meta) {
 		return buildResults(CollectionUtil.getList(resultArray), meta);
 	}
@@ -245,6 +250,10 @@ public class ApiResponse<T, M> extends AResponse<M> implements ApiDataMetaRespon
 
 	public static <TS> ApiResponse<TS, Object> buildResults(List<TS> resultList) {
 		return buildResults(resultList, new HashMap<String, Object>());
+	}
+
+	public static <TS> ApiResponse<TS, Object> buildResults(Set<TS> resultList) {
+		return buildResults(CollectionUtil.asList(resultList), new HashMap<String, Object>());
 	}
 
 	public static <TS, MS> ApiResponse<TS, MS> buildResults(List<TS> resultList, MS meta) {
