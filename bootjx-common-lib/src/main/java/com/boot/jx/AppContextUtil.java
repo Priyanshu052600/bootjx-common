@@ -365,6 +365,12 @@ public class AppContextUtil {
 		ContextUtil.clear();
 	}
 
+	public static void switchTenant(String tenant) {
+		AppContextUtil.clear();
+		AppContextUtil.setTenant(tenant);
+		AppContextUtil.init();
+	}
+
 	public static AppContext getContext() {
 		AppContext appContext = new AppContext();
 		appContext.setTenant(getTenant());
