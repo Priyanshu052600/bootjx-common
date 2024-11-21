@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class TimeModels {
 
-	@JsonDeserialize(as = ITimeStampIndexImpl.class, keyUsing = TimeStampIndexKeyDeserializer.class)
+	@JsonDeserialize(as = TimeStamp.class, keyUsing = TimeStampIndexKeyDeserializer.class)
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public interface ITimeStampIndex<T extends ITimeStampIndex<T>> extends Serializable {
 		public long getStamp();
@@ -147,15 +147,15 @@ public class TimeModels {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static class ITimeStampIndexImpl extends ITimeStampIndexAbstract<ITimeStampIndexImpl> {
+	public static class TimeStamp extends ITimeStampIndexAbstract<TimeStamp> {
 		private static final long serialVersionUID = 4863858945194917227L;
 
-		public static ITimeStampIndexImpl from(long stamp) {
-			return new ITimeStampIndexImpl().fromStamp(stamp);
+		public static TimeStamp from(long stamp) {
+			return new TimeStamp().fromStamp(stamp);
 		}
 
-		public static ITimeStampIndexImpl now() {
-			return new ITimeStampIndexImpl().fromNow();
+		public static TimeStamp now() {
+			return new TimeStamp().fromNow();
 		}
 	}
 
@@ -163,14 +163,14 @@ public class TimeModels {
 		@Override
 		public Object deserializeKey(String key, DeserializationContext deserializationContext)
 				throws IOException, JsonProcessingException {
-			return JsonUtil.getMapper().readValue(key, ITimeStampIndexImpl.class);
+			return JsonUtil.getMapper().readValue(key, TimeStamp.class);
 		}
 	}
 
 	static {
 		ObjectMapper objectMapper = JsonUtil.getMapper();
 		SimpleModule module = new SimpleModule();
-		module.addKeyDeserializer(ITimeStampIndexImpl.class, new TimeStampIndexKeyDeserializer());
+		module.addKeyDeserializer(TimeStamp.class, new TimeStampIndexKeyDeserializer());
 		objectMapper.registerModule(module);
 	}
 }
