@@ -36,6 +36,15 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 		public static Criteria where(Object key) {
 			return where(key);
 		}
+
+		public static Criteria whereIdNot(Object id) {
+			String idStr = ArgUtil.parseAsString(id);
+			if (idStr != null && ObjectId.isValid(idStr)) {
+				return where("_id").ne(new ObjectId(idStr));
+
+			}
+			return Criteria.where("_id").ne(id);
+		}
 	}
 
 	Query query;
