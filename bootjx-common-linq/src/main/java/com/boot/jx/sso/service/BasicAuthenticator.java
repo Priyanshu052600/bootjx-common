@@ -23,7 +23,11 @@ public interface BasicAuthenticator extends Serializable {
 
 	default public OAuth2UserInfo authenticate(String provider, ChannelPartner partner, MapModel body) {
 		try {
-			return this.doAuthenticate(provider, partner, body);
+			if(body!=null && body.containsKey("direct") && (boolean)body.get("direct")) {
+				return this.doAuthenticateDirect(provider, partner, body);
+			}else {
+				return this.doAuthenticate(provider, partner, body);
+			}
 		} catch (Exception e) {
 			LOGGER.error("ERROR", e);
 		}
@@ -66,5 +70,6 @@ public interface BasicAuthenticator extends Serializable {
 	public static interface TwitterAuthenticator extends BasicAuthenticator {
 
 	}
+	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body) throws Exception;
 
 }

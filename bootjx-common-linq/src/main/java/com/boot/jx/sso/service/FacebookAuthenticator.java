@@ -119,4 +119,11 @@ public class FacebookAuthenticator extends AbstractAuthenticator {
 		return userinfo;
 	}
 
+	@Override
+	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

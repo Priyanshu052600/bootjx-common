@@ -148,4 +148,10 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 		return truecallerAuthenticator;
 	}
 
+	@Override
+	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body)
+			throws Exception {
+		return find(provider, partner).doAuthenticateDirect(provider, partner, body);
+	}
+
 }

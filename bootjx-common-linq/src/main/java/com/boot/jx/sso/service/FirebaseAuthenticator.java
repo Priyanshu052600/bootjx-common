@@ -191,4 +191,11 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 				.toMap()).toJson();
 	}
 
+	@Override
+	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

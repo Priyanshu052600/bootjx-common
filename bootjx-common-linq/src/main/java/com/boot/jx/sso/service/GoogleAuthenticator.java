@@ -165,4 +165,35 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 		return null;
 	}
 
+	@Override
+	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body)
+			throws Exception {
+		String token = (String) body.get("token");
+		if (ArgUtil.is(token)) {
+			GoogleIdToken idToken = null;
+			try {
+				idToken = getVerifier().verify(token);
+				if (idToken != null) {
+					GoogleIdToken.Payload payload = idToken.getPayload();
+					OAuth2UserInfo userinfo = new CommonOAuth2UserInfo();
+					userinfo.setProvider(ChannelProvider.GOOGLE.getType());
+					// Get profile information from payload
+					userinfo.setProfileId(payload.getSubject());
+					userinfo.setEmail(payload.getEmail());
+					userinfo.setName(ArgUtil.parseAsString(payload.get("name")));
+					userinfo.setPicture(ArgUtil.parseAsString(payload.get("picture")));
+					return userinfo;
+
+				} else {
+					LOGGER.warn("Invalid Google ID token.");
+				}
+			} catch (GeneralSecurityException e) {
+				LOGGER.warn(e.getLocalizedMessage());
+			} catch (IOException e) {
+				LOGGER.warn(e.getLocalizedMessage());
+			}
+		}
+		return null;
+	}
+
 }
