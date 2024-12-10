@@ -194,8 +194,8 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 	@Override
 	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String idToken = (String) body.get("token");
+		return this.doAuthenticate(provider, partner, idToken);
 	}
 
 }
