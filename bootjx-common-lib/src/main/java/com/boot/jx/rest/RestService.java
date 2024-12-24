@@ -504,6 +504,21 @@ public class RestService implements AjaxRestService {
 			return this.asApiResponse(Object.class);
 		}
 
+		public ApiResponse<Map<String, Object>, Object> asApiResponseOfMap() {
+			return this.as(new ParameterizedTypeReference<ApiResponse<Map<String, Object>, Object>>() {
+			});
+		}
+
+		public ApiResponse<Map<String, String>, Object> asApiResponseOfPlainMap() {
+			return this.as(new ParameterizedTypeReference<ApiResponse<Map<String, String>, Object>>() {
+			});
+		}
+
+		public ApiResponse<String, Object> asApiResponseOfString() {
+			return this.as(new ParameterizedTypeReference<ApiResponse<String, Object>>() {
+			});
+		}
+
 		public ApiResponse<Map<String, Object>, Object> asAmxApiResponseOfMap() {
 			return this.as(new ParameterizedTypeReference<ApiResponse<Map<String, Object>, Object>>() {
 			});
