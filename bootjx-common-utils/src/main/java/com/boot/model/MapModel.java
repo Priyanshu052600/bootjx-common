@@ -616,6 +616,14 @@ public class MapModel implements JsonSerializerType<Object> {
 		return this.size() == 0;
 	}
 
+	public boolean isList() {
+		return (this.list != null);
+	}
+
+	public boolean isMap() {
+		return (this.map != null);
+	}
+
 	public MapModel map2list() {
 		this.list().add(this.map());
 		this.map = null;
