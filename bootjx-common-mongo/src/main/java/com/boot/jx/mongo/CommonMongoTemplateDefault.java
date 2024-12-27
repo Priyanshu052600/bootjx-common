@@ -405,4 +405,6 @@ public abstract class CommonMongoTemplateDefault {
 	public abstract <T> UpdateResult update(IMongoQueryBuilder<T> builder);
 
 	public abstract <T> UpdateResult updateFirst(IMongoQueryBuilder<T> builder);
+
+	public abstract <T> long count(IMongoQueryBuilder<T> builder);
 }

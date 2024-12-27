@@ -42,6 +42,19 @@ public class ApiResponseUtil {
 		}
 	}
 
+	public static ApiPagination pagination() {
+		Object logsObject = ContextUtil.map().get(AppConstants.RESPONSE_PAGINATION_XKEY);
+		ApiPagination logs = null;
+		if (logsObject != null) {
+			logs = (ApiPagination) logsObject;
+		}
+		return logs;
+	}
+
+	public static void pagination(ApiPagination pagination) {
+		ContextUtil.map().put(AppConstants.RESPONSE_PAGINATION_XKEY, pagination);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static List<ApiFieldError> getErrors() {
 		Object warningsObject = ContextUtil.map().get(AppConstants.REQUEST_ERROR_XKEY);

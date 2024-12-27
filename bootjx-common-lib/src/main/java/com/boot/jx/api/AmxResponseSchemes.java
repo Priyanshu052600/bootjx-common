@@ -57,6 +57,10 @@ public class AmxResponseSchemes {
 		public List<T> getResults();
 
 		public void setResults(List<T> results);
+		
+		public ApiPagination getPagination();
+
+		public void setPagination(ApiPagination pagination);
 	}
 
 	public interface ApiDataResponse<T> extends ApiWrapperResponse {

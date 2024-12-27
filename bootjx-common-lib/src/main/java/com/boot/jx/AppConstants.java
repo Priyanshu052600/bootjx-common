@@ -48,6 +48,7 @@ public class AppConstants extends Constants {
 	public static final String REQUEST_TRACES_XKEY = "x-request-traces";
 	public static final String REQUEST_ERROR_XKEY = "x-request-error";
 	public static final String REQUEST_LOGS_XKEY = "x-request-logs";
+	public static final String RESPONSE_PAGINATION_XKEY = "x-request-pagination";
 	public static final String TRANX_ID_XKEY = "x-tranx-id";
 	public static final String CONTEXT_ID_XKEY = "x-cntxt-id";
 	public static final String USER_CLIENT_XKEY = "x-user-client";

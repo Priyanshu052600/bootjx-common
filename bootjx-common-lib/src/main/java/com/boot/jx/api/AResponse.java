@@ -50,6 +50,7 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 	protected List<String> logs = null;
 	protected Map<String, Object> params = null;
 	protected Map<String, Object> extra = null;
+	protected ApiPagination pagination;
 
 	public AResponse() {
 		this.timestamp = System.currentTimeMillis();
@@ -402,5 +403,20 @@ public abstract class AResponse<M> implements ApiMetaDetailsResponse<M> {
 
 	public void setTraces(List<Object> traces) {
 		this.traces = traces;
+	}
+
+	public ApiPagination getPagination() {
+		return pagination;
+	}
+
+	public void setPagination(ApiPagination pagination) {
+		this.pagination = pagination;
+	}
+
+	public ApiPagination pagination() {
+		if (this.pagination == null) {
+			this.pagination = new ApiPagination();
+		}
+		return this.pagination;
 	}
 }

@@ -97,6 +97,10 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 		response.setHeader(AppConstants.EXCEPTION_HEADER_KEY, apiError.getException());
 		response.setHeader(AppConstants.EXCEPTION_HEADER_CODE_KEY, apiAuditEvent.getErrorCode());
 
+		if (!ArgUtil.is(apiError.getPagination()) && ArgUtil.is(ApiResponseUtil.pagination())) {
+			apiError.setPagination(ApiResponseUtil.pagination());
+		}
+
 		for (ApiFieldError warning : ApiResponseUtil.getWarnings()) {
 			apiError.addWarning(warning);
 		}
@@ -148,6 +152,10 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 		apiError.setException(ApiHttpArgException.class.getName());
 		ExceptionMessageKey.resolveLocalMessage(apiError);
 		response.setHeader(AppConstants.EXCEPTION_HEADER_KEY, apiError.getException());
+
+		if (!ArgUtil.is(apiError.getPagination()) && ArgUtil.is(ApiResponseUtil.pagination())) {
+			apiError.setPagination(ApiResponseUtil.pagination());
+		}
 
 		for (ApiFieldError warning : ApiResponseUtil.getWarnings()) {
 			apiError.addWarning(warning);
@@ -302,6 +310,11 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 		apiError.setException(ApiHttpArgException.class.getName());
 		ExceptionMessageKey.resolveLocalMessage(apiError);
 		response.setHeader(AppConstants.EXCEPTION_HEADER_KEY, apiError.getException());
+
+		if (!ArgUtil.is(apiError.getPagination()) && ArgUtil.is(ApiResponseUtil.pagination())) {
+			apiError.setPagination(ApiResponseUtil.pagination());
+		}
+
 		for (ApiFieldError warning : ApiResponseUtil.getWarnings()) {
 			apiError.addWarning(warning);
 		}
@@ -325,6 +338,11 @@ public abstract class AmxAdvice implements ResponseBodyAdvice<ApiResponse<?, ?>>
 	public ApiResponse<?, ?> beforeBodyWrite(ApiResponse<?, ?> body, MethodParameter returnType,
 			MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType,
 			ServerHttpRequest request, ServerHttpResponse response) {
+
+		if (!ArgUtil.is(body.getPagination()) && ArgUtil.is(ApiResponseUtil.pagination())) {
+			body.setPagination(ApiResponseUtil.pagination());
+		}
+
 		for (ApiFieldError warning : ApiResponseUtil.getWarnings()) {
 			body.addWarning(warning);
 		}
