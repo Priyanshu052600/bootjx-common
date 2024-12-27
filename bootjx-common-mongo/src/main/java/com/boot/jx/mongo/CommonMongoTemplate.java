@@ -131,7 +131,7 @@ public class CommonMongoTemplate extends CommonMongoTemplateAbstract<CommonMongo
 
 	public <T> PaginatedQuery<T> getPages(PaginatedQuery<T> query) {
 
-		MQB<T> q = MongoQueryBuilder.select(query.docClass, query.collectionName).page(query.pageNo, query.pageSize);
+		MQB<T> q = MongoQueryBuilder.select(query.docClass, query.collectionName);
 
 		query.extraParams = (query.extraParams == null) ? MapModel.createInstance() : query.extraParams;
 
@@ -139,21 +139,26 @@ public class CommonMongoTemplate extends CommonMongoTemplateAbstract<CommonMongo
 
 		while (params.hasMoreElements()) {
 			String param = (String) params.nextElement();
-			switch (param) {
-			case "pageSize":
-				query.pageSize = new MapEntry(commonHttpRequest.getRequest().getParameter("pageSize"))
+			String paramLowCase = param.toLowerCase();
+			switch (paramLowCase) {
+			case "pagesize":
+			case "page_size":
+				query.pageSize = new MapEntry(commonHttpRequest.getRequest().getParameter(param))
 						.asInteger(query.pageSize);
 				break;
-			case "pageNo":
-				query.pageNo = new MapEntry(commonHttpRequest.getRequest().getParameter("pageNo"))
+			case "page_no":
+			case "pageno":
+				query.pageNo = new MapEntry(commonHttpRequest.getRequest().getParameter(param))
 						.asInteger(query.pageNo);
 				break;
-			case "sortBy":
-				query.sortBy = new MapEntry(commonHttpRequest.getRequest().getParameter("sortBy"))
+			case "sort_by":
+			case "sortby":
+				query.sortBy = new MapEntry(commonHttpRequest.getRequest().getParameter(param))
 						.asString(query.sortBy);
 				break;
-			case "sortDir":
-				query.sortDir = new MapEntry(commonHttpRequest.getRequest().getParameter("sortDir"))
+			case "sort_dir":
+			case "sortdir":
+				query.sortDir = new MapEntry(commonHttpRequest.getRequest().getParameter(param))
 						.asString(query.sortDir);
 				break;
 			case "id":
@@ -178,6 +183,8 @@ public class CommonMongoTemplate extends CommonMongoTemplateAbstract<CommonMongo
 				q.where(entry.getKey()).is(paramValue);
 			}
 		}
+		
+		q.page(query.pageNo, query.pageSize);
 
 		if (ArgUtil.is(query.sortBy)) {
 			q = q.sortBy(query.sortBy, Direction.fromString(query.sortDir));
@@ -190,7 +197,7 @@ public class CommonMongoTemplate extends CommonMongoTemplateAbstract<CommonMongo
 		pagination.setSortBy(query.sortBy);
 		pagination.setSortDir(query.sortDir);
 		if (query.count) {
-			pagination.setTotal(this.count(null, query.docClass));
+			pagination.setTotal(this.count(q));
 		}
 		query.setResults(this.find(q));
 		query.setPagination(pagination);
