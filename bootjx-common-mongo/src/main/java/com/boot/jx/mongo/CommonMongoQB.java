@@ -366,8 +366,9 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 			if (isCreatedTimeStampSupport) {
 				this.setOnInsert("created", timeStampIndex);
 			}
+		} else {
+			this.set("updatedStamp", updatedStamp);
 		}
-		this.set("updatedStamp", updatedStamp);
 	}
 
 	public static class MongoQueryBuilder<R> extends CommonMongoQB<MongoQueryBuilder<R>, R> {
