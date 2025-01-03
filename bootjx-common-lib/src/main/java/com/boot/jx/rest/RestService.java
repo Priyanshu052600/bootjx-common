@@ -27,7 +27,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
@@ -312,6 +314,11 @@ public class RestService implements AjaxRestService {
 			return this;
 		}
 
+		public Ajax accept(String mimeType) {
+			headers.add("accept", mimeType);
+			return this;
+		}
+
 		public Ajax authBearer(String token) {
 			headers.add("Authorization", "Bearer " + token);
 			return this;
@@ -446,7 +453,18 @@ public class RestService implements AjaxRestService {
 
 		public byte[] asByteArray() {
 			URI uri = builder.buildAndExpand(uriParams).toUri();
-			return restTemplate.getForObject(uri, byte[].class);
+			if (method == HttpMethod.GET) {
+				return restTemplate.getForObject(uri, byte[].class);
+			} else {
+				ResponseEntity<byte[]> response = restTemplate.exchange(uri, method, requestEntity, byte[].class);
+				if (response.getStatusCode() == HttpStatus.FOUND
+						|| response.getStatusCode() == HttpStatus.MOVED_PERMANENTLY) {
+					String redirectUrl = response.getHeaders().getLocation().toString();
+					URI redirectUri = UriComponentsBuilder.fromHttpUrl(redirectUrl).build().toUri();
+					response = restTemplate.exchange(redirectUri, this.method, requestEntity, byte[].class);
+				}
+				return response.getBody();
+			}
 		}
 
 		public String asString() {
