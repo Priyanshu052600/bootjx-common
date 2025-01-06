@@ -1,9 +1,12 @@
 
 package com.boot.jx.mongo;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.bson.Document;
@@ -17,6 +20,7 @@ import com.boot.jx.mongo.CommonMongoQB.MongoQueryBuilder;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.CollectionUtil;
 import com.boot.utils.EntityDtoUtil;
+import com.boot.utils.StringUtils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.DistinctIterable;
@@ -227,6 +231,48 @@ public class MongoUtils {
 
 	public static class SimpleMongoResultProcessor extends MongoResultProcessor<Document> {
 
+	}
+
+	public static List<String> cleanupIndexes(CommonMongoTemplateDefault mongoTemplate, String collectionName,
+			Class<?> targetClass) {
+		List<String> indexesNames = new ArrayList<String>();
+		Set<String> entityFields = new HashSet<>();
+		for (Field field : targetClass.getDeclaredFields()) {
+			entityFields.add(field.getName());
+		}
+
+		MongoCollection<Document> collection = mongoTemplate.getCollection(collectionName);
+
+		// Get all indexes
+		List<org.bson.Document> indexes = collection.listIndexes().into(new ArrayList<>());
+
+		// Get a sample document (or schema knowledge if no documents exist)
+		org.bson.Document sampleDoc = collection.find().first();
+		if (sampleDoc == null) {
+			System.out.println("No documents found in collection: " + collectionName);
+			return indexesNames;
+		}
+
+		for (Document index : indexes) {
+			Document indexKeys = index.get("key", Document.class);
+
+			if (indexKeys != null) {
+				for (String indexedFieldKey : indexKeys.keySet()) {
+					if (!ArgUtil.is(indexedFieldKey, "_id")) {
+						String[] indexedFields = StringUtils.split(indexedFieldKey, "\\.");
+						System.out.println("indexedFieldKey: " + indexedFieldKey + "  " + indexedFields.length);
+						String indexedField = indexedFields[0];
+						if (!entityFields.contains(indexedField)) {
+							String indexName = index.getString("name");
+							indexesNames.add(indexName);
+							collection.dropIndex(indexName);
+							System.out.println("Dropped index: " + indexName + " (Field: " + indexedField + ")");
+						}
+					}
+				}
+			}
+		}
+		return indexesNames;
 	}
 
 }
