@@ -6,7 +6,7 @@ public class SocialEnums {
 	public static enum ChannelProvider {
 
 		LINKEDIN("linkedin"), FACEBOOK("facebook"), TWITTER("twitter"), GOOGLE("google"), GITHUB("github"),
-		EMAIL("email"), MOBILE("mobile"), WHATSAPP("whatsapp"), TELEGRAM("telegram"), OUTLOOK("outlook");
+		EMAIL("email"), MOBILE("mobile"), WHATSAPP("whatsapp"), TELEGRAM("telegram"), OUTLOOK("outlook"),APPLE("apple");
 
 		private String type;
 

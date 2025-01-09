@@ -52,6 +52,9 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 
 	@Autowired(required = false)
 	private TelegramAuthenticator telegramAuthenticator;
+	
+	@Autowired(required = false)
+	private AppleAuthenticator appleAuthenticator;
 
 	public BasicAuthenticator find(String provider, String partner) {
 		if (ChannelProvider.LINKEDIN.getType().equalsIgnoreCase(provider)) {
@@ -71,7 +74,9 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 		} else if (ChannelPartner.TRUECALLER.name().equalsIgnoreCase(provider)
 				|| (ChannelProvider.MOBILE.is(provider) && ChannelPartner.TRUECALLER.is(partner))) {
 			return truecallerAuthenticator;
-		} else {
+		} else if(ChannelProvider.APPLE.getType().equalsIgnoreCase(provider)) {
+			return appleAuthenticator;
+		}else {
 			return firebaseAuthenticator;
 		}
 	}
