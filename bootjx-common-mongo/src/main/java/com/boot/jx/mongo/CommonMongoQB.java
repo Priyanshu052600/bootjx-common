@@ -127,6 +127,12 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 		return (M) this;
 	}
 
+	@SuppressWarnings("unchecked")
+	public M without(String key) {
+		query().addCriteria(Criteria.where(key).exists(false));
+		return (M) this;
+	}
+
 	// <--- Where Queries----
 	@SuppressWarnings("unchecked")
 	public M where(String key) {
