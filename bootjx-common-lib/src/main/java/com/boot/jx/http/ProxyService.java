@@ -78,6 +78,7 @@ public class ProxyService {
 
 		String traceId = AppContextUtil.getTraceId();
 		ThreadContext.put("traceId", traceId);
+		// ThreadContext.put("traceIds", traceId);
 		// log if required in this line
 
 		URLBuilder parsedDomain = Urly.parse(domain);
@@ -140,24 +141,24 @@ public class ProxyService {
 		headers.remove(HttpHeaders.ORIGIN);
 		headers.remove(HttpHeaders.REFERER);
 
+		response.addHeader("x-proxy-path", path);
+		response.addHeader("x-proxy-url", uri.toString());
+
 		HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
 		ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
 		RestTemplate restTemplate = new RestTemplate(factory);
 		restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 		try {
-
 			ResponseEntity<String> serverResponse = restTemplate.exchange(uri, method, httpEntity, String.class);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.put(HttpHeaders.CONTENT_TYPE, serverResponse.getHeaders().get(HttpHeaders.CONTENT_TYPE));
-			responseHeaders.put("x-proxy-path", CollectionUtil.asList(parsedDomain.getPath()));
 			// LOGGER.info(serverResponse);
 			return serverResponse;
 		} catch (HttpStatusCodeException e) {
-			// LOGGER.error(e.getMessage());
-			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+			HttpHeaders responseHeaders = e.getResponseHeaders();
+			return ResponseEntity.status(e.getRawStatusCode()).headers(responseHeaders)
 					.body(e.getResponseBodyAsString());
 		}
-
 	}
 
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
