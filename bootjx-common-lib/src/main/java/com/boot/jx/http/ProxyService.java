@@ -37,6 +37,7 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.CollectionUtil;
 import com.boot.utils.StringUtils;
 import com.boot.utils.URLBuilder;
 import com.boot.utils.Urly;
@@ -148,6 +149,7 @@ public class ProxyService {
 			ResponseEntity<String> serverResponse = restTemplate.exchange(uri, method, httpEntity, String.class);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.put(HttpHeaders.CONTENT_TYPE, serverResponse.getHeaders().get(HttpHeaders.CONTENT_TYPE));
+			responseHeaders.put("x-proxy-path", CollectionUtil.asList(parsedDomain.getPath()));
 			// LOGGER.info(serverResponse);
 			return serverResponse;
 		} catch (HttpStatusCodeException e) {
