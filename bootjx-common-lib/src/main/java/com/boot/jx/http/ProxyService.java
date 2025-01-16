@@ -174,8 +174,8 @@ public class ProxyService {
 			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
 			throws URISyntaxException, MalformedURLException {
 		String path = "/" + request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
-		return this.processProxyRequest(targetUrl, path, body, addheaders, HttpMethod.valueOf(request.getMethod()),
-				request, response);
+		return this.processProxyRequest(targetUrl, path.replaceAll("/+", "/"), body, addheaders,
+				HttpMethod.valueOf(request.getMethod()), request, response);
 	}
 
 	public ResponseEntity<String> forwardRequestNoRetry(String sourcePrefix, String targetUrl, String body,
