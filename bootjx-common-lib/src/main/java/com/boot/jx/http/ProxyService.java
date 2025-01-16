@@ -37,7 +37,6 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
-import com.boot.utils.CollectionUtil;
 import com.boot.utils.StringUtils;
 import com.boot.utils.URLBuilder;
 import com.boot.utils.Urly;
@@ -173,9 +172,10 @@ public class ProxyService {
 	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body,
 			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
 			throws URISyntaxException, MalformedURLException {
-		String path = "/" + request.getRequestURI().replaceFirst(appConfig.getAppPrefix() + sourcePrefix, "");
-		return this.processProxyRequest(targetUrl, path.replaceAll("/+", "/"), body, addheaders,
-				HttpMethod.valueOf(request.getMethod()), request, response);
+		String sourcePrefixAbsolute = (appConfig.getAppPrefix() + sourcePrefix).replaceAll("/+", "/");
+		String path = ("/" + request.getRequestURI().replaceFirst(sourcePrefixAbsolute, "")).replaceAll("/+", "/");
+		return this.processProxyRequest(targetUrl, path, body, addheaders, HttpMethod.valueOf(request.getMethod()),
+				request, response);
 	}
 
 	public ResponseEntity<String> forwardRequestNoRetry(String sourcePrefix, String targetUrl, String body,
