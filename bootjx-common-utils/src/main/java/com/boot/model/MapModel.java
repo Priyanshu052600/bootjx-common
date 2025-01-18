@@ -218,6 +218,22 @@ public class MapModel implements JsonSerializerType<Object> {
 			return ArgUtil.isEqual(this.value, compare);
 		}
 
+		public boolean lessThan(String compare) {
+			int result = this.asString(Constants.BLANK).compareTo(ArgUtil.parseAsString(compare, Constants.BLANK));
+			if (result < 0) {
+				return true;
+			}
+			return false;
+		}
+
+		public boolean greaterThan(String compare) {
+			int result = this.asString(Constants.BLANK).compareTo(ArgUtil.parseAsString(compare, Constants.BLANK));
+			if (result > 0) {
+				return true;
+			}
+			return false;
+		}
+
 		public T getValue() {
 			return value;
 		}
