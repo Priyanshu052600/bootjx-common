@@ -2,26 +2,40 @@ package com.javachinna.oauth2.user;
 
 import java.io.Serializable;
 
+import com.boot.jx.sso.View;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.StringUtils;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.javachinna.oauth2.user.SocialEnums.ChannelProvider;
 
 public abstract class BasicOAuth2UserInfo implements Serializable {
 
 	private static final long serialVersionUID = 6766553013282715387L;
+	@JsonView(View.Public.class)
 	String name;
+	@JsonView(View.Public.class)
 	String email;
+	@JsonView(View.Public.class)
 	String phone;
 
+	@JsonView(View.Internal.class)
 	String jobTitle;
+	@JsonView(View.Internal.class)
 	String accessToken;
 
+	@JsonView(View.Public.class)
 	String picture;
+	@JsonView(View.Public.class)
 	String provider;
+	@JsonView(View.Internal.class)
 	String partner;
+	@JsonView(View.Internal.class)
 	String profileId;
+	@JsonView(View.Public.class)
 	String profileHandle;
+	@JsonView(View.Public.class)
 	String profileLink;
+	@JsonView(View.Internal.class)
 	Object record;
 
 	public void importFrom(BasicOAuth2UserInfo profile) {
