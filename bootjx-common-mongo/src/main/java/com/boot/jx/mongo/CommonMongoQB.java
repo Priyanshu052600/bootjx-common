@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
+import com.boot.jx.mongo.CommonDocInterfaces.IdNumberSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.UpdatedTimeStampIndexSupport;
@@ -330,6 +331,14 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 
 	public void setCollectionName(String collectionName) {
 		this.collectionName = collectionName;
+	}
+
+	@Override
+	public boolean isIdNumberSupport() {
+		if (ArgUtil.is(this.docClass)) {
+			return IdNumberSupport.class.isAssignableFrom(this.docClass);
+		}
+		return false;
 	}
 
 	@Override

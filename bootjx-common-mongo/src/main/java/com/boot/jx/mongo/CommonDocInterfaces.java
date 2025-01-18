@@ -38,6 +38,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class CommonDocInterfaces {
 
 	public static interface IMongoQueryBuilder<T> {
+		public boolean isIdNumberSupport();
+
 		public boolean isUpdatedTimeStampSupport();
 
 		public boolean isCreatedTimeStampSupport();
@@ -487,6 +489,52 @@ public class CommonDocInterfaces {
 			return new ResourceDocumentImpl();
 		}
 
+	}
+
+	public static interface IdNumberSupport {
+		public long getIdNumber();
+
+		public void setIdNumber(long idNumber);
+	}
+
+	@Document(collection = "seq_counters")
+	public static class MongoSeqCounter {
+
+		@Id
+		private String id; // The name of the sequence (e.g., "user_sequence", "order_sequence")
+
+		private long seq; // The current value of the sequence
+
+		// Constructors
+		public MongoSeqCounter() {
+		}
+
+		public MongoSeqCounter(String id, long seq) {
+			this.id = id;
+			this.seq = seq;
+		}
+
+		// Getters and setters
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
+
+		public long getSeq() {
+			return seq;
+		}
+
+		public void setSeq(long seq) {
+			this.seq = seq;
+		}
+
+		@Override
+		public String toString() {
+			return "Counter{" + "id='" + id + '\'' + ", seq=" + seq + '}';
+		}
 	}
 
 	public static class ResourceDocumentKeyDeserializer extends KeyDeserializer {

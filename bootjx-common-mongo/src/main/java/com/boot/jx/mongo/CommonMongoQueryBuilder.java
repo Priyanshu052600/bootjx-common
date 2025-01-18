@@ -1,5 +1,6 @@
 package com.boot.jx.mongo;
 
+import com.boot.jx.mongo.CommonDocInterfaces.IdNumberSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.ResourceDocumentImpl;
 import com.boot.jx.mongo.CommonDocInterfaces.SimpleDocument;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
@@ -60,6 +61,14 @@ public class CommonMongoQueryBuilder extends MongoQueryBuilder<Object> {
 				return this.doc instanceof CreatedTimeStampIndexSupport;
 			}
 			return super.isCreatedTimeStampSupport();
+		}
+
+		@Override
+		public boolean isIdNumberSupport() {
+			if (ArgUtil.is(this.doc)) {
+				return this.doc instanceof IdNumberSupport;
+			}
+			return super.isIdNumberSupport();
 		}
 
 		@SuppressWarnings("unchecked")

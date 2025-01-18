@@ -6,10 +6,14 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpMethod;
 
+import com.boot.jx.api.ApiResponse;
 import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.logger.LoggerService;
 import com.boot.jx.model.AuditCreateEntity;
@@ -20,7 +24,10 @@ import com.boot.jx.model.ModelPatch.ModelPatches;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditActivityDoc;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditableByIdEntity;
 import com.boot.jx.mongo.CommonDocInterfaces.DocVersion;
+import com.boot.jx.mongo.CommonDocInterfaces.IDocument;
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
+import com.boot.jx.mongo.CommonDocInterfaces.IdNumberSupport;
+import com.boot.jx.mongo.CommonDocInterfaces.MongoSeqCounter;
 import com.boot.jx.mongo.CommonDocInterfaces.SimpleDocument;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex.CreatedTimeStampIndexSupport;
@@ -147,6 +154,25 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			}
 		}
 
+		if (objectToSave instanceof IdNumberSupport) {
+			IdNumberSupport objectToSaveIdNumber = (IdNumberSupport) objectToSave;
+			if (ArgUtil.is(objectToSaveIdNumber.getIdNumber())) {
+				objectToSaveIdNumber.setIdNumber(generateSequence(collectionName));
+			}
+		}
+
+	}
+
+	public long generateSequence(String seqName) {
+		MongoSeqCounter counter = mongoTemplate.findAndModify(Query.query(Criteria.where("_id").is(seqName)), // Find by
+				// sequence name
+				new Update().inc("seq", 1), // Increment the "seq" field by 1
+				FindAndModifyOptions.options().returnNew(true).upsert(true), // Return the updated value or create new
+																				// if not exists
+				MongoSeqCounter.class // Map the result to the Counter class
+		);
+
+		return counter != null ? counter.getSeq() : 1; // Return the new sequence value or default to 1
 	}
 
 	public <T> T save(DocQueryBuilder<T> builder) {
@@ -246,6 +272,41 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			}
 		}
 		return update(qb);
+	}
+
+	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, String id, T quickGalleryItem,
+			Class<T> entityClass, String docName) throws InstantiationException, IllegalAccessException {
+		switch (method) {
+		case GET:
+			if (ArgUtil.is(id)) {
+				return ApiResponse.buildResults(mongoTemplate.findById(id, entityClass));
+			}
+			return ApiResponse.buildResults(mongoTemplate.findAll(entityClass));
+		case DELETE:
+			T qr = removeAndAudit(id, entityClass);
+			return ApiResponse.buildResults(mongoTemplate.findAll(entityClass)).data(qr).message(docName + " deleted");
+		case POST:
+			saveOnSubmit(quickGalleryItem, entityClass);
+			return ApiResponse.buildResults(quickGalleryItem).message(docName + " Saved");
+		default:
+			break;
+		}
+		return null;
+	}
+
+	public <T extends IDocument> T saveOnSubmit(T quickGalleryItem, Class<T> entityClass) {
+		save(quickGalleryItem);
+		return quickGalleryItem;
+	}
+
+	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, String id, Class<T> entityClass,
+			String docName) throws InstantiationException, IllegalAccessException {
+		return submit(method, id, null, entityClass, docName);
+	}
+
+	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, T quickGalleryItem,
+			Class<T> entityClass, String docName) throws InstantiationException, IllegalAccessException {
+		return submit(method, null, quickGalleryItem, entityClass, docName);
 	}
 
 	@Override
