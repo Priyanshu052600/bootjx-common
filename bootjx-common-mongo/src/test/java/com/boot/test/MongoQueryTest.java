@@ -18,11 +18,20 @@ import com.boot.utils.JsonUtil;
 public class MongoQueryTest { // Noncompliant
 
 	public static void main(String[] args) throws ParseException, IOException {
+		QA list = new QA()
+				.add(Aggregation.match(Criteria.where("bulkSessionId").is(("BUILK_SESSION_ID"))),
+						QA.project().append("statuss", QA.objectToArray("stamps"))
+								.append("firstLog", QA.arrayElemAt("log", 0)).build(),
+						Aggregation.unwind("statuss"), Aggregation.group("statuss.k").count().as("count"));
+		System.out.println(JsonUtil.toJson(list.piplines()));
+	}
+
+	public static void main4(String[] args) throws ParseException, IOException {
 		Query query = new Query();
 		String agent = "Vinod";
 		String dateRange1 = "GT_DATE";
 		String dateRange2 = "LT_DATE";
-		
+
 		query.addCriteria(Criteria.where("assignedToAgent").is(agent));
 		query.addCriteria(Criteria.where("assignedAgentStamp").gt(dateRange1).lt(dateRange2));
 		query.fields().include("assignedToAgent").include("assignedAgentStamp").include("contactId").include("contact");
@@ -50,7 +59,7 @@ public class MongoQueryTest { // Noncompliant
 		List<Document> list = new ArrayList<Document>();
 		list.add(Aggregation.match(Criteria.where("sessionId").is("622753392ce8572032037399")) // Match
 				.toDocument(Aggregation.DEFAULT_CONTEXT));
-		list.add(QA.project("statuss", QA.objectToArray("stamps")));
+		list.add(QA.project("statuss", QA.objectToArray("stamps")).build());
 		list.add(Aggregation.unwind("statuss").toDocument(Aggregation.DEFAULT_CONTEXT));
 		list.add(Aggregation.group("statuss.k").count().as("count").toDocument(Aggregation.DEFAULT_CONTEXT));
 
