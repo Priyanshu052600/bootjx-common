@@ -136,7 +136,7 @@ public class TunnelFilterMongoImpl implements TunnelFilter {
 		return myTopics.containsKey(myTopicKey);
 	}
 
-	public <T> void afterTaskPublic(String topic, T messagePayload, AppContext context) {
+	public <T> void afterTaskPublish(String topic, T messagePayload, AppContext context) {
 		if (myTopics.containsKey(topic) && ArgUtil.is(crossUrl)) {
 			TunnelMessage<Object> t = new TunnelMessage<Object>(new HashMap<String, Object>());
 			t.setAppType(appConfig.getAppType());

@@ -40,7 +40,7 @@ public class ITunnelDefs {
 		 */
 		public <T> boolean beforeTaskPublish(String topic, T messagePayload, AppContext context);
 
-		public <T> void afterTaskPublic(String topic, T messagePayload, AppContext context);
+		public <T> void afterTaskPublish(String topic, T messagePayload, AppContext context);
 
 		public void onMasterUpdate(TunnelEvent message);
 
