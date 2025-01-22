@@ -75,7 +75,7 @@ public class QA {
 		return new Document("$objectToArray", "$" + field);
 	}
 
-	public static Document arrayElemAt(Object field, int index) {
-		return new Document("$arrayElemAt", CollectionUtil.asArray("$" + field, index));
+	public static Document arrayElemAt(Object field, Integer index) {
+		return new Document("$arrayElemAt", CollectionUtil.asList("$" + field, index));
 	}
 }

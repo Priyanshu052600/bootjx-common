@@ -24,6 +24,11 @@ public class MongoQueryTest { // Noncompliant
 								.append("firstLog", QA.arrayElemAt("log", 0)).build(),
 						Aggregation.unwind("statuss"), Aggregation.group("statuss.k").count().as("count"));
 		System.out.println(JsonUtil.toJson(list.piplines()));
+		
+		QA list2 = new QA().add(Aggregation.match(Criteria.where("bulkSessionId").is(("BUILK_SESSION_ID"))),
+				QA.project("firstLog", QA.arrayElemAt("logs", 0)).build(), Aggregation.unwind("firstLog"),
+				Aggregation.group("firstLog").count().as("count"));
+		System.out.println(JsonUtil.toJson(list2.piplines()));
 	}
 
 	public static void main4(String[] args) throws ParseException, IOException {
