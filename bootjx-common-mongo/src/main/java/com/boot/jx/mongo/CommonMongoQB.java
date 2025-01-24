@@ -48,8 +48,60 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 		}
 	}
 
+	public static class FieldCriteriaMap {
+		private Map<String, Criteria> fieldCriteriaMap;
+
+		public FieldCriteriaMap() {
+			this.fieldCriteriaMap = new HashMap<String, Criteria>();
+		}
+
+		public Criteria where(String key) {
+			Criteria x = fieldCriteriaMap.get(key);
+			if (!ArgUtil.is(x)) {
+				x = Criteria.where(key);
+				fieldCriteriaMap.put(key, x);
+			}
+			return x;
+		}
+
+		public boolean isEmpty() {
+			return this.fieldCriteriaMap.isEmpty();
+		}
+
+		public Criteria[] toArray() {
+			return this.fieldCriteriaMap.values().toArray(new Criteria[0]);
+		}
+
+		public Criteria where(String key, String operator, Object value) {
+			Criteria c = this.where(key);
+			if (ArgUtil.is(operator)) {
+				switch (operator) {
+				case "<":
+					c.lt(ArgUtil.parseAsInteger(value));
+					break;
+				case "<=":
+				case "=<":
+					c.lte(ArgUtil.parseAsInteger(value));
+					break;
+				case ">":
+					c.gt(ArgUtil.parseAsInteger(value));
+					break;
+				case ">=":
+				case "=>":
+					c.gte(ArgUtil.parseAsInteger(value));
+					break;
+				default:
+					throw new IllegalArgumentException("Unsupported operator: " + operator);
+				}
+			}
+			return c;
+		}
+
+	}
+
 	Query query;
 	Criteria currentCriteria;
+
 	Update update;
 	Class<T> docClass;
 	String collectionName;
@@ -144,6 +196,17 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 	@SuppressWarnings("unchecked")
 	public M and(String key) {
 		criteria(key);
+		return (M) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public M and(FieldCriteriaMap fieldCriteriaMap) {
+		if (this.currentCriteria == null) {
+			this.currentCriteria = new Criteria();
+		}
+		if (!fieldCriteriaMap.isEmpty()) {
+			this.currentCriteria.andOperator(fieldCriteriaMap.toArray());
+		}
 		return (M) this;
 	}
 

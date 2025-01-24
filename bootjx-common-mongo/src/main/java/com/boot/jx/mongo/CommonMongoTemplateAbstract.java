@@ -11,9 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.http.HttpMethod;
 
-import com.boot.jx.api.ApiResponse;
 import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.logger.LoggerService;
 import com.boot.jx.model.AuditCreateEntity;
@@ -24,7 +22,6 @@ import com.boot.jx.model.ModelPatch.ModelPatches;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditActivityDoc;
 import com.boot.jx.mongo.CommonDocInterfaces.AuditableByIdEntity;
 import com.boot.jx.mongo.CommonDocInterfaces.DocVersion;
-import com.boot.jx.mongo.CommonDocInterfaces.IDocument;
 import com.boot.jx.mongo.CommonDocInterfaces.IMongoQueryBuilder;
 import com.boot.jx.mongo.CommonDocInterfaces.IdNumberSupport;
 import com.boot.jx.mongo.CommonDocInterfaces.MongoSeqCounter;
@@ -46,10 +43,6 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 		extends CommonMongoTemplateDefault {
 
 	public static final Logger LOGGER = LoggerService.getLogger(CommonMongoTemplateAbstract.class);
-
-	public static class CommonMongoStore<DStore extends CommonMongoStore<DStore>>
-			extends CommonMongoTemplateAbstract<DStore> {
-	}
 
 	public static class TenantDefaultMongoStore<DStore extends TenantDefaultMongoStore<DStore>>
 			extends CommonMongoTemplateAbstract<DStore> {
@@ -272,41 +265,6 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			}
 		}
 		return update(qb);
-	}
-
-	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, String id, T quickGalleryItem,
-			Class<T> entityClass, String docName) throws InstantiationException, IllegalAccessException {
-		switch (method) {
-		case GET:
-			if (ArgUtil.is(id)) {
-				return ApiResponse.buildResults(mongoTemplate.findById(id, entityClass));
-			}
-			return ApiResponse.buildResults(mongoTemplate.findAll(entityClass));
-		case DELETE:
-			T qr = removeAndAudit(id, entityClass);
-			return ApiResponse.buildResults(mongoTemplate.findAll(entityClass)).data(qr).message(docName + " deleted");
-		case POST:
-			saveOnSubmit(quickGalleryItem, entityClass);
-			return ApiResponse.buildResults(quickGalleryItem).message(docName + " Saved");
-		default:
-			break;
-		}
-		return null;
-	}
-
-	public <T extends IDocument> T saveOnSubmit(T quickGalleryItem, Class<T> entityClass) {
-		save(quickGalleryItem);
-		return quickGalleryItem;
-	}
-
-	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, String id, Class<T> entityClass,
-			String docName) throws InstantiationException, IllegalAccessException {
-		return submit(method, id, null, entityClass, docName);
-	}
-
-	public <T extends IDocument> ApiResponse<T, Object> submit(HttpMethod method, T quickGalleryItem,
-			Class<T> entityClass, String docName) throws InstantiationException, IllegalAccessException {
-		return submit(method, null, quickGalleryItem, entityClass, docName);
 	}
 
 	@Override
