@@ -11,11 +11,11 @@ import com.javachinna.oauth2.user.SocialEnums.ChannelProvider;
 public abstract class BasicOAuth2UserInfo implements Serializable {
 
 	private static final long serialVersionUID = 6766553013282715387L;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String name;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String email;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String phone;
 
 	@JsonView(View.Internal.class)
@@ -23,17 +23,17 @@ public abstract class BasicOAuth2UserInfo implements Serializable {
 	@JsonView(View.Internal.class)
 	String accessToken;
 
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String picture;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String provider;
 	@JsonView(View.Internal.class)
 	String partner;
 	@JsonView(View.Internal.class)
 	String profileId;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String profileHandle;
-	@JsonView(View.Public.class)
+	@JsonView(View.External.class)
 	String profileLink;
 	@JsonView(View.Internal.class)
 	Object record;
