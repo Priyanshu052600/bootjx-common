@@ -392,6 +392,10 @@ public final class ArgUtil {
 		return parseAsLong(value, null);
 	}
 
+	public static Long parseAsLongOrZero(Object value) {
+		return parseAsLong(value, Constants.DEFAULT_LONG);
+	}
+
 	/**
 	 * <pre>
 	 * Parses the given object as an BigDecimal

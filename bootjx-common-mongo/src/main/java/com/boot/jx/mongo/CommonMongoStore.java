@@ -141,7 +141,9 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 		public static String RANGE_FORMAT = "<=?\\d*,\\d*=?\\>";
 		public static String ANY_OF_FORMAT = "\\(([^|]+\\|?)+\\)";
 		public static String ALL_OF_FORMAT = "\\(([^,]+,?)+\\)";
-		public static Pattern RANGE_PATTERN = Pattern.compile("(<|<=)?(\\d*)?,(\\d*)?(>|>=|=>)?");
+		public static final Pattern COMPARE_PATTERN = Pattern.compile("(.+?)(<=|>=|<|>)$");
+		public static final Pattern RANGE_PATTERN = Pattern
+				.compile("\\s*(<=|=<|>=|=>|<|>)?\\s*(\\d*)\\s*,\\s*(\\d*)\\s*(<=|=<|>=|=>|<|>)?\\s*");
 
 		public Enumeration<String> getParameterNames();
 
@@ -234,34 +236,32 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 			String key = entry.getKey();
 			if (value.startsWith("*") && value.endsWith("*")) {
 				q.search(entry.getKey(), StringUtils.trim(value, '*'));
-			} else if (key.endsWith("<")) {
-				fieldCriteriaMap.where(key.substring(0, key.length() - 1)).lt(Integer.parseInt(value));
-			} else if (key.endsWith(">")) {
-				fieldCriteriaMap.where(key.substring(0, key.length() - 1)).gt(Integer.parseInt(value));
-			} else if (key.endsWith("<=")) {
-				fieldCriteriaMap.where(key.substring(0, key.length() - 1)).lte(Integer.parseInt(value));
-			} else if (key.endsWith(">=")) {
-				fieldCriteriaMap.where(key.substring(0, key.length() - 1)).gte(Integer.parseInt(value));
 			} else {
-				StringMatcher valueMatcher = new StringMatcher(value);
-				if (valueMatcher.isMatch(QueryParams.RANGE_PATTERN)) {
-					String fromOperator = valueMatcher.group(1); // < or <=
-					String fromValue = valueMatcher.group(2); // The first number
-					String toValue = valueMatcher.group(3); // The second number
-					String toOperator = valueMatcher.group(4); // > or >=
-					fieldCriteriaMap.where(key, fromOperator, fromValue);
-					fieldCriteriaMap.where(key, toOperator, toValue);
-				} else if (value.matches(QueryParams.ANY_OF_FORMAT)) {
-					String inner = value.substring(1, value.length() - 1); // Remove the parentheses
-					fieldCriteriaMap.where(key).in(Arrays.asList(inner.split("\\|")));
-				} else if (value.matches(QueryParams.ALL_OF_FORMAT)) {
-					String inner = value.substring(1, value.length() - 1); // Remove the parentheses
-					fieldCriteriaMap.where(key).all(Arrays.asList(inner.split(",")));
+				StringMatcher keyMatcher = new StringMatcher(entry.getKey());
+				if (keyMatcher.isMatch(QueryParams.COMPARE_PATTERN)) {
+					String fieldName = keyMatcher.group(1);;
+					String fieldOperator = keyMatcher.group(2);
+					fieldCriteriaMap.where(fieldName, fieldOperator, value);
 				} else {
-					q.where(entry.getKey()).is(value);
+					StringMatcher valueMatcher = new StringMatcher(value);
+					if (valueMatcher.isMatch(QueryParams.RANGE_PATTERN)) {
+						String fromOperator = valueMatcher.group(1); // < or <=
+						String fromValue = valueMatcher.group(2); // The first number
+						String toValue = valueMatcher.group(3); // The second number
+						String toOperator = valueMatcher.group(4); // > or >=
+						fieldCriteriaMap.range(key, fromOperator, fromValue, toValue, toOperator);
+					} else if (value.matches(QueryParams.ANY_OF_FORMAT)) {
+						String inner = value.substring(1, value.length() - 1); // Remove the parentheses
+						fieldCriteriaMap.where(key).in(Arrays.asList(inner.split("\\|")));
+					} else if (value.matches(QueryParams.ALL_OF_FORMAT)) {
+						String inner = value.substring(1, value.length() - 1); // Remove the parentheses
+						fieldCriteriaMap.where(key).all(Arrays.asList(inner.split(",")));
+					} else {
+						q.where(entry.getKey()).is(value);
+					}
 				}
-
 			}
+
 		}
 
 		q.and(fieldCriteriaMap);

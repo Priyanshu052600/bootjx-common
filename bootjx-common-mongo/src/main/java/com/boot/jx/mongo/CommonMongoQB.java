@@ -77,24 +77,36 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 			if (ArgUtil.is(operator)) {
 				switch (operator) {
 				case "<":
-					c.lt(ArgUtil.parseAsLong(value));
+					c.lt(ArgUtil.parseAsLong(value, Long.MAX_VALUE));
 					break;
 				case "<=":
 				case "=<":
-					c.lte(ArgUtil.parseAsLong(value));
+					c.lte(ArgUtil.parseAsLong(value, Long.MAX_VALUE));
 					break;
 				case ">":
-					c.gt(ArgUtil.parseAsLong(value));
+					c.gt(ArgUtil.parseAsLongOrZero(value));
 					break;
 				case ">=":
 				case "=>":
-					c.gte(ArgUtil.parseAsLong(value));
+					c.gte(ArgUtil.parseAsLongOrZero(value));
 					break;
 				default:
 					throw new IllegalArgumentException("Unsupported operator: " + operator);
 				}
 			}
 			return c;
+		}
+
+		public Criteria range(String key, String fromOperator, Object fromValue, Object toValue, String toOperator) {
+			Long fromNumber = ArgUtil.parseAsLong(fromValue);
+			Long toNumber = ArgUtil.parseAsLong(toValue);
+			if (fromNumber > toNumber) {
+				this.where(key, fromOperator, fromValue);
+				return this.where(key, toOperator, toValue);
+			} else {
+				this.where(key, fromOperator, toValue);
+				return this.where(key, toOperator, fromValue);
+			}
 		}
 
 	}

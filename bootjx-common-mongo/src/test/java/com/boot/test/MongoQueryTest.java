@@ -24,7 +24,7 @@ public class MongoQueryTest { // Noncompliant
 
 	public static void main(String[] args) throws ParseException, IOException {
 		CommonMongoStore.getPages(
-				new ModelQueryParams(MapModel.createInstance().put("age", "<35,40>").put("yr", "<40,50=>")
+				new ModelQueryParams(MapModel.createInstance().put("age", ">4, 5<").put("yr<", "8")
 						.put("status", "(CLOSED|OPEN)").put("tag", "(URGEN|P1)")),
 				PaginatedQuery.select(TimeStampIndex.class, "CHAT_SESSION").pageNo(2).pageSize(25).sortBy("stamp")
 						.sortDir("DESC").extraParams(null));
