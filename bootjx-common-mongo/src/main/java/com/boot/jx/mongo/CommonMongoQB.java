@@ -77,18 +77,18 @@ public class CommonMongoQB<M extends CommonMongoQB<M, T>, T> implements IMongoQu
 			if (ArgUtil.is(operator)) {
 				switch (operator) {
 				case "<":
-					c.lt(ArgUtil.parseAsInteger(value));
+					c.lt(ArgUtil.parseAsLong(value));
 					break;
 				case "<=":
 				case "=<":
-					c.lte(ArgUtil.parseAsInteger(value));
+					c.lte(ArgUtil.parseAsLong(value));
 					break;
 				case ">":
-					c.gt(ArgUtil.parseAsInteger(value));
+					c.gt(ArgUtil.parseAsLong(value));
 					break;
 				case ">=":
 				case "=>":
-					c.gte(ArgUtil.parseAsInteger(value));
+					c.gte(ArgUtil.parseAsLong(value));
 					break;
 				default:
 					throw new IllegalArgumentException("Unsupported operator: " + operator);
