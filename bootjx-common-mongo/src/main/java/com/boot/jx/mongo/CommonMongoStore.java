@@ -273,7 +273,7 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 		}
 
 		ApiResponseUtil.addLog(q.build().getQuery().toString());
-		System.out.println(q.build().getQuery().toString());
+		//System.out.println(q.build().getQuery().toString());
 		return q;
 	}
 
