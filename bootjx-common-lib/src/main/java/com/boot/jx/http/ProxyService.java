@@ -5,8 +5,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -37,6 +39,7 @@ import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.LoggerService;
 import com.boot.utils.ArgUtil;
+import com.boot.utils.CryptoUtil;
 import com.boot.utils.StringUtils;
 import com.boot.utils.URLBuilder;
 import com.boot.utils.Urly;
@@ -71,8 +74,8 @@ public class ProxyService {
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
 			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
 	public ResponseEntity<String> processProxyRequest(String domain, String path, String body,
-			Map<String, String> addheaders, HttpMethod method, HttpServletRequest request, HttpServletResponse response)
-			throws URISyntaxException, MalformedURLException {
+			Map<String, String> addheaders, HttpMethod method, HttpServletRequest request, HttpServletResponse response,
+			String user) throws URISyntaxException, MalformedURLException {
 		// LOGGER.info(method.name()": " + domain + "/" + path);
 
 		String traceId = AppContextUtil.getTraceId();
@@ -127,6 +130,14 @@ public class ProxyService {
 			}
 		}
 
+		if (ArgUtil.is(user)) {
+			headers.set("app-proxy-user", user);
+			try {
+				headers.set("app-proxy-hash", CryptoUtil.getMD5Hash(user + "#" + appProxyToken));
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+		}
 		headers.set("app-proxy-token", appProxyToken);
 
 		if (ArgUtil.is(addheaders)) {
@@ -162,9 +173,22 @@ public class ProxyService {
 
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
 			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
+	public ResponseEntity<String> forwardRequest(ProxyRequest proxyRequest, HttpMethod method,
+			HttpServletRequest request, HttpServletResponse response) throws URISyntaxException, MalformedURLException {
+		if (proxyRequest.path == null) {
+			String sourcePrefixAbsolute = (appConfig.getAppPrefix() + proxyRequest.sourcePrefix).replaceAll("/+", "/");
+			String path = ("/" + request.getRequestURI().replaceFirst(sourcePrefixAbsolute, "")).replaceAll("/+", "/");
+			proxyRequest.path = path;
+		}
+		return this.processProxyRequest(ArgUtil.anyOf(proxyRequest.targetUrl, proxyRequest.domain), proxyRequest.path,
+				proxyRequest.body, proxyRequest.addheaders, method, request, response, proxyRequest.user);
+	}
+
+	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
+			backoff = @Backoff(delay = 5000, multiplier = 4.0), maxAttempts = 4)
 	public ResponseEntity<String> processProxyRequest(String domain, String path, String body, HttpMethod method,
 			HttpServletRequest request, HttpServletResponse response) throws URISyntaxException, MalformedURLException {
-		return this.processProxyRequest(domain, path, body, null, method, request, response);
+		return this.forwardRequest(new ProxyRequest().domain(domain).path(path).body(body), method, request, response);
 	}
 
 	@Retryable(exclude = { HttpStatusCodeException.class }, include = Exception.class,
@@ -172,10 +196,14 @@ public class ProxyService {
 	public ResponseEntity<String> forwardRequest(String sourcePrefix, String targetUrl, String body,
 			Map<String, String> addheaders, HttpServletRequest request, HttpServletResponse response)
 			throws URISyntaxException, MalformedURLException {
-		String sourcePrefixAbsolute = (appConfig.getAppPrefix() + sourcePrefix).replaceAll("/+", "/");
-		String path = ("/" + request.getRequestURI().replaceFirst(sourcePrefixAbsolute, "")).replaceAll("/+", "/");
-		return this.processProxyRequest(targetUrl, path, body, addheaders, HttpMethod.valueOf(request.getMethod()),
-				request, response);
+		return this.forwardRequest(
+				new ProxyRequest().targetUrl(targetUrl).sourcePrefix(sourcePrefix).body(body).addheaders(addheaders),
+				HttpMethod.valueOf(request.getMethod()), request, response);
+	}
+
+	public ResponseEntity<String> forwardRequestNoRetry(ProxyRequest proxyRequest, HttpServletRequest request,
+			HttpServletResponse response) throws URISyntaxException, MalformedURLException {
+		return this.forwardRequest(proxyRequest, HttpMethod.valueOf(request.getMethod()), request, response);
 	}
 
 	public ResponseEntity<String> forwardRequestNoRetry(String sourcePrefix, String targetUrl, String body,
@@ -191,6 +219,67 @@ public class ProxyService {
 		// + " has failed" + e.getMessage());
 		// LOGGER.error("ERROR", e);
 		throw new RuntimeException("There was an error trying to process you request. Please try again later");
+	}
+
+	public static class ProxyRequest {
+		public String domain;
+		public String path;
+		public String body;
+		public String sourcePrefix;
+		public String targetUrl;
+		public Map<String, String> addheaders;
+		public String user;
+
+		public static ProxyRequest from(String sourcePrefix, String targetUrl, String body) {
+			ProxyRequest proxyRequest = new ProxyRequest();
+			proxyRequest.sourcePrefix = sourcePrefix;
+			proxyRequest.targetUrl = targetUrl;
+			proxyRequest.body = body;
+			return proxyRequest;
+		}
+
+		public ProxyRequest domain(String domain) {
+			this.domain = domain;
+			return this;
+		}
+
+		public ProxyRequest path(String path) {
+			this.path = path;
+			return this;
+		}
+
+		public ProxyRequest body(String body) {
+			this.body = body;
+			return this;
+		}
+
+		public ProxyRequest sourcePrefix(String sourcePrefix) {
+			this.sourcePrefix = sourcePrefix;
+			return this;
+		}
+
+		public ProxyRequest targetUrl(String targetUrl) {
+			this.targetUrl = targetUrl;
+			return this;
+		}
+
+		public ProxyRequest addheaders(Map<String, String> addheaders) {
+			this.addheaders = addheaders;
+			return this;
+		}
+
+		public ProxyRequest addheaders(String key, String value) {
+			if (this.addheaders == null) {
+				this.addheaders = new HashMap<String, String>();
+			}
+			this.addheaders.put(key, value);
+			return this;
+		}
+
+		public ProxyRequest user(String user) {
+			this.user = user;
+			return this;
+		}
 	}
 
 }
