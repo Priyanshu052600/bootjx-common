@@ -34,6 +34,8 @@ public class MapModel implements JsonSerializerType<Object> {
 		public String getKey();
 
 		public String getUkey();
+
+		<T> T getDefaultValue();
 	}
 
 	public static class NodeEntry<T> {
