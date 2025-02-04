@@ -24,7 +24,7 @@ public class ConfigMeta implements Serializable {
 	}
 
 	public static enum CONVERT_TYPE {
-		TIME_MILLIS, BOOLEAN, NONE
+		TIME_MILLIS, BOOLEAN, STRING, NONE;
 	}
 
 	public static enum MESSAGE_TYPE {
