@@ -39,7 +39,7 @@ public final class StringUtils {
 		}
 
 		public String group(int index) {
-			return this.m.group(index);
+			return this.m != null ? this.m.group(index) : null;
 		}
 
 		public String toString() {
