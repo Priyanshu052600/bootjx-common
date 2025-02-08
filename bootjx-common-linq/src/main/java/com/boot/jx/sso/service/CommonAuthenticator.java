@@ -51,8 +51,11 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 	private TruecallerAuthenticator truecallerAuthenticator;
 
 	@Autowired(required = false)
+	private WabaAuthenticator wabaAuthenticator;
+
+	@Autowired(required = false)
 	private TelegramAuthenticator telegramAuthenticator;
-	
+
 	@Autowired(required = false)
 	private AppleAuthenticator appleAuthenticator;
 
@@ -68,15 +71,17 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 		} else if (ChannelProvider.TWITTER.getType().equalsIgnoreCase(provider)) {
 			return twitterAuthenticator;
 		} else if (ChannelProvider.WHATSAPP.getType().equalsIgnoreCase(provider)) {
+			if (ChannelPartner.WABA.is(partner))
+				return wabaAuthenticator;
 			return otplessAuthenticator;
 		} else if (ChannelProvider.TELEGRAM.getType().equalsIgnoreCase(provider)) {
 			return telegramAuthenticator;
 		} else if (ChannelPartner.TRUECALLER.name().equalsIgnoreCase(provider)
 				|| (ChannelProvider.MOBILE.is(provider) && ChannelPartner.TRUECALLER.is(partner))) {
 			return truecallerAuthenticator;
-		} else if(ChannelProvider.APPLE.getType().equalsIgnoreCase(provider)) {
+		} else if (ChannelProvider.APPLE.getType().equalsIgnoreCase(provider)) {
 			return appleAuthenticator;
-		}else {
+		} else {
 			return firebaseAuthenticator;
 		}
 	}
