@@ -164,4 +164,9 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 		return find(provider, partner).doAuthenticateDirect(provider, partner, body);
 	}
 
+	@Override
+	public String getNounce() {
+		return null;
+	}
+
 }

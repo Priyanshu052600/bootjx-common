@@ -23,9 +23,9 @@ public interface BasicAuthenticator extends Serializable {
 
 	default public OAuth2UserInfo authenticate(String provider, ChannelPartner partner, MapModel body) {
 		try {
-			if(body!=null && body.containsKey("direct") && (boolean)body.get("direct")) {
+			if (body != null && body.containsKey("direct") && (boolean) body.get("direct")) {
 				return this.doAuthenticateDirect(provider, partner, body);
-			}else {
+			} else {
 				return this.doAuthenticate(provider, partner, body);
 			}
 		} catch (Exception e) {
@@ -40,6 +40,8 @@ public interface BasicAuthenticator extends Serializable {
 	String createAuthUrl(String provider, ChannelPartner partner, String redirectUrl)
 			throws MalformedURLException, URISyntaxException;
 
+	public String getNounce();
+
 	default BasicAuthWebhookRespHolder webhook(ChannelProvider provider, ChannelPartner partner, MapModel body) {
 		BasicAuthWebhookRespHolder holder = new BasicAuthWebhookRespHolder();
 		holder.setProvider(provider);
@@ -47,6 +49,7 @@ public interface BasicAuthenticator extends Serializable {
 		if (body != null) {
 			holder.setBody(body.toMap());
 		}
+		holder.setNonce(getNounce());
 		return holder;
 	}
 
@@ -57,6 +60,7 @@ public interface BasicAuthenticator extends Serializable {
 		if (body != null) {
 			holder.setBody(body.toMap());
 		}
+		holder.setNonce(getNounce());
 		return holder;
 	}
 
@@ -70,10 +74,11 @@ public interface BasicAuthenticator extends Serializable {
 	public static interface TwitterAuthenticator extends BasicAuthenticator {
 
 	}
-	
+
 	public static interface WabaAuthenticator extends BasicAuthenticator {
 
 	}
+
 	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body) throws Exception;
 
 }

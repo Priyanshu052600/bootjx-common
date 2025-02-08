@@ -81,4 +81,13 @@ public abstract class AbstractAuthenticator implements BasicAuthenticator {
 		return urlService.getUrl(subdomain, "/linq/home");
 	}
 
+	@Override
+	public String getNounce() {
+		AuthState state = authStateManager.getState();
+		if (ArgUtil.is(state)) {
+			return state.getNonce();
+		}
+		return null;
+	}
+
 }

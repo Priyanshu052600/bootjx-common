@@ -95,7 +95,7 @@ public abstract class AuthStateManager implements Serializable {
 		refreshCsrfToken();
 		state = new AuthState();
 		state.setTimestamp(System.currentTimeMillis());
-		state.setNonce(UniqueID.generateString62());
+		state.setNonce(UniqueID.generateString62() + "x" + Random.randomAlphaNumeric(6));
 		state.setCsrfToken(getCsrfToken());
 		state.setDomain(AppContextUtil.getTenant());
 		return state;
