@@ -3,6 +3,7 @@ package com.boot.jx.sso.service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -167,6 +168,10 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 	@Override
 	public String getNounce() {
 		return null;
+	}
+
+	public boolean release(BasicAuthWebhookRespHolder responseHolder) {
+		return find(responseHolder.getProvider(), responseHolder.getPartner()).release(responseHolder);
 	}
 
 }

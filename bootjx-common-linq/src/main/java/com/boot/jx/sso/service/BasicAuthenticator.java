@@ -81,4 +81,8 @@ public interface BasicAuthenticator extends Serializable {
 
 	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body) throws Exception;
 
+	default public boolean release(BasicAuthWebhookRespHolder responseHolder) {
+		return true;
+	}
+
 }
