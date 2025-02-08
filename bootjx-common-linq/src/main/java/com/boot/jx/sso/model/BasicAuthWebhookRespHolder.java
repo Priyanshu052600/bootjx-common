@@ -3,9 +3,11 @@ package com.boot.jx.sso.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.javachinna.oauth2.user.SocialEnums.ChannelPartner;
 import com.javachinna.oauth2.user.SocialEnums.ChannelProvider;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BasicAuthWebhookRespHolder {
 
 	public static enum WebhookRespStatus {
@@ -20,6 +22,8 @@ public class BasicAuthWebhookRespHolder {
 	protected ChannelProvider provider;
 	protected ChannelPartner partner;
 	protected Map<String, Object> data;
+	protected String rawResponse;
+	protected Map<String, Object> response;
 
 	public String getId() {
 		return id;
@@ -95,5 +99,29 @@ public class BasicAuthWebhookRespHolder {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+
+	public String getRawResponse() {
+		return rawResponse;
+	}
+
+	public void setRawResponse(String rawResponse) {
+		this.rawResponse = rawResponse;
+	}
+
+	public Map<String, Object> getResponse() {
+		return response;
+	}
+
+	public void setResponse(Map<String, Object> response) {
+		this.response = response;
+	}
+
+	public void response(Map<String, Object> response) {
+		this.response = response;
+	}
+
+	public void response(String response) {
+		this.rawResponse = response;
 	}
 }
