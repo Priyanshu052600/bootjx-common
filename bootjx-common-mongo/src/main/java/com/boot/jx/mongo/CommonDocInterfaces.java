@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -28,13 +30,17 @@ import com.boot.utils.JsonUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
+@JsonComponent 
 public class CommonDocInterfaces {
 
 	public static interface IMongoQueryBuilder<T> {
@@ -545,11 +551,23 @@ public class CommonDocInterfaces {
 		}
 	}
 
+	public static class ObjectIdSerializer extends JsonSerializer<ObjectId> {
+		@Override
+		public void serialize(ObjectId objectId, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+				throws IOException {
+			jsonGenerator.writeString(objectId.toHexString()); // Convert ObjectId to String
+		}
+	}
+
+	public static void initObjectMapping() {
+		//
+	}
+
 	static {
 		ObjectMapper objectMapper = JsonUtil.getMapper();
 		SimpleModule module = new SimpleModule();
 		module.addKeyDeserializer(ResourceDocumentImpl.class, new ResourceDocumentKeyDeserializer());
+		module.addSerializer(ObjectId.class, new ObjectIdSerializer()); // Register custom serializer
 		objectMapper.registerModule(module);
-
 	}
 }

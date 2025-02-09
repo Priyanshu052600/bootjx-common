@@ -25,8 +25,13 @@ import com.boot.utils.ArgUtil;
 import com.boot.utils.Constants;
 import com.boot.utils.StringUtils;
 import com.boot.utils.StringUtils.StringMatcher;
+import com.mongodb.BasicDBObject;
 
 public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends CommonMongoTemplateAbstract<TStore> {
+
+	static {
+		CommonDocInterfaces.initObjectMapping();
+	}
 
 	@Autowired
 	private CommonHttpRequest commonHttpRequest;
@@ -107,6 +112,10 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 
 		public static <T2> PaginatedQuery<T2> select(Class<T2> docClass2, String collectionName2) {
 			return new PaginatedQuery<T2>(docClass2, collectionName2);
+		}
+
+		public static PaginatedQuery<BasicDBObject> select(String collectionName2) {
+			return new PaginatedQuery<BasicDBObject>(BasicDBObject.class, collectionName2);
 		}
 
 		public PaginatedQuery<T> where(String field, String value) {
@@ -273,7 +282,7 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 		}
 
 		ApiResponseUtil.addLog(q.build().getQuery().toString());
-		//System.out.println(q.build().getQuery().toString());
+		// System.out.println(q.build().getQuery().toString());
 		return q;
 	}
 
@@ -329,4 +338,5 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 			Class<T> entityClass, String docName) throws InstantiationException, IllegalAccessException {
 		return submit(method, null, quickGalleryItem, entityClass, docName);
 	}
+
 }
