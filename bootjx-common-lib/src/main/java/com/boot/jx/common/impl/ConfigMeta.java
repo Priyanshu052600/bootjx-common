@@ -119,6 +119,7 @@ public class ConfigMeta implements Serializable {
 	private Integer max;
 	private Integer min;
 	private Integer rows; // for textarea
+	private Integer size; // for textarea
 
 	private INPUT_TYPE inputType;
 	private DATA_TYPE dataType;
@@ -531,6 +532,16 @@ public class ConfigMeta implements Serializable {
 		return this;
 	}
 
+	public ConfigMeta size(Integer size) {
+		this.size = size;
+		return this;
+	}
+
+	public ConfigMeta rows(Integer rows) {
+		this.rows = rows;
+		return this;
+	}
+
 	public ConfigMeta writeonly(boolean writeonly) {
 		this.writeonly = writeonly;
 		return this;
@@ -661,5 +672,13 @@ public class ConfigMeta implements Serializable {
 
 	public void setRows(Integer rows) {
 		this.rows = rows;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
 	}
 }
