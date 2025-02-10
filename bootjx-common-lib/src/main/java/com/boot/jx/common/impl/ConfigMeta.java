@@ -118,6 +118,7 @@ public class ConfigMeta implements Serializable {
 	private Integer order;
 	private Integer max;
 	private Integer min;
+	private Integer rows; // for textarea
 
 	private INPUT_TYPE inputType;
 	private DATA_TYPE dataType;
@@ -652,5 +653,13 @@ public class ConfigMeta implements Serializable {
 
 	public void setUkey(String ukey) {
 		this.ukey = ukey;
+	}
+
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
 	}
 }
