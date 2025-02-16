@@ -21,6 +21,8 @@ public class SsoUser extends TimeStampDoc implements Serializable {
 	private SocialProfile profile;
 
 	private String providerProfileId;
+	
+	private String profilePicture;
 
 	public String getProviderProfileId() {
 		return providerProfileId;
@@ -76,6 +78,14 @@ public class SsoUser extends TimeStampDoc implements Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 
 }
