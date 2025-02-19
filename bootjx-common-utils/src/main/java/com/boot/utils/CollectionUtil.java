@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The Class CollectionUtil.
@@ -180,6 +181,28 @@ public final class CollectionUtil {
 			}
 		}
 		return false;
+	}
+
+	// Case 1: Collection & Collection
+	public static <T> boolean exists(Collection<T> collection, Collection<T> from) {
+		return collection != null && from != null && from.stream().anyMatch(collection::contains);
+	}
+
+	// Case 2: Collection & Array
+	@SafeVarargs
+	public static <T> boolean exists(Collection<T> collection, T... from) {
+		return collection != null && from != null && Stream.of(from).anyMatch(collection::contains);
+	}
+
+	// Case 3: Array & Collection
+	public static <T> boolean exists(T[] collection, Collection<T> from) {
+		return collection != null && from != null && from.stream().anyMatch(Arrays.asList(collection)::contains);
+	}
+
+	// Case 4: Array & Array
+	@SafeVarargs
+	public static <T> boolean exists(T[] collection, T... from) {
+		return collection != null && from != null && Stream.of(from).anyMatch(Arrays.asList(collection)::contains);
 	}
 
 	/**

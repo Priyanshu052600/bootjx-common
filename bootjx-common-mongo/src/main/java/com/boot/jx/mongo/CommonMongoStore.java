@@ -48,6 +48,7 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 		public MapModel extraParams;
 		private List<T> results;
 		private ApiPagination pagination;
+		private boolean skipDBRef;
 
 		public PaginatedQuery(Class<T> docClass, String collectionName) {
 			this.docClass = docClass;
@@ -76,6 +77,11 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 
 		public PaginatedQuery<T> count() {
 			this.count = true;
+			return this;
+		}
+
+		public PaginatedQuery<T> skipDBRef() {
+			this.skipDBRef = true;
 			return this;
 		}
 
@@ -279,6 +285,10 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 
 		if (ArgUtil.is(query.sortBy)) {
 			q.sortBy(query.sortBy, Direction.fromString(query.sortDir));
+		}
+
+		if (query.skipDBRef) {
+			q.skipDBRef();
 		}
 
 		ApiResponseUtil.addLog(q.build().getQuery().toString());
