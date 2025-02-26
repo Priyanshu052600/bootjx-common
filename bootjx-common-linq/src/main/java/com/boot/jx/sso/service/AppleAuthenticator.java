@@ -17,6 +17,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.boot.jx.auth.AuthStateManager.AuthState;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.model.MapModel;
 import com.boot.utils.ArgUtil;
@@ -67,12 +68,20 @@ public class AppleAuthenticator extends AbstractAuthenticator {
 		String clientId = appleCreds.pathEntry("clientId").asString();
 		String grantType = appleCreds.pathEntry("authorization-grant-type").asString();
 		String tokenUrl = appleCreds.pathEntry("token-uri").asString();
+		String stateStr = commonHttpRequest.getRequestParam("state");
 		String token = null;
+		
+		String redirectUrl = redirectPath(provider, partner);
+
+		if (ArgUtil.is(stateStr)) {
+			AuthState state = authStateManager.fromState(stateStr);
+			redirectUrl = state.getRedirectUrl();
+		}
 
 		if (ArgUtil.is(code)) {
 			MapModel tokenResponse = restService.ajax(tokenUrl).field("code", code).field("client_id", clientId)
 					.field("client_secret", generateSecretKey()).field("grant_type", grantType)
-					.field("redirect_uri", redirectUrl(provider, partner)).submit().asMapModel();
+					.field("redirect_uri", redirectUrl).submit().asMapModel();
 			token = tokenResponse.keyEntry("id_token").asString();
 		}
 		if (ArgUtil.is(token)) {
@@ -91,11 +100,14 @@ public class AppleAuthenticator extends AbstractAuthenticator {
 	@Override
 	public String createAuthUrl(String provider, ChannelPartner partner, String redirectUrl)
 			throws MalformedURLException, URISyntaxException {
+		AuthState state = authStateManager.createState();
+		state.setRedirectUrl(redirectUrl);
+		
 		MapModel appleCreds = appleCreds();
 		String appleOuthUrl = appleCreds.pathEntry("authorizationUri").asString();
 		String clientId = appleCreds.pathEntry("clientId").asString();
 		return Urly.parse(appleOuthUrl).queryParam("response_type", "code").queryParam("client_id", clientId)
-				.queryParam("scope", "openid%20name%20email").queryParam("redirect_uri", redirectUrl).getURL();
+				.queryParam("scope", "name email").queryParam("redirect_uri", redirectUrl).queryParam("state", state.toString()).getURL();
 	}
 
 	@Override
