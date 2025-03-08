@@ -106,7 +106,7 @@ public class GoogleAuthenticator extends AbstractAuthenticator {
 
 		return Urly.parse(GOOGLE_OAUTH_URL).queryParam("response_type", "code").queryParam("client_id", clientId)
 				.queryParam("scope", "openid email profile").queryParam("redirect_uri", redirectUrl)
-				.queryParam("state", state.toString()).queryParam("nonce", state.getNonce()).getURL();
+				.queryParam("state", state.toString()).queryParam("nonce", state.getNonce()).queryParam("prompt","select_account").getURL();
 	}
 
 	@Override
