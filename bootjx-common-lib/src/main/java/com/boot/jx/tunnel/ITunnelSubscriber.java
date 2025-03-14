@@ -1,5 +1,7 @@
 package com.boot.jx.tunnel;
 
+import com.boot.utils.JsonUtil;
+
 public interface ITunnelSubscriber<M> {
 
 	default void onListen(String channel, M message) {
@@ -15,6 +17,10 @@ public interface ITunnelSubscriber<M> {
 
 	default void setSampleEvent(M message) {
 		// This is only for help
+	}
+
+	default public void poll(M message) {
+		System.out.println("poll:Nothing to " + JsonUtil.toJson(message));
 	}
 
 }
