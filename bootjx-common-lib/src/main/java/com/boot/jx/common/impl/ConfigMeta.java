@@ -128,6 +128,7 @@ public class ConfigMeta implements Serializable {
 
 	private List<ConfigOption> options;
 	private Map<String, Object> filter;
+	private Map<String, Object> condition;
 	private String optionsKey;
 	private String optionsLabel;
 	private String optionsSource;
@@ -681,4 +682,25 @@ public class ConfigMeta implements Serializable {
 	public void setSize(Integer size) {
 		this.size = size;
 	}
+
+	public Map<String, Object> condition() {
+		if (this.condition == null) {
+			this.condition = new HashMap<String, Object>();
+		}
+		return this.condition;
+	}
+
+	public ConfigMeta condition(String key, Object value) {
+		this.condition().put(key, value);
+		return this;
+	}
+
+	public Map<String, Object> getCondition() {
+		return condition;
+	}
+
+	public void setCondition(Map<String, Object> condition) {
+		this.condition = condition;
+	}
+
 }
