@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -372,6 +373,11 @@ public class AppRequestFilter implements Filter {
 					addSameSiteCookieAttribute(wresp);
 					chain.doFilter(req, wresp);
 
+					if (ArgUtil.is(appConfig.getCookieSameSite())) {
+						// Ensure post-filter cookie headers are also fixed
+						addSameSiteCookieAttribute(wresp);
+					}
+
 				} else {
 					resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
 					resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -399,14 +405,24 @@ public class AppRequestFilter implements Filter {
 
 	private void addSameSiteCookieAttribute(HttpServletResponse response) {
 		Collection<String> headers = response.getHeaders(HttpHeaders.SET_COOKIE);
-		boolean firstHeader = true;
-		for (String header : headers) { // there can be multiple Set-Cookie attributes
-			if (firstHeader) {
-				response.setHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
-				firstHeader = false;
-				continue;
+		if (headers == null)
+			return;
+
+		List<String> newHeaders = headers.stream().map(header -> {
+			if (header.toLowerCase().contains("samesite")) {
+				return header; // already set
 			}
-			response.addHeader(HttpHeaders.SET_COOKIE, String.format("%s; %s", header, "SameSite=None"));
+			// Only add SameSite=None if Secure is also present (required by browsers)
+			if (header.toLowerCase().contains("secure")) {
+				return header + "; SameSite=None";
+			} else {
+				return header; // skip if not secure
+			}
+		}).collect(Collectors.toList());;
+
+		response.setHeader(HttpHeaders.SET_COOKIE, null); // Clear existing
+		for (String newHeader : newHeaders) {
+			response.addHeader(HttpHeaders.SET_COOKIE, newHeader);
 		}
 	}
 

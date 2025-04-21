@@ -234,6 +234,9 @@ public class AppConfig {
 	@Value("${server.servlet.session.cookie.secure}")
 	private boolean cookieSecure;
 
+	@Value("${server.servlet.session.cookie.same-site:}")
+	private String cookieSameSite;
+
 	@Value("${spring.profiles.active}")
 	private String[] springProfile;
 
@@ -511,6 +514,10 @@ public class AppConfig {
 		config.setStringOutputType("base64");
 		encryptor.setConfig(config);
 		return encryptor;
+	}
+
+	public String getCookieSameSite() {
+		return cookieSameSite;
 	}
 
 }
