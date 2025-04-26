@@ -10,6 +10,7 @@ import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -40,7 +41,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-@JsonComponent 
+@JsonComponent
 public class CommonDocInterfaces {
 
 	public static interface IMongoQueryBuilder<T> {
@@ -337,15 +338,13 @@ public class CommonDocInterfaces {
 	public static class TimeStampIndex implements Serializable, ITimeStampIndex<TimeStampIndex> {
 
 		private static final long serialVersionUID = 9114924334759684396L;
-		@Indexed
+		@Indexed(name = "stamp_desc", direction = IndexDirection.DESCENDING)
 		private long stamp;
-		@Indexed
+		@Indexed(name = "hour_desc", direction = IndexDirection.DESCENDING)
 		private long hour;
-		@Indexed
+		@Indexed(name = "day_desc", direction = IndexDirection.DESCENDING)
 		private long day;
-		@Indexed
 		private long week;
-		@Indexed
 		private String byUser;
 
 		@Override
@@ -421,14 +420,14 @@ public class CommonDocInterfaces {
 		public interface TimeStampIndexSupport extends CreatedTimeStampIndexSupport, UpdatedTimeStampIndexSupport {
 		}
 
-		@CompoundIndexes({ @CompoundIndex(name = "created_stamp", def = "{ 'created.stamp': 1 }"),
-				@CompoundIndex(name = "created_hour", def = "{ 'created.hour': 1 }"),
-				@CompoundIndex(name = "created_day", def = "{ 'created.day': 1 }"),
-				@CompoundIndex(name = "created_week", def = "{ 'created.week': 1 }"),
+		@CompoundIndexes({ @CompoundIndex(name = "created_stamp_desc", def = "{ 'created.stamp': -1 }"),
+				@CompoundIndex(name = "created_hour_desc", def = "{ 'created.hour': -1 }"),
+				@CompoundIndex(name = "created_day_desc", def = "{ 'created.day': -1 }"),
+				@CompoundIndex(name = "created_week_desc", def = "{ 'created.week': -1 }"),
 				@CompoundIndex(name = "created_byUser", def = "{ 'created.byUser': 1 }"),
-				@CompoundIndex(name = "updated_hour", def = "{ 'updated.hour': 1 }"),
-				@CompoundIndex(name = "updated_day", def = "{ 'updated.day': 1 }"),
-				@CompoundIndex(name = "updated_week", def = "{ 'updated.week': 1 }"),
+				@CompoundIndex(name = "updated_hour_desc", def = "{ 'updated.hour': -1 }"),
+				@CompoundIndex(name = "updated_day_desc", def = "{ 'updated.day': -1 }"),
+				@CompoundIndex(name = "updated_week_desc", def = "{ 'updated.week': -1 }"),
 				@CompoundIndex(name = "updated_byUser", def = "{ 'updated.byUser': 1 }"),
 
 		})
