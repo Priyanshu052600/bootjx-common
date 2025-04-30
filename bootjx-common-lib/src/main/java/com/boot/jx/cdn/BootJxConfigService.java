@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.boot.jx.AppConfig;
+import com.boot.jx.AppContextUtil;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.CryptoUtil;
@@ -54,6 +55,10 @@ public class BootJxConfigService {
 			return cdnApp;
 		}
 
+		public String webApp(String cdnApp) {
+			return cdnApp;
+		}
+
 		public String cdnContext(String cdnContext) {
 			return cdnContext;
 		}
@@ -76,10 +81,20 @@ public class BootJxConfigService {
 	private BootJxConfigProvider bootJxConfigProvider;
 
 	private BootJxConfigProvider provider() {
+		Object provider = AppContextUtil.get("BootJxConfigProvider");
+		if (ArgUtil.is(provider)) {
+			return (BootJxConfigProvider) provider;
+		}
+
 		if (bootJxConfigProvider == null) {
 			return defaultProfider;
 		}
 		return bootJxConfigProvider;
+	}
+
+	public BootJxConfigProvider provider(BootJxConfigProvider provider) {
+		AppContextUtil.set("BootJxConfigProvider", provider);
+		return provider;
 	}
 
 	public String getCdnUrl(boolean isSwagger) {
@@ -100,6 +115,7 @@ public class BootJxConfigService {
 
 		model.cdnUrl(cdnUrl);
 		model.cdnApp(provider().cdnApp(bootJxCdnApp));
+		model.webApp(provider().webApp(bootJxCdnApp));
 		model.cdnContext(provider().cdnContext(bootJxCdnContext));
 		model.cdnStatic(provider().cdnStatic(bootJxCdnStatic));
 		model.cdnVersion(provider().cdnVersion(bootJxCdnVersion));
