@@ -161,6 +161,11 @@ public class BootJxConfigService {
 			return this;
 		}
 
+		public BootJxConfigModel webApp(String bootJxWebApp) {
+			map.put("BOOTJX_WEBAPP", bootJxWebApp);
+			return this;
+		}
+
 		public BootJxConfigModel cdnEntry(String bootJxCdnEntry) {
 			map.put("BOOTJX_CDN_ENTRY", bootJxCdnEntry);
 			return this;
