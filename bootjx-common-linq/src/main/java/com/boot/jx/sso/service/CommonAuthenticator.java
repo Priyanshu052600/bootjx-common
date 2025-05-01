@@ -72,9 +72,9 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 		} else if (ChannelProvider.TWITTER.getType().equalsIgnoreCase(provider)) {
 			return twitterAuthenticator;
 		} else if (ChannelProvider.WHATSAPP.getType().equalsIgnoreCase(provider)) {
-			if (ChannelPartner.WABA.is(partner))
-				return wabaAuthenticator;
-			return otplessAuthenticator;
+			if (ChannelPartner.OTPLESS.is(partner))
+				return otplessAuthenticator;
+			return wabaAuthenticator;
 		} else if (ChannelProvider.TELEGRAM.getType().equalsIgnoreCase(provider)) {
 			return telegramAuthenticator;
 		} else if (ChannelPartner.TRUECALLER.name().equalsIgnoreCase(provider)
