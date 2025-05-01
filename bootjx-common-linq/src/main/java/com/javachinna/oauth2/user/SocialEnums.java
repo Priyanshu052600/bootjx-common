@@ -7,7 +7,7 @@ public class SocialEnums {
 
 		LINKEDIN("linkedin"), FACEBOOK("facebook"), TWITTER("twitter"), GOOGLE("google"), GITHUB("github"),
 		EMAIL("email"), MOBILE("mobile"), WHATSAPP("whatsapp"), TELEGRAM("telegram"), OUTLOOK("outlook"),
-		APPLE("apple");
+		APPLE("apple"), TRUELINQ("truelinq");
 
 		private String type;
 
@@ -26,7 +26,7 @@ public class SocialEnums {
 	}
 
 	public static enum ChannelPartner {
-		ANY, FIREBASE, OTPLESS, TRUECALLER, WABA;
+		ANY, FIREBASE, OTPLESS, TRUECALLER, WABA, TQ;
 
 		public boolean is(ChannelPartner partner) {
 			return this.equals(partner);

@@ -78,6 +78,10 @@ public interface BasicAuthenticator extends Serializable {
 	public static interface WabaAuthenticator extends BasicAuthenticator {
 
 	}
+	
+	public static interface TQAuthenticator extends BasicAuthenticator {
+
+	}
 
 	public OAuth2UserInfo doAuthenticateDirect(String provider, ChannelPartner partner, MapModel body) throws Exception;
 

@@ -1,6 +1,8 @@
 package com.boot.jx.sso.service;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +90,12 @@ public abstract class AbstractAuthenticator implements BasicAuthenticator {
 			return state.getNonce();
 		}
 		return null;
+	}
+
+	@Override
+	public String createAuthUrl(String provider, ChannelPartner partner)
+			throws MalformedURLException, URISyntaxException, IOException {
+		return this.createAuthUrl(provider, partner, getUrl("/linq/app/v1/connect/" + provider + "/callback"));
 	}
 
 }

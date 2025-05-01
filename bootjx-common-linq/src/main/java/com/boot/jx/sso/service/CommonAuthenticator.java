@@ -3,7 +3,6 @@ package com.boot.jx.sso.service;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -59,6 +58,9 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 
 	@Autowired(required = false)
 	private AppleAuthenticator appleAuthenticator;
+	
+	@Autowired(required = false)
+	private TQAuthenticator tqAuthenticator;
 
 	public BasicAuthenticator find(String provider, String partner) {
 		if (ChannelProvider.LINKEDIN.getType().equalsIgnoreCase(provider)) {
@@ -82,6 +84,8 @@ public class CommonAuthenticator extends AbstractAuthenticator {
 			return truecallerAuthenticator;
 		} else if (ChannelProvider.APPLE.getType().equalsIgnoreCase(provider)) {
 			return appleAuthenticator;
+		} else if (ChannelProvider.TRUELINQ.getType().equalsIgnoreCase(provider)) {
+			return tqAuthenticator;
 		} else {
 			return firebaseAuthenticator;
 		}
