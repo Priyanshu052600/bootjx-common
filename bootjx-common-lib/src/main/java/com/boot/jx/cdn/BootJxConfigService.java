@@ -55,6 +55,10 @@ public class BootJxConfigService {
 			return cdnApp;
 		}
 
+		public String cdnEntry(String cdnEntry) {
+			return cdnEntry;
+		}
+
 		public String webApp(String cdnApp) {
 			return cdnApp;
 		}
@@ -115,6 +119,7 @@ public class BootJxConfigService {
 
 		model.cdnUrl(cdnUrl);
 		model.cdnApp(provider().cdnApp(bootJxCdnApp));
+		model.cdnEntry(provider().cdnEntry("app-" + bootJxCdnApp));
 		model.webApp(provider().webApp(bootJxCdnApp));
 		model.cdnContext(provider().cdnContext(bootJxCdnContext));
 		model.cdnStatic(provider().cdnStatic(bootJxCdnStatic));
@@ -173,7 +178,6 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
 			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
-			this.cdnEntry(bootJxCdnApp);
 			return this;
 		}
 
