@@ -78,7 +78,7 @@ public interface BasicAuthenticator extends Serializable {
 	public static interface WabaAuthenticator extends BasicAuthenticator {
 
 	}
-	
+
 	public static interface TQAuthenticator extends BasicAuthenticator {
 
 	}

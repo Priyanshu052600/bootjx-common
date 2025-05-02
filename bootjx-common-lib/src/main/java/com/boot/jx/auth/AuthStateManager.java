@@ -18,6 +18,7 @@ public abstract class AuthStateManager implements Serializable {
 		private String redirectUrl;
 		private long timestamp;
 		private String domain;
+		private String authCode;
 
 		public String getCsrfToken() {
 			return csrfToken;
@@ -71,6 +72,14 @@ public abstract class AuthStateManager implements Serializable {
 
 		public static AuthState fromString(String stateStr) {
 			return MapModel.decoder(stateStr).decodeBase64().detokenize().decrypt().toObzect(AuthState.class);
+		}
+
+		public String getAuthCode() {
+			return authCode;
+		}
+
+		public void setAuthCode(String authCode) {
+			this.authCode = authCode;
 		}
 
 	}
