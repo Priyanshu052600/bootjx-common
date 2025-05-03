@@ -168,6 +168,7 @@ public class AppParamController {
 		map.put("request.getRemoteAddr()", request.getRemoteAddr());
 		map.put("request.getLocalAddr()", request.getLocalAddr());
 		map.put("request.getScheme()", request.getScheme());
+		map.put("request.getQueryString()", request.getQueryString());
 		map.put("HttpUtils.getSubdomain()", HttpUtils.getSubDomain(request));
 
 		map.put("HttpUtils.getScheme()", HttpUtils.getScheme(request));
