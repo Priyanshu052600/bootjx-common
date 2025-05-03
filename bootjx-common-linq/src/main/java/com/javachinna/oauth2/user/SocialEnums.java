@@ -21,7 +21,7 @@ public class SocialEnums {
 
 		LINKEDIN("linkedin"), FACEBOOK("facebook"), TWITTER("twitter"), GOOGLE("google"), GITHUB("github"),
 		EMAIL("email"), MOBILE("mobile"), WHATSAPP("whatsapp", ChannelPartner.WABA), TELEGRAM("telegram"),
-		OUTLOOK("outlook"), APPLE("apple"), TRUELINQ("truelinq", ChannelPartner.TQ);
+		OUTLOOK("outlook"), APPLE("apple"), TRUELINQ("truelinq", ChannelPartner.TQ), DIRECT("direct");
 
 		private String type;
 		private ChannelPartner defaultPartner = ChannelPartner.ANY;
