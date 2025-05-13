@@ -34,6 +34,12 @@ public class BootJxConfigService {
 	@Value("${bootjx.cdn.context:}")
 	String bootJxCdnContext;
 
+	@Value("${bootjx.app.context:}")
+	String bootJxAppContext;
+
+	@Value("${bootjx.api.context:}")
+	String bootJxApiContext;
+
 	@Value("${bootjx.cdn.static:}")
 	String bootJxCdnStatic;
 
@@ -48,12 +54,14 @@ public class BootJxConfigService {
 
 	public static class BootJxConfigProvider {
 		String cdnUrl;
-		String cdnApp;
-		String cdnEntry;
-		String webApp;
-		String cdnContext;
+		String cdnApp; // maine cdn app nexus
+		String webApp; // Sub part of cndApp nexus/mysubapp
+		String cdnEntry; // js/app.js
 		String cdnStatic;
 		String cdnVersion;
+		String appContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in browser
+		String cdnContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in browser
+		String apiContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in apis
 
 		public String cdnUrlGet(String cdnUrl) {
 			return ArgUtil.nonEmpty(this.cdnUrl, cdnUrl);
@@ -91,15 +99,6 @@ public class BootJxConfigService {
 			return this;
 		}
 
-		public String cdnContextGet(String cdnContext) {
-			return ArgUtil.nonEmpty(this.cdnContext, cdnContext);
-		}
-
-		public BootJxConfigProvider cdnContext(String cdnContext) {
-			this.cdnContext = cdnContext;
-			return this;
-		}
-
 		public String cdnStaticGet(String cdnStatic) {
 			return ArgUtil.nonEmpty(this.cdnStatic, cdnStatic);
 		}
@@ -115,6 +114,33 @@ public class BootJxConfigService {
 
 		public BootJxConfigProvider cdnVersion(String cdnVersion) {
 			this.cdnVersion = cdnVersion;
+			return this;
+		}
+
+		public String appContextGet(String appContext) {
+			return ArgUtil.nonEmpty(this.appContext, appContext);
+		}
+
+		public BootJxConfigProvider appContext(String appContext) {
+			this.appContext = appContext;
+			return this;
+		}
+
+		public String apiContextGet(String apiContext) {
+			return ArgUtil.nonEmpty(this.apiContext, apiContext, this.appContext);
+		}
+
+		public BootJxConfigProvider apiContext(String apiContext) {
+			this.apiContext = apiContext;
+			return this;
+		}
+
+		public String cdnContextGet(String cdnContext) {
+			return ArgUtil.nonEmpty(this.cdnContext, cdnContext, this.appContext);
+		}
+
+		public BootJxConfigProvider cdnContext(String cdnContext) {
+			this.cdnContext = cdnContext;
 			return this;
 		}
 
@@ -165,9 +191,12 @@ public class BootJxConfigService {
 		model.cdnApp(provider().cdnAppGet(bootJxCdnApp));
 		model.cdnEntry(provider().cdnEntryGet("app-" + bootJxCdnApp));
 		model.webApp(provider().webAppGet(bootJxCdnApp));
-		model.cdnContext(provider().cdnContextGet(bootJxCdnContext));
 		model.cdnStatic(provider().cdnStaticGet(bootJxCdnStatic));
 		model.cdnVersion(provider().cdnVersionGet(bootJxCdnVersion));
+
+		model.appContext(provider().appContextGet(bootJxAppContext));
+		model.cdnContext(provider().cdnContextGet(bootJxCdnContext));
+		model.apiContext(provider().apiContextGet(bootJxApiContext));
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
 			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
@@ -215,11 +244,6 @@ public class BootJxConfigService {
 			return this;
 		}
 
-		public BootJxConfigModel cdnContext(String bootJxCdnContext) {
-			map.put("BOOTJX_CDN_CONTEXT", bootJxCdnContext);
-			return this;
-		}
-
 		public BootJxConfigModel cdnApp(String bootJxCdnApp) {
 			map.put("BOOTJX_CDN_APP", bootJxCdnApp);
 			return this;
@@ -237,6 +261,21 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel cdnVersion(String bootJxCdnVersion) {
 			map.put("BOOTJX_CDN_VERSION", bootJxCdnVersion);
+			return this;
+		}
+
+		public BootJxConfigModel cdnContext(String bootJxCdnContext) {
+			map.put("BOOTJX_CDN_CONTEXT", bootJxCdnContext);
+			return this;
+		}
+
+		public BootJxConfigModel apiContext(String bootJxApiContext) {
+			map.put("BOOTJX_API_CONTEXT", bootJxApiContext);
+			return this;
+		}
+
+		public BootJxConfigModel appContext(String bootJxAppContext) {
+			map.put("BOOTJX_APP_CONTEXT", bootJxAppContext);
 			return this;
 		}
 
