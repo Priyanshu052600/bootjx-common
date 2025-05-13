@@ -47,33 +47,77 @@ public class BootJxConfigService {
 	String bootJxAppSite;
 
 	public static class BootJxConfigProvider {
-		public String cdnUrl(String cdnUrl) {
-			return cdnUrl;
+		String cdnUrl;
+		String cdnApp;
+		String cdnEntry;
+		String webApp;
+		String cdnContext;
+		String cdnStatic;
+		String cdnVersion;
+
+		public String cdnUrlGet(String cdnUrl) {
+			return ArgUtil.nonEmpty(this.cdnUrl, cdnUrl);
 		}
 
-		public String cdnApp(String cdnApp) {
-			return cdnApp;
+		public BootJxConfigProvider cdnUrl(String cdnUrl) {
+			this.cdnUrl = cdnUrl;
+			return this;
 		}
 
-		public String cdnEntry(String cdnEntry) {
-			return cdnEntry;
+		public String cdnAppGet(String cdnApp) {
+			return ArgUtil.nonEmpty(this.cdnApp, cdnApp);
 		}
 
-		public String webApp(String cdnApp) {
-			return cdnApp;
+		public BootJxConfigProvider cdnApp(String cdnApp) {
+			this.cdnApp = cdnApp;
+			return this;
 		}
 
-		public String cdnContext(String cdnContext) {
-			return cdnContext;
+		public String cdnEntryGet(String cdnEntry) {
+			return ArgUtil.nonEmpty(this.cdnEntry, cdnEntry);
 		}
 
-		public String cdnStatic(String cdnStatic) {
-			return cdnStatic;
+		public BootJxConfigProvider cdnEntry(String cdnEntry) {
+			this.cdnEntry = cdnEntry;
+			return this;
 		}
 
-		public String cdnVersion(String cdnVersion) {
-			return cdnVersion;
+		public String webAppGet(String webApp) {
+			return ArgUtil.nonEmpty(this.webApp, webApp);
 		}
+
+		public BootJxConfigProvider webApp(String webApp) {
+			this.webApp = webApp;
+			return this;
+		}
+
+		public String cdnContextGet(String cdnContext) {
+			return ArgUtil.nonEmpty(this.cdnContext, cdnContext);
+		}
+
+		public BootJxConfigProvider cdnContext(String cdnContext) {
+			this.cdnContext = cdnContext;
+			return this;
+		}
+
+		public String cdnStaticGet(String cdnStatic) {
+			return ArgUtil.nonEmpty(this.cdnStatic, cdnStatic);
+		}
+
+		public BootJxConfigProvider cdnStatic(String cdnStatic) {
+			this.cdnStatic = cdnStatic;
+			return this;
+		}
+
+		public String cdnVersionGet(String cdnVersion) {
+			return ArgUtil.nonEmpty(this.cdnVersion, cdnVersion);
+		}
+
+		public BootJxConfigProvider cdnVersion(String cdnVersion) {
+			this.cdnVersion = cdnVersion;
+			return this;
+		}
+
 	}
 
 	@Autowired
@@ -106,7 +150,7 @@ public class BootJxConfigService {
 		if (ArgUtil.is(debugCdnUrl) && !(debugCdnUrl.startsWith("http://") || debugCdnUrl.startsWith("https://"))) {
 			debugCdnUrl = CryptoUtil.getEncoder().message(debugCdnUrl).decodeBase64().toString();
 		}
-		return ArgUtil.parseAsString(debugCdnUrl, isSwagger ? bootJxCdnSwagger : provider().cdnUrl(bootJxCdnUrl));
+		return ArgUtil.parseAsString(debugCdnUrl, isSwagger ? bootJxCdnSwagger : provider().cdnUrlGet(bootJxCdnUrl));
 	}
 
 	public String getCdnUrl() {
@@ -118,12 +162,12 @@ public class BootJxConfigService {
 		String cdnUrl = getCdnUrl(isSwagger);
 
 		model.cdnUrl(cdnUrl);
-		model.cdnApp(provider().cdnApp(bootJxCdnApp));
-		model.cdnEntry(provider().cdnEntry("app-" + bootJxCdnApp));
-		model.webApp(provider().webApp(bootJxCdnApp));
-		model.cdnContext(provider().cdnContext(bootJxCdnContext));
-		model.cdnStatic(provider().cdnStatic(bootJxCdnStatic));
-		model.cdnVersion(provider().cdnVersion(bootJxCdnVersion));
+		model.cdnApp(provider().cdnAppGet(bootJxCdnApp));
+		model.cdnEntry(provider().cdnEntryGet("app-" + bootJxCdnApp));
+		model.webApp(provider().webAppGet(bootJxCdnApp));
+		model.cdnContext(provider().cdnContextGet(bootJxCdnContext));
+		model.cdnStatic(provider().cdnStaticGet(bootJxCdnStatic));
+		model.cdnVersion(provider().cdnVersionGet(bootJxCdnVersion));
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
 			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
