@@ -77,7 +77,7 @@ public class DemoController {
 		}
 
 		if (ArgUtil.is(bootJxConfigService)) {
-			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("test").cdnEntry("dev").map());
+			model.addAllAttributes(bootJxConfigService.bootJxAttributesModel().cdnApp("test").cdnEntry("app-dev").map());
 		}
 
 		return "app-demo";
