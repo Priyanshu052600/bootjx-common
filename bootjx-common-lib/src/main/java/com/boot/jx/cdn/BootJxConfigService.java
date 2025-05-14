@@ -82,7 +82,7 @@ public class BootJxConfigService {
 		}
 
 		public String cdnEntryGet(String cdnEntry) {
-			return ArgUtil.nonEmpty(this.cdnEntry, cdnEntry);
+			return ArgUtil.nonEmpty(this.cdnEntry, cdnEntry, this.cdnApp);
 		}
 
 		public BootJxConfigProvider cdnEntry(String cdnEntry) {
@@ -189,7 +189,7 @@ public class BootJxConfigService {
 
 		model.cdnUrl(cdnUrl);
 		model.cdnApp(provider().cdnAppGet(bootJxCdnApp));
-		model.cdnEntry(provider().cdnEntryGet("app-" + bootJxCdnApp));
+		model.cdnEntry(provider().cdnEntryGet(ArgUtil.is(bootJxCdnApp) ? "app-" + bootJxCdnApp : bootJxCdnApp));
 		model.webApp(provider().webAppGet(bootJxCdnApp));
 		model.cdnStatic(provider().cdnStaticGet(bootJxCdnStatic));
 		model.cdnVersion(provider().cdnVersionGet(bootJxCdnVersion));
