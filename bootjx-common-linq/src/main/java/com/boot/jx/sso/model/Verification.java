@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.boot.jx.mongo.CommonDocInterfaces.TimeStampIndex;
 import com.boot.jx.sso.SsoConstants.ASSOCIATION_TYPE;
+import com.boot.model.TimeModels.TimeStamp;
 
 public class Verification implements Serializable {
 
@@ -28,9 +29,9 @@ public class Verification implements Serializable {
 
 	private Map<String, Object> form;
 
-	private TimeStampIndex created;
-	private TimeStampIndex updated;
-	private TimeStampIndex validated;
+	private TimeStamp created;
+	private TimeStamp updated;
+	private TimeStamp validated;
 
 	private Map<String, Object> config;
 
@@ -58,19 +59,19 @@ public class Verification implements Serializable {
 		this.profileTypes = profileTypes;
 	}
 
-	public TimeStampIndex getCreated() {
+	public TimeStamp getCreated() {
 		return created;
 	}
 
-	public void setCreated(TimeStampIndex created) {
+	public void setCreated(TimeStamp created) {
 		this.created = created;
 	}
 
-	public TimeStampIndex getUpdated() {
+	public TimeStamp getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(TimeStampIndex updated) {
+	public void setUpdated(TimeStamp updated) {
 		this.updated = updated;
 	}
 
@@ -146,11 +147,11 @@ public class Verification implements Serializable {
 		this.config = config;
 	}
 
-	public TimeStampIndex getValidated() {
+	public TimeStamp getValidated() {
 		return validated;
 	}
 
-	public void setValidated(TimeStampIndex validated) {
+	public void setValidated(TimeStamp validated) {
 		this.validated = validated;
 	}
 }
