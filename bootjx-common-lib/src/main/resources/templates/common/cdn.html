@@ -74,6 +74,23 @@
 	</p>
 </header>
 
+<header-vue3 th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
+	<p th:case="'true'" th:remove="tag">
+		<meta name=report th:content="${BOOTJX_CDN_DEBUG}">
+	</p>
+	<p th:case="*" th:remove="tag">
+		<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+
+		<!-- // preload  css and js -->
+		<link th:href="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}" rel=preload
+			as=script>
+
+		<!-- // load  css -->
+		<link th:href=="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.css?_='+${BOOTJX_CDN_VERSION}"  rel=stylesheet>
+
+	</p>
+</header-vue3>
+
 <body th:remove="tag">
 	<noscript>
 		<strong>We're sorry but ArchitectUI doesn't work properly
@@ -93,3 +110,13 @@
 		</p>
 	</div>
 </body>
+<body-vue3 th:remove="tag">
+	<noscript>
+		<strong>We're sorry but ArchitectUI doesn't work properly
+			without JavaScript enabled. Please enable it to continue.</strong>
+	</noscript>
+	<div id=app></div>
+	<div th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
+		<script th:src="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}"></script>
+	</div>
+</body-vue3>
