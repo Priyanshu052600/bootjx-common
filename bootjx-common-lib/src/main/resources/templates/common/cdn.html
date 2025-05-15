@@ -117,6 +117,6 @@
 	</noscript>
 	<div id=app></div>
 	<div th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
-		<script th:src="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}"></script>
+		<script th:src="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}" type="module"></script>
 	</div>
 </body-vue3>
