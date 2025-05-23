@@ -45,6 +45,7 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 	public CommonMongoSourceProvider commonMongoSourceProvider;
 
 	private boolean onlyDefault = false;
+	private boolean readOnly = false;
 
 	public MongoTemplateCommonImpl(MongoDbFactory mongoDbFactory) {
 		super(mongoDbFactory);
@@ -59,11 +60,17 @@ public class MongoTemplateCommonImpl extends MongoTemplate {
 		return this;
 	}
 
+	public MongoTemplateCommonImpl readOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+		return this;
+	}
+
 	protected MongoTemplate getCommonMongoTemplate() {
 		if (commonMongoSourceProvider == null) {
 			return null;
 		}
-		CommonMongoSource source = commonMongoSourceProvider.getSource();
+		CommonMongoSource source = readOnly ? commonMongoSourceProvider.getReadOnlySource()
+				: commonMongoSourceProvider.getSource();
 		if (source == null) {
 			return null;
 		}

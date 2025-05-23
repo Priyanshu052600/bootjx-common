@@ -41,6 +41,8 @@ public abstract class CommonMongoTemplateDefault {
 
 	protected abstract MongoTemplate getCommonMongoTemplate();
 
+	protected abstract MongoTemplate getCommonMongoTemplate(boolean readPreferenceSecondary);
+
 	protected abstract void beforeSaveInternal(Object objectToSave, String collectionName);
 
 	public String getCollectionName(Class<?> entityClass) {
@@ -232,8 +234,16 @@ public abstract class CommonMongoTemplateDefault {
 		return getCommonMongoTemplate().find(query, entityClass);
 	}
 
+	public <T> List<T> findReadOnly(Query query, Class<T> entityClass) {
+		return getCommonMongoTemplate(true).find(query, entityClass);
+	}
+
 	public <T> List<T> find(Query query, Class<T> entityClass, String collectionName) {
 		return getCommonMongoTemplate().find(query, entityClass, collectionName);
+	}
+
+	public <T> List<T> findReadOnly(Query query, Class<T> entityClass, String collectionName) {
+		return getCommonMongoTemplate(true).find(query, entityClass, collectionName);
 	}
 
 	public <T> T findById(Object id, Class<T> entityClass) {
@@ -392,6 +402,10 @@ public abstract class CommonMongoTemplateDefault {
 	public abstract <T> List<T> find(IMongoQueryBuilder<T> builder);
 
 	public abstract <T> List<T> find(IMongoQueryBuilder<T> builder, Class<T> clazz);
+
+	public abstract <T> List<T> findReadOnly(IMongoQueryBuilder<T> builder);
+
+	public abstract <T> List<T> findReadOnly(IMongoQueryBuilder<T> builder, Class<T> clazz);
 
 	/**
 	 * @param builder

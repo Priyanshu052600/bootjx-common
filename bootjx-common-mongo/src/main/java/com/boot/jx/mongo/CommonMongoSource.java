@@ -21,6 +21,7 @@ import com.boot.utils.StringUtils;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
+import com.mongodb.ReadPreference;
 
 public class CommonMongoSource {
 
@@ -62,6 +63,7 @@ public class CommonMongoSource {
 	static MongoDbFactory mongoDbFactoryDefault;
 	static MongoTemplate mongoTemplateDefault;
 
+	private boolean readPreferenceSecondary;
 	boolean ready = false;
 
 	public static boolean hasRule(String useNoDb) {
@@ -105,9 +107,16 @@ public class CommonMongoSource {
 				|| Tenants.isDefault(tnt) || (ArgUtil.is(useDb, USE_DB.USE_DEFAULT_DB)))) {
 			dataBaseName = mongoClientURI.getDatabase();
 		}
-		LOGGER.info("MONGODB: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
 
-		return new SimpleMongoDbFactory(sharedMongoClient, dataBaseName);
+		if (this.readPreferenceSecondary || isReadOnly()) {
+			LOGGER.info("MONGODB[RO]: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
+			return new ReadPreferenceMongoDbFactory(sharedMongoClient, dataBaseName,
+					ReadPreference.secondaryPreferred());
+		} else {
+			LOGGER.info("MONGODB[WR]: {}:{}:{}", dataBaseName, Tenants.isDefault(tnt), dbtnt);
+			return new SimpleMongoDbFactory(sharedMongoClient, dataBaseName);
+		}
+
 	}
 
 	public MongoDbFactory getMongoDbFactory(String dataSourceUrl) {
@@ -139,6 +148,10 @@ public class CommonMongoSource {
 
 	public MongoDbFactory getMongoDbFactory() {
 		return this.mongoDbFactory(getRule());
+	}
+
+	public MongoDbFactory getMongoDbFactoryReadOnly() {
+		return this.mongoDbFactory(USE_DB.READ_ONLY_DB);
 	}
 
 	public MongoTemplate mongoTemplate(USE_DB useDb) {
@@ -269,6 +282,14 @@ public class CommonMongoSource {
 		// codec
 //		return new MongoCustomConversions(Arrays.asList(new DotReplacingConverters.DotReplacingWriter(),
 //				new DotReplacingConverters.DotReplacingReader()));
+	}
+
+	public boolean isReadPreferenceSecondary() {
+		return readPreferenceSecondary;
+	}
+
+	public void setReadPreferenceSecondary(boolean readPreferenceSecondary) {
+		this.readPreferenceSecondary = readPreferenceSecondary;
 	}
 
 }

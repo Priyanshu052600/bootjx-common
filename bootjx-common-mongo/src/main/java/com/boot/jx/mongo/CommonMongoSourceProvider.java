@@ -42,7 +42,8 @@ public class CommonMongoSourceProvider {
 	@Autowired(required = false)
 	private TenantResolver tenantResolver;
 
-	public CommonMongoSource getSource(String dataSourceUrl, String globalDBProfix, String globalDataSourceUrl) {
+	public CommonMongoSource getSource(String dataSourceUrl, String globalDBProfix, String globalDataSourceUrl,
+			boolean readOnly) {
 		String tnt = AppContextUtil.getTenant();
 		String dbtnt = ArgUtil.is(tenantResolver) ? tenantResolver.getDBName(tnt) : tnt;
 		CommonMongoSource commonMongoSource = new CommonMongoSource();
@@ -51,6 +52,7 @@ public class CommonMongoSourceProvider {
 		commonMongoSource.setDataSourceUrl(dataSourceUrl);
 		commonMongoSource.setGlobalDataSourceUrl(globalDataSourceUrl);
 		commonMongoSource.setGlobalDBProfix(globalDBProfix);
+		commonMongoSource.setReadPreferenceSecondary(readOnly);
 		return commonMongoSource;
 	}
 
@@ -58,17 +60,28 @@ public class CommonMongoSourceProvider {
 		if (CommonMongoSource.isReadOnly()) {
 			if (this.reader == null) {
 				synchronized (READER) {
-					this.reader = getSource(dataSourceUrlReadOnly, globalDBProfixReadOnly, globalDataSourceUrlReadOnly);
+					this.reader = getSource(dataSourceUrlReadOnly, globalDBProfixReadOnly, globalDataSourceUrlReadOnly,
+							true);
 				}
 			}
 			return reader;
 		}
 		if (this.writer == null) {
 			synchronized (WRITER) {
-				this.writer = getSource(dataSourceUrl, globalDBProfix, globalDataSourceUrl);
+				this.writer = getSource(dataSourceUrl, globalDBProfix, globalDataSourceUrl, false);
 			}
 		}
 		return writer;
+	}
+
+	public CommonMongoSource getReadOnlySource() {
+		if (this.reader == null) {
+			synchronized (READER) {
+				this.reader = getSource(dataSourceUrlReadOnly, globalDBProfixReadOnly, globalDataSourceUrlReadOnly,
+						true);
+			}
+		}
+		return reader;
 	}
 
 	public void setDataSourceUrl(String dataSourceUrl) {

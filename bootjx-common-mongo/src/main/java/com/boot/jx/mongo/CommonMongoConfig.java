@@ -1,6 +1,7 @@
 package com.boot.jx.mongo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import com.boot.jx.mongo.CommonMongoTemplate.ReadOnlyMongoTemplate;
 import com.boot.jx.mongo.CommonMongoTemplate.TenantDefaultMongoTemplateImpl;
 import com.boot.jx.scope.tnt.TenantDefinations.TenantDefaultQualifier;
 
@@ -42,6 +44,19 @@ public class CommonMongoConfig {
 	@TenantDefaultQualifier
 	public CommonMongoTemplate tenantDefaultMongoTemplate() {
 		return new TenantDefaultMongoTemplateImpl();
+	}
+
+	@Bean
+	@Qualifier("mongoReadOnlyTemplate")
+	public MongoTemplate mongoReadOnlyTemplate() {
+		CommonMongoSource source = commonMongoSourceProvider.getReadOnlySource();
+		MongoDbFactory factory = source.getMongoDbFactory(dataSourceUrl);
+		return new MongoTemplateCommonImpl(factory, source.mappingMongoConverter(factory)).readOnly(true);
+	}
+
+	@Bean
+	public ReadOnlyMongoTemplate readOnlyMongoTemplate() {
+		return new ReadOnlyMongoTemplate();
 	}
 
 }

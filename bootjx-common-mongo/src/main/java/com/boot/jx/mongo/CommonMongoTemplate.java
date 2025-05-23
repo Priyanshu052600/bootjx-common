@@ -1,6 +1,7 @@
 package com.boot.jx.mongo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,19 @@ public class CommonMongoTemplate extends CommonMongoStore<CommonMongoTemplate> {
 		@Override
 		protected MongoTemplate getCommonMongoTemplate() {
 			return mongoTemplateTenantDefault;
+		}
+
+	}
+
+	public static class ReadOnlyMongoTemplate extends CommonMongoTemplate {
+
+		@Autowired
+		@Qualifier("mongoReadOnlyTemplate")
+		protected MongoTemplate mongoReadOnlyTemplate;
+
+		@Override
+		protected MongoTemplate getCommonMongoTemplate() {
+			return mongoReadOnlyTemplate;
 		}
 
 	}

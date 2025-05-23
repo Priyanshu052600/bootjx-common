@@ -10,7 +10,7 @@ import com.boot.jx.mongo.CommonDocInterfaces.IDocument;
 @TypeAlias("ChangeLogDoc")
 public class ChangeLogDoc implements IDocument {
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
 }

@@ -6,6 +6,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -60,12 +62,24 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 	@Autowired
 	protected MongoTemplate mongoTemplate;
 
+	@Autowired
+	@Lazy
+	@Qualifier("mongoReadOnlyTemplate")
+	protected MongoTemplate mongoReadOnlyTemplate;
+
 	// protected MongoConverter mongoConverter;
 
 	@Autowired(required = false)
 	protected AuditDetailProvider auditDetailProvider;
 
 	protected MongoTemplate getCommonMongoTemplate() {
+		return mongoTemplate;
+	}
+
+	protected MongoTemplate getCommonMongoTemplate(boolean readPreferenceSecondary) {
+		if (readPreferenceSecondary) {
+			return mongoReadOnlyTemplate;
+		}
 		return mongoTemplate;
 	}
 
@@ -213,12 +227,26 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 	}
 
 	@Override
+	public <T> List<T> findReadOnly(IMongoQueryBuilder<T> builder, Class<T> clazz) {
+		return findReadOnly(builder.build().getQuery(), clazz);
+	}
+
+	@Override
 	public <T> List<T> find(IMongoQueryBuilder<T> builder) {
 		// System.out.println("+++"+builder.getQuery());
 		if (ArgUtil.is(builder.getCollectionName())) {
 			return find(builder.build().getQuery(), builder.getDocClass(), builder.getCollectionName());
 		}
 		return find(builder.build().getQuery(), builder.getDocClass());
+	}
+
+	@Override
+	public <T> List<T> findReadOnly(IMongoQueryBuilder<T> builder) {
+		// System.out.println("+++"+builder.getQuery());
+		if (ArgUtil.is(builder.getCollectionName())) {
+			return find(builder.build().getQuery(), builder.getDocClass(), builder.getCollectionName());
+		}
+		return findReadOnly(builder.build().getQuery(), builder.getDocClass());
 	}
 
 	@Override
