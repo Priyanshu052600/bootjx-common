@@ -77,6 +77,8 @@
 <header-vue3 th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
 	<p th:case="'true'" th:remove="tag">
 		<meta name=report th:content="${BOOTJX_CDN_DEBUG}">
+		<!-- // load  css -->
+		<link th:href="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.css?_='+${BOOTJX_CDN_VERSION}"  rel=stylesheet>
 	</p>
 	<p th:case="*" th:remove="tag">
 		<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
@@ -86,7 +88,6 @@
 
 		<!-- // load  css -->
 		<link th:href="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.css?_='+${BOOTJX_CDN_VERSION}"  rel=stylesheet>
-
 	</p>
 </header-vue3>
 
