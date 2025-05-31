@@ -463,6 +463,10 @@ public final class CryptoUtil {
 			return this;
 		}
 
+		public String meta() {
+			return String.format("%s:%s@%s", interval, tolerance, currentTime);
+		}
+
 		/**
 		 * Generates SHA2 based HASH from params
 		 * 
