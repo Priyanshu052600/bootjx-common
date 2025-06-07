@@ -56,24 +56,6 @@ public class CommonMongoSourceProvider {
 		return commonMongoSource;
 	}
 
-	public CommonMongoSource getSource() {
-		if (CommonMongoSource.isReadOnly()) {
-			if (this.reader == null) {
-				synchronized (READER) {
-					this.reader = getSource(dataSourceUrlReadOnly, globalDBProfixReadOnly, globalDataSourceUrlReadOnly,
-							true);
-				}
-			}
-			return reader;
-		}
-		if (this.writer == null) {
-			synchronized (WRITER) {
-				this.writer = getSource(dataSourceUrl, globalDBProfix, globalDataSourceUrl, false);
-			}
-		}
-		return writer;
-	}
-
 	public CommonMongoSource getReadOnlySource() {
 		if (this.reader == null) {
 			synchronized (READER) {
@@ -82,6 +64,21 @@ public class CommonMongoSourceProvider {
 			}
 		}
 		return reader;
+	}
+
+	public CommonMongoSource getSource() {
+		if (CommonMongoSource.isReadOnly()) {
+			CommonMongoSource r = getReadOnlySource();
+			if (reader != null) {
+				return r;
+			}
+		}
+		if (this.writer == null) {
+			synchronized (WRITER) {
+				this.writer = getSource(dataSourceUrl, globalDBProfix, globalDataSourceUrl, false);
+			}
+		}
+		return writer;
 	}
 
 	public void setDataSourceUrl(String dataSourceUrl) {
