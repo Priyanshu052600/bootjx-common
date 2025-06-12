@@ -19,7 +19,7 @@ public interface ITunnelSubscriber<M> {
 		// This is only for help
 	}
 
-	default public void onPush(M message) {
+	default public void onRecieve(M message) {
 		System.out.println("poll:Nothing to " + JsonUtil.toJson(message));
 	}
 
