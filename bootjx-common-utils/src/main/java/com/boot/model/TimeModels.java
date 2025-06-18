@@ -125,24 +125,24 @@ public class TimeModels {
 	}
 
 	public static class TimeStampSupportedModel implements TimeStampSupport {
-		private ITimeStampIndex<?> updated;
+		private TimeStamp updated;
 
 		public ITimeStampIndex<?> getUpdated() {
 			return updated;
 		}
 
 		public void setUpdated(ITimeStampIndex<?> updated) {
-			this.updated = updated;
+			this.updated = (TimeStamp) updated;
 		}
 
-		private ITimeStampIndex<?> created;
+		private TimeStamp created;
 
 		public ITimeStampIndex<?> getCreated() {
 			return created;
 		}
 
 		public void setCreated(ITimeStampIndex<?> created) {
-			this.created = created;
+			this.created = (TimeStamp) created;
 		}
 	}
 
