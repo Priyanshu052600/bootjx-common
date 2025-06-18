@@ -10,8 +10,6 @@ import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.IndexDirection;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,6 +19,7 @@ import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.model.AuditCreateEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditUpdateEntity;
 import com.boot.model.TimeModels.ITimeStampIndex;
+import com.boot.model.TimeModels.ITimeStampIndexAbstract;
 import com.boot.model.TimeModels.TimeStampIndexKeyDeserializer;
 import com.boot.model.TimeModels.TimeStampSupport;
 import com.boot.model.UtilityModels.ProtectedJsonProperty;
@@ -335,72 +334,20 @@ public class CommonDocInterfaces {
 	}
 
 	@JsonDeserialize(as = TimeStampIndex.class, keyUsing = TimeStampIndexKeyDeserializer.class)
-	public static class TimeStampIndex implements Serializable, ITimeStampIndex<TimeStampIndex> {
+	@CompoundIndexes({ @CompoundIndex(name = "stamp_desc", def = "{ 'stamp': -1 }"),
+			@CompoundIndex(name = "hour_desc", def = "{ 'hour': -1 }"),
+			@CompoundIndex(name = "day_desc", def = "{ 'day': -1 }"), })
+	public static class TimeStampIndex extends ITimeStampIndexAbstract<TimeStampIndex>
+			implements Serializable, ITimeStampIndex<TimeStampIndex> {
 
 		private static final long serialVersionUID = 9114924334759684396L;
-		@Indexed(name = "stamp_desc", direction = IndexDirection.DESCENDING)
-		private long stamp;
-		@Indexed(name = "hour_desc", direction = IndexDirection.DESCENDING)
-		private long hour;
-		@Indexed(name = "day_desc", direction = IndexDirection.DESCENDING)
-		private long day;
-		private long week;
-		private String byUser;
 
-		@Override
-		public String getByUser() {
-			return byUser;
-		}
-
-		@Override
-		public void setByUser(String byUser) {
-			this.byUser = byUser;
-		}
-
-		@Override
-		public long getStamp() {
-			return stamp;
-		}
-
-		@Override
-		public void setStamp(long stamp) {
-			this.stamp = stamp;
-		}
-
-		@Override
-		public long getHour() {
-			return hour;
-		}
-
-		@Override
-		public void setHour(long hour) {
-			this.hour = hour;
-		}
-
-		@Override
-		public long getDay() {
-			return day;
-		}
-
-		@Override
-		public void setDay(long day) {
-			this.day = day;
-		}
-
-		@Override
-		public long getWeek() {
-			return week;
-		}
-
-		@Override
-		public void setWeek(long week) {
-			this.week = week;
-		}
-
+		@SuppressWarnings("unchecked")
 		public static TimeStampIndex from(long stamp) {
 			return new TimeStampIndex().fromStamp(stamp);
 		}
 
+		@SuppressWarnings("unchecked")
 		public static TimeStampIndex now() {
 			return new TimeStampIndex().fromNow();
 		}

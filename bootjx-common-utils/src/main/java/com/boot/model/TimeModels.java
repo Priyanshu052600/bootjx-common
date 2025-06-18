@@ -59,7 +59,7 @@ public class TimeModels {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	public static abstract class ITimeStampIndexAbstract<T extends ITimeStampIndex<T>> implements ITimeStampIndex<T> {
+	public static class ITimeStampIndexAbstract<T extends ITimeStampIndex<T>> implements ITimeStampIndex<T> {
 		private static final long serialVersionUID = -923904958433975647L;
 		private long stamp;
 		private long hour;
@@ -107,6 +107,16 @@ public class TimeModels {
 			this.week = week;
 		}
 
+		@SuppressWarnings("unchecked")
+		public static <X extends ITimeStampIndex<X>> ITimeStampIndexAbstract<X> from(long stamp) {
+			return (ITimeStampIndexAbstract<X>) new ITimeStampIndexAbstract<X>().fromStamp(stamp);
+		}
+
+		@SuppressWarnings("unchecked")
+		public static <X extends ITimeStampIndex<X>> ITimeStampIndexAbstract<X> now() {
+			return (ITimeStampIndexAbstract<X>) new ITimeStampIndexAbstract<X>().fromNow();
+		}
+
 	}
 
 	public interface TimeStampUpdatedSupport {
@@ -125,24 +135,24 @@ public class TimeModels {
 	}
 
 	public static class TimeStampSupportedModel implements TimeStampSupport {
-		private TimeStamp updated;
+		private ITimeStampIndexAbstract<?> updated;
 
 		public ITimeStampIndex<?> getUpdated() {
 			return updated;
 		}
 
 		public void setUpdated(ITimeStampIndex<?> updated) {
-			this.updated = (TimeStamp) updated;
+			this.updated = (ITimeStampIndexAbstract<?>) updated;
 		}
 
-		private TimeStamp created;
+		private ITimeStampIndexAbstract<?> created;
 
 		public ITimeStampIndex<?> getCreated() {
 			return created;
 		}
 
 		public void setCreated(ITimeStampIndex<?> created) {
-			this.created = (TimeStamp) created;
+			this.created = (ITimeStampIndexAbstract<?>) created;
 		}
 	}
 
