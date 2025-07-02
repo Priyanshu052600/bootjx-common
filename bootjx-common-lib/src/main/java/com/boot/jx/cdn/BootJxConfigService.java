@@ -12,6 +12,7 @@ import com.boot.jx.AppContextUtil;
 import com.boot.jx.http.CommonHttpRequest;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.CryptoUtil;
+import com.boot.utils.StringUtils;
 
 @Component
 public class BootJxConfigService {
@@ -62,6 +63,8 @@ public class BootJxConfigService {
 		String appContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in browser
 		String cdnContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in browser
 		String apiContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in apis
+		String appHost;
+		String appBrand;
 
 		public String cdnUrlGet(String cdnUrl) {
 			return ArgUtil.nonEmpty(this.cdnUrl, cdnUrl);
@@ -144,6 +147,31 @@ public class BootJxConfigService {
 			return this;
 		}
 
+		public String appHostGet(String appHost) {
+			return ArgUtil.nonEmpty(this.appHost, appHost);
+		}
+
+		public String appHostGet() {
+			return this.appHost;
+		}
+
+		public BootJxConfigProvider appHost(String appHost) {
+			this.appHost = appHost;
+			return this;
+		}
+
+		public String appBrandGet(String appBrand) {
+			return ArgUtil.nonEmpty(this.appBrand, appBrand);
+		}
+
+		public String appBrandGet() {
+			return appBrand;
+		}
+
+		public BootJxConfigProvider appBrand(String appBrand) {
+			this.appBrand = appBrand;
+			return this;
+		}
 	}
 
 	@Autowired
@@ -169,6 +197,10 @@ public class BootJxConfigService {
 	public BootJxConfigProvider provider(BootJxConfigProvider provider) {
 		AppContextUtil.set("BootJxConfigProvider", provider);
 		return provider;
+	}
+
+	public BootJxConfigProvider config() {
+		return this.provider(new BootJxConfigProvider());
 	}
 
 	public String getCdnUrl(boolean isSwagger) {
@@ -207,6 +239,12 @@ public class BootJxConfigService {
 		model.put("BOOTJX_APP_TITLE", bootJxAppTitle);
 		model.put("BOOTJX_APP_DESC", bootJxAppDesc);
 		model.put("BOOTJX_APP_SITE", bootJxAppSite);
+
+		String host = commonHttpRequest.getBaseDomain();
+		String brand = StringUtils.split(host, ".")[0];
+
+		model.appHost(provider().appHostGet(host));
+		model.appBrand(provider().appBrandGet(brand));
 
 		model.put("BOOTJX_UPGRADE_INSECURE_REQUESTS", "true");
 
@@ -276,6 +314,16 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel appContext(String bootJxAppContext) {
 			map.put("BOOTJX_APP_CONTEXT", bootJxAppContext);
+			return this;
+		}
+
+		public BootJxConfigModel appHost(String bootJxAppHost) {
+			map.put("BOOTJX_APP_HOST", bootJxAppHost);
+			return this;
+		}
+
+		public BootJxConfigModel appBrand(String bootJxAppBrand) {
+			map.put("BOOTJX_APP_BRAND", bootJxAppBrand);
 			return this;
 		}
 
