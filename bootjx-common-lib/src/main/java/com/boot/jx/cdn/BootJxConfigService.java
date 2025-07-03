@@ -241,7 +241,7 @@ public class BootJxConfigService {
 		model.put("BOOTJX_APP_SITE", bootJxAppSite);
 
 		String host = commonHttpRequest.getBaseDomain();
-		String brand = StringUtils.split(host, ".")[0];
+		String brand = StringUtils.getByIndex(host, ".", 0);
 
 		model.appHost(provider().appHostGet(host));
 		model.appBrand(provider().appBrandGet(brand));
