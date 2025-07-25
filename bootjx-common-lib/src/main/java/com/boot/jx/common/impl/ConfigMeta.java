@@ -261,7 +261,7 @@ public class ConfigMeta implements Serializable {
 	}
 
 	public ConfigMeta optionsOnOff() {
-		return this.options(ConfigOption.ON, ConfigOption.OFF);
+		return this.options(ConfigOption.ON, ConfigOption.OFF).converterType(CONVERT_TYPE.BOOLEAN);
 	}
 
 	public INPUT_TYPE getInputType() {
@@ -396,6 +396,11 @@ public class ConfigMeta implements Serializable {
 
 	public void setConverterType(CONVERT_TYPE converterType) {
 		this.converterType = converterType;
+	}
+
+	public ConfigMeta converterType(CONVERT_TYPE converterType) {
+		this.converterType = converterType;
+		return this;
 	}
 
 	public boolean isDeprecated() {
