@@ -114,7 +114,7 @@
 </body>
 <body-vue3 th:remove="tag">
 	<noscript>
-		<strong>We're sorry but ArchitectUI doesn't work properly
+		<strong>We're sorry but BootVueUI (3.0) doesn't work properly
 			without JavaScript enabled. Please enable it to continue.</strong>
 	</noscript>
 	<div id=app></div>
@@ -122,3 +122,14 @@
 		<script th:src="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}" type="module"></script>
 	</div>
 </body-vue3>
+<body-vue3-1 th:remove="tag">
+	<noscript>
+		<strong>We're sorry but BootVueUI (3.1) doesn't work properly
+			without JavaScript enabled. Please enable it to continue.</strong>
+	</noscript>
+	<div id=app></div>
+	<div th:switch="${BOOTJX_CDN_DEBUG}" th:remove="tag">
+    	<script defer th:src="${BOOTJX_CDN_URL}+'/js/chunk-vendors.js?_='+${BOOTJX_CDN_VERSION}"></script>
+		<script defer th:src="${BOOTJX_CDN_URL}+'/'+${BOOTJX_CDN_ENTRY} + '.js?_='+${BOOTJX_CDN_VERSION}"></script>
+	</div>
+</body-vue3-1>
