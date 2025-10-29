@@ -189,7 +189,7 @@ public class BootJxConfigService {
 			return this;
 		}
 
-		public BootJxConfigProvider appUser(String key, Object value) {
+		public BootJxConfigProvider appUserProperty(String key, Object value) {
 			if (this.appUser == null) {
 				this.appUser = new HashMap<String, Object>();
 			}
