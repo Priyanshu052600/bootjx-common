@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import com.boot.jx.AppConfig;
 import com.boot.jx.AppContextUtil;
 import com.boot.jx.http.CommonHttpRequest;
+import com.boot.model.MapModel;
 import com.boot.utils.ArgUtil;
 import com.boot.utils.CryptoUtil;
+import com.boot.utils.JsonUtil;
 import com.boot.utils.StringUtils;
 
 @Component
@@ -65,6 +67,7 @@ public class BootJxConfigService {
 		String apiContext; // Sub part of cdnApp nexus/mysubapp //prefix of path in apis
 		String appHost;
 		String appBrand;
+		Map<String, Object> appUser;
 
 		public String cdnUrlGet(String cdnUrl) {
 			return ArgUtil.nonEmpty(this.cdnUrl, cdnUrl);
@@ -172,6 +175,27 @@ public class BootJxConfigService {
 			this.appBrand = appBrand;
 			return this;
 		}
+
+		public Map<String, Object> appUserGet(Map<String, Object> appUser) {
+			return ArgUtil.nonEmpty(this.appUser, appUser);
+		}
+
+		public Map<String, Object> appUserGet() {
+			return appUser;
+		}
+
+		public BootJxConfigProvider appUser(Map<String, Object> appUser) {
+			this.appUser = appUser;
+			return this;
+		}
+
+		public BootJxConfigProvider appUser(String key, Object value) {
+			if (this.appUser == null) {
+				this.appUser = new HashMap<String, Object>();
+			}
+			this.appUser.put(key, value);
+			return this;
+		}
 	}
 
 	@Autowired
@@ -229,6 +253,7 @@ public class BootJxConfigService {
 		model.appContext(provider().appContextGet(bootJxAppContext));
 		model.cdnContext(provider().cdnContextGet(bootJxCdnContext));
 		model.apiContext(provider().apiContextGet(bootJxApiContext));
+		model.appUser(provider().appUserGet(MapModel.newMap()));
 
 		if (ArgUtil.is(cdnUrl) && (cdnUrl.contains("127.0.0.1") || cdnUrl.contains("localhost"))) {
 			model.put("BOOTJX_CDN_DEBUG", ArgUtil.parseAsString(commonHttpRequest.get("BOOTJX_CDN_DEBUG"), "true"));
@@ -324,6 +349,12 @@ public class BootJxConfigService {
 
 		public BootJxConfigModel appBrand(String bootJxAppBrand) {
 			map.put("BOOTJX_APP_BRAND", bootJxAppBrand);
+			return this;
+		}
+
+		public BootJxConfigModel appUser(Map<String, Object> appUser) {
+			map.put("BOOTJX_APP_USER", appUser);
+			map.put("BOOTJX_APP_USER_JSON", JsonUtil.toJson(appUser));
 			return this;
 		}
 
