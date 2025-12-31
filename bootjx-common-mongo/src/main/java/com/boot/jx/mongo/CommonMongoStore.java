@@ -81,7 +81,7 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 		}
 
 		public PaginatedQuery<T> count(boolean count) {
-			this.count = true;
+			this.count = count;
 			return this;
 		}
 
