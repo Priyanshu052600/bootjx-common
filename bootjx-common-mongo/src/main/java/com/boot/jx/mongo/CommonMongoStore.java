@@ -80,6 +80,11 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 			return this;
 		}
 
+		public PaginatedQuery<T> count(boolean count) {
+			this.count = true;
+			return this;
+		}
+
 		public PaginatedQuery<T> skipDBRef() {
 			this.skipDBRef = true;
 			return this;
