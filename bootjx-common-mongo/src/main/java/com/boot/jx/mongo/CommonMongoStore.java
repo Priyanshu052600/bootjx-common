@@ -230,6 +230,9 @@ public class CommonMongoStore<TStore extends CommonMongoStore<TStore>> extends C
 			case "sortdir":
 				query.sortDir = new MapEntry(queryParams.getParameter(param)).asString(query.sortDir);
 				break;
+			case "count":
+				query.count = new MapEntry(queryParams.getParameter(param)).asBoolean(query.count);
+				break;
 			case "id":
 				String idValue = queryParams.getParameter("id");
 				q.whereId(idValue);
