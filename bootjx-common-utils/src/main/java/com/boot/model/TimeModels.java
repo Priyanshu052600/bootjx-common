@@ -34,6 +34,10 @@ public class TimeModels {
 
 		void setWeek(long week);
 
+		long getSeconds();
+
+		void setSeconds(long seconds);
+
 		String getByUser();
 
 		void setByUser(String byUser);
@@ -44,6 +48,7 @@ public class TimeModels {
 			this.setHour(stamp / TimeUtils.Constants.MILLIS_IN_HOUR);
 			this.setDay(stamp / TimeUtils.Constants.MILLIS_IN_DAY);
 			this.setWeek(stamp / TimeUtils.Constants.MILLIS_IN_WEEK);
+			this.setSeconds(stamp / TimeUtils.Constants.MILLIS_IN_SECOND);
 			return (T) this;
 		}
 
@@ -65,6 +70,16 @@ public class TimeModels {
 		private long hour;
 		private long day;
 		private long week;
+		private long seconds;
+
+		public long getSeconds() {
+			return seconds;
+		}
+
+		public void setSeconds(long seconds) {
+			this.seconds = seconds;
+		}
+
 		private String byUser;
 
 		public String getByUser() {
