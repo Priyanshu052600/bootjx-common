@@ -369,14 +369,12 @@ public class CommonDocInterfaces {
 		}
 
 		@CompoundIndexes({ @CompoundIndex(name = "created_stamp_desc", def = "{ 'created.stamp': -1 }"),
-				@CompoundIndex(name = "created_second_desc", def = "{ 'created.seconds': -1 }"),
 				@CompoundIndex(name = "created_hour_desc", def = "{ 'created.hour': -1 }"),
 				@CompoundIndex(name = "created_day_desc", def = "{ 'created.day': -1 }"),
 				@CompoundIndex(name = "created_week_desc", def = "{ 'created.week': -1 }"),
 				@CompoundIndex(name = "created_byUser", def = "{ 'created.byUser': 1 }"),
 				//
 				@CompoundIndex(name = "updated_stamp_desc", def = "{ 'updated.stamp': -1 }"),
-				@CompoundIndex(name = "updated_second_desc", def = "{ 'updated.seconds': -1 }"),
 				@CompoundIndex(name = "updated_hour_desc", def = "{ 'updated.hour': -1 }"),
 				@CompoundIndex(name = "updated_day_desc", def = "{ 'updated.day': -1 }"),
 				@CompoundIndex(name = "updated_week_desc", def = "{ 'updated.week': -1 }"),
