@@ -26,4 +26,6 @@ public interface ITunnelService {
 
 	public <T extends Schedulable> long schedule(T event);
 
+	public <T> long publish(String topic, T messagePayload);
+
 }
