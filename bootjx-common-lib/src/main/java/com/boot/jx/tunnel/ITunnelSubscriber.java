@@ -1,5 +1,6 @@
 package com.boot.jx.tunnel;
 
+import com.boot.model.MapModel;
 import com.boot.utils.JsonUtil;
 
 public interface ITunnelSubscriber<M> {
@@ -19,8 +20,20 @@ public interface ITunnelSubscriber<M> {
 		// This is only for help
 	}
 
+	default public void onSend(M message) {
+		System.out.println("send:Nothing to " + JsonUtil.toJson(message));
+	}
+
 	default public void onReceive(M message) {
-		System.out.println("poll:Nothing to " + JsonUtil.toJson(message));
+		this.onSend(message);
+	}
+
+	default public void onPublish(M message) {
+		System.out.println("publish:Nothing to " + JsonUtil.toJson(message));
+	}
+
+	default public M decode(MapModel encodedMessage) {
+		return null;
 	}
 
 }

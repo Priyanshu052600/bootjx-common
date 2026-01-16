@@ -8,7 +8,7 @@ public enum TunnelEventXchange {
 	 * 
 	 * @see com.amx.jax.tunnel.ITunnelService#shout(String, Object)
 	 */
-	SHOUT_LISTNER("SD"), SHOUT_PUB_LISTNER("SDP"),
+	SHOUT_LISTNER("SD"), PUB_LISTNER("PL"),
 
 	/**
 	 * Events deleivered by
