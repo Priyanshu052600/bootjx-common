@@ -33,6 +33,14 @@ public interface ITunnelSubscriber<M> {
 	}
 
 	default public M decode(MapModel encodedMessage) {
+		Class<M> clazz = toClass();
+		if (clazz == null) {
+			return null;
+		}
+		return encodedMessage.as(clazz);
+	}
+
+	default public Class<M> toClass() {
 		return null;
 	}
 
