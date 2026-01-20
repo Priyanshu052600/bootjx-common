@@ -42,6 +42,10 @@ public class TimeModels {
 
 		void setByUser(String byUser);
 
+		String getTraceId();
+
+		void setTraceId(String traceId);
+
 		@SuppressWarnings("unchecked")
 		public default T fromStamp(long stamp) {
 			this.setStamp(stamp);
@@ -81,6 +85,15 @@ public class TimeModels {
 		}
 
 		private String byUser;
+		private String traceId;
+
+		public String getTraceId() {
+			return traceId;
+		}
+
+		public void setTraceId(String traceId) {
+			this.traceId = traceId;
+		}
 
 		public String getByUser() {
 			return byUser;

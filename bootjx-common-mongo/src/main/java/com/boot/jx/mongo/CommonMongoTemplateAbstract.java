@@ -14,10 +14,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import com.boot.jx.AppContextUtil;
 import com.boot.jx.logger.AuditDetailProvider;
 import com.boot.jx.logger.LoggerService;
 import com.boot.jx.model.AuditCreateEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditIdentifier;
+import com.boot.jx.model.AuditCreateEntity.AuditTraceEntity;
 import com.boot.jx.model.AuditCreateEntity.AuditUpdateEntity;
 import com.boot.jx.model.ModelPatch;
 import com.boot.jx.model.ModelPatch.ModelPatches;
@@ -109,6 +111,8 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 	public void beforeSaveInternal(Object objectToSave, String collectionName) {
 
 		TimeStampIndex timeindex = TimeStampIndex.now();
+		timeindex.setTraceId(AppContextUtil.getTraceId());
+
 		if (ArgUtil.is(auditDetailProvider)) {
 			timeindex.by(auditDetailProvider.getAuditUser());
 		}
@@ -159,6 +163,12 @@ public class CommonMongoTemplateAbstract<TStore extends CommonMongoTemplateAbstr
 			} else if (objectToSave instanceof AuditUpdateEntity) {
 				auditDetailProvider.auditUpdate((AuditUpdateEntity) objectToSave);
 			}
+
+		}
+
+		if (objectToSave instanceof AuditTraceEntity) {
+			AuditTraceEntity auditableByIdEntity = (AuditTraceEntity) objectToSave;
+			auditableByIdEntity.setTraceId(AppContextUtil.getTraceId());
 		}
 
 		if (objectToSave instanceof IdNumberSupport) {

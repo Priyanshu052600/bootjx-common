@@ -10,6 +10,12 @@ public interface AuditCreateEntity {
 
 	void setCreatedStamp(Long createdStamp);
 
+	public interface AuditTraceEntity {
+		void setTraceId(String tracdId);
+
+		public String getTraceId();
+	}
+
 	public interface AuditUpdateEntity {
 		public Long getUpdatedStamp();
 
