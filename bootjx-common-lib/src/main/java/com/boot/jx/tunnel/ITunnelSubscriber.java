@@ -32,12 +32,14 @@ public interface ITunnelSubscriber<M> {
 		System.out.println("publish:Nothing to " + JsonUtil.toJson(message));
 	}
 
-	default public M decode(MapModel encodedMessage) {
+	default public void onPublishRaw(MapModel data) {
 		Class<M> clazz = toClass();
-		if (clazz == null) {
-			return null;
+		if (clazz != null) {
+			M msgdata = data.as(clazz);
+			if (msgdata != null) {
+				this.onPublish(msgdata);
+			}
 		}
-		return encodedMessage.as(clazz);
 	}
 
 	default public Class<M> toClass() {
