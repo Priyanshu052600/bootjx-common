@@ -41,6 +41,7 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseAuthenticator.class);
 	private static final String SCOPES = "https://www.googleapis.com/auth/firebase";
+	private static final String PN_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
 
 	private static final GsonFactory jacksonFactory = new GsonFactory();
 	private static final NetHttpTransport netHttpTransport = new NetHttpTransport();
@@ -82,7 +83,7 @@ public class FirebaseAuthenticator extends AbstractAuthenticator {
 				InputStream leftStream = FileUtil.getExternalOrInternalResourceAsStream(
 						"providers/truelinq-firebase-adminsdk.json", FirebaseAuthenticator.class);
 				if (ArgUtil.is(leftStream)) {
-					googleCredentials = GoogleCredentials.fromStream(leftStream).createScoped(Arrays.asList(SCOPES));
+					googleCredentials = GoogleCredentials.fromStream(leftStream).createScoped(Arrays.asList(SCOPES, PN_SCOPE));
 					leftStream.close();
 					googleCredentials.refresh();
 				}
